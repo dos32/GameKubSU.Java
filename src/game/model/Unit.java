@@ -12,9 +12,23 @@ public abstract class Unit {
 	public Vector2d speed = new Vector2d();
 	public double angle = 0;
 	public double angularSpeed = 0;
+	
+	/*
+	 * When object becomes static it
+	 * ignores self speed, friction and all collisions
+	 */
 	public boolean isStatic = false;
+	
+	/*
+	 * When object becomes not material it
+	 * ignores all collisions
+	 */
 	public boolean isMaterial = true;
+	
+	// Physical mass of an object
 	public double mass;
+	
+	// Friction coefficient of an object
 	public double frictionCoeff = Settings.Physics.defaultFrictionCoeff;
 	public double elasticityCoeff = Settings.Physics.defaultElasticityCoeff;
 

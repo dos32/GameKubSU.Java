@@ -15,12 +15,17 @@ public final class Physics {
 		for (Unit unit : runner.world.allUnits)
 		{
 			// Inertial moving:
-			unit.position.add(unit.speed);
-			unit.angle+=unit.angularSpeed;
-			
+			if (!unit.isStatic) {
+				unit.position.add(unit.speed);
+				unit.angle += unit.angularSpeed;
+			}
+
 			// Friction:
-			unit.speed.add(unit.speed.mul(-unit.frictionCoeff/*unit.getSquare()*/));
-			unit.angularSpeed-=unit.frictionCoeff*unit.angularSpeed;
+			if (!unit.isStatic) {
+				//unit.getSquare()*unit.mass
+				unit.speed.add(unit.speed.mul(-unit.frictionCoeff));
+				unit.angularSpeed -= unit.frictionCoeff * unit.angularSpeed;
+			}
 		}
 		
 		runner.renderer.updated = true;

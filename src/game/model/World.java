@@ -12,7 +12,7 @@ import java.io.ObjectOutput;
 import java.util.ArrayList;
 
 /*
- * Object that contains all visible objects,
+ * Contains all visible objects,
  * and info about players
  */
 public class World implements Externalizable {
@@ -57,7 +57,7 @@ public class World implements Externalizable {
 	
 	protected void showGreeting() {
 		InfoTip info = new InfoTip("Wait for client AI");
-		info.position = new Vector2d(width/2, height/2);
+		info.position.assign(width/2, height/2);
 		addUnit(info);
 		runner.mainFrame.repaint();
 	}
@@ -67,8 +67,8 @@ public class World implements Externalizable {
 		Vehicle vehicle = new Vehicle(100, 200);
 		vehicle.angle = Math.PI / 6;
 		vehicle.angularSpeed = 0.01 * Math.PI / 3;
-		vehicle.position = new Vector2d(250, 100);
-		vehicle.speed = new Vector2d(1.1, 0.5);
+		vehicle.position.assign(50, 100);
+		vehicle.speed.assign(1.1, 0.5);
 		addUnit(vehicle);
 		InfoTip info = new InfoTip(String.format("Ticks=%s", this.tick));
 		addUnit(info);
@@ -101,9 +101,7 @@ public class World implements Externalizable {
 		else if (unit.getClass() == InfoTip.class)
 			tips.add((InfoTip) unit);
 		else {
-			// Type not recognized
 			allUnits.remove(allUnits.size() - 1);
-			//throw new Exception("World.addUnit::Cant recognize type of object");
 			System.err.println("World.addUnit::Cant recognize type of object");
 		}
 	}

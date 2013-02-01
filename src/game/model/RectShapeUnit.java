@@ -29,9 +29,13 @@ public class RectShapeUnit extends Unit {
 	@Override
 	public void draw(Graphics2D graphics) {
 		AffineTransform a=graphics.getTransform();
-		graphics.translate(this.position.x+this.width/2, this.position.y+this.height/2);
+		/*graphics.translate(this.position.x+this.width/2, this.position.y+this.height/2);
 		graphics.rotate(this.angle,this.width/2,this.height/2);
-		graphics.drawRect(0, 0, (int)this.width, (int)this.height);
+		graphics.drawRect(0, 0, (int)this.width, (int)this.height);*/
+		graphics.translate(this.position.x, this.position.y);
+		graphics.rotate(this.angle);
+		graphics.drawRect(-(int)this.width/2, -(int)this.height/2,
+				(int)this.width, (int)this.height);
 		graphics.setTransform(a);
 	}
 

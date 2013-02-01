@@ -11,10 +11,11 @@ import javax.swing.border.EmptyBorder;
 public class MainFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private Graphics2D mainGraphics;
 	protected final Runner runner;
 	
 	public void paint(Graphics g) {
-		runner.renderer.render((Graphics2D)g);
+		runner.renderer.render(mainGraphics);
 	}
 	
 	/*public static void main(String[] args) {
@@ -32,6 +33,7 @@ public class MainFrame extends JFrame {
 	
 	public MainFrame(Runner runner) {
 		this.runner = runner;
+		setIgnoreRepaint(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, Settings.Frame.width, Settings.Frame.height);
 		setResizable(false);
@@ -41,7 +43,8 @@ public class MainFrame extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		setVisible(true);
-		//repaint();
+		mainGraphics = (Graphics2D) contentPane.getGraphics();
+		setIgnoreRepaint(false);
 	}
-	
+
 }

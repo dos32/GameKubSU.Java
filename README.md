@@ -1,2 +1,1 @@
-GameKubSU.Java
-==============
+Simple game engine

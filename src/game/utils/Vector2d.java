@@ -17,6 +17,16 @@ public class Vector2d {
 		this.x = prototype.x;
 		this.y = prototype.y;
 	}
+	
+	public void assign(double x, double y) {
+		this.x = x;
+		this.y = y;
+	}
+
+	public void assign(Vector2d vector) {
+		this.x = vector.x;
+		this.y = vector.y;
+	}
 
 	public double dotprod(Vector2d v) {
 		return v.x * this.x + v.y * this.y;
