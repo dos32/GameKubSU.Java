@@ -1,8 +1,13 @@
-package game.model;
+package game.physics;
 
+import game.Runner;
 import game.engine.Player;
-import game.engine.Runner;
 import game.engine.Settings;
+import game.physics.objects.Bonus;
+import game.physics.objects.InfoTip;
+import game.physics.objects.Obstacle;
+import game.physics.objects.Unit;
+import game.physics.objects.Vehicle;
 import game.utils.Vector2d;
 
 import java.io.Externalizable;
@@ -52,6 +57,7 @@ public class World implements Externalizable {
 		}
 		showStats();
 		delay(Settings.waitAfterDuration);
+		System.out.println(runner.renderer.dbg_ticks);
 		runner.mainFrame.dispose();
 	}
 	
@@ -64,12 +70,16 @@ public class World implements Externalizable {
 
 	protected void initialize() {
 		clearUnits();
-		Vehicle vehicle = new Vehicle(100, 200);
-		vehicle.angle = Math.PI / 6;
-		vehicle.angularSpeed = 0.01 * Math.PI / 3;
-		vehicle.position.assign(50, 100);
-		vehicle.speed.assign(1.1, 0.5);
-		addUnit(vehicle);
+		// test
+		for(int i=0; i<1; i++)
+		{
+			Vehicle vehicle = new Vehicle(100, 200);
+			vehicle.angle = Math.PI / 6;
+			vehicle.angularSpeed = 0.01 * Math.PI / 3;
+			vehicle.position.assign(50, 100);
+			vehicle.speed.assign(1.1, 0.5);
+			addUnit(vehicle);
+		}
 		InfoTip info = new InfoTip(String.format("Ticks=%s", this.tick));
 		addUnit(info);
 	}

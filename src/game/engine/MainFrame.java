@@ -1,5 +1,7 @@
 package game.engine;
 
+import game.Runner;
+
 import java.awt.BorderLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;

@@ -1,9 +1,14 @@
-package game.engine;
+package game.physics;
 
-import game.model.Unit;
+import java.util.ArrayList;
+
+import game.Runner;
+import game.physics.forces.GlobalForce;
+import game.physics.objects.Unit;
 
 public final class Physics {
 	public final Runner runner;
+	public ArrayList<GlobalForce> globalForces = new ArrayList<GlobalForce>();
 
 	public Physics(Runner runner) {
 		this.runner = runner;
@@ -23,8 +28,8 @@ public final class Physics {
 			// Friction:
 			if (!unit.isStatic) {
 				//unit.getSquare()*unit.mass
-				unit.speed.add(unit.speed.mul(-unit.frictionCoeff));
-				unit.angularSpeed -= unit.frictionCoeff * unit.angularSpeed;
+				unit.speed.scale(1-unit.frictionCoeff);
+				unit.angularSpeed *= (1-unit.frictionCoeff);
 			}
 		}
 		

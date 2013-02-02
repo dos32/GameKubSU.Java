@@ -1,4 +1,4 @@
-package game.model;
+package game.physics.objects;
 
 import java.awt.Graphics2D;
 

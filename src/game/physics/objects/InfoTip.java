@@ -1,4 +1,4 @@
-package game.model;
+package game.physics.objects;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -7,7 +7,7 @@ import java.awt.geom.AffineTransform;
 import game.utils.Vector2d;
 
 /*
- * Animation object for showing text info on screen 
+ * Animation object for showing text label on screen
  */
 public class InfoTip extends Unit {
 	public String message;
@@ -30,7 +30,7 @@ public class InfoTip extends Unit {
 	}
 
 	/*
-	 * draws object into left top side of its bounds,
+	 * Draws object into left top side of its bounds,
 	 * rotate it around the center of string in current
 	 * graphics font metrics
 	 */

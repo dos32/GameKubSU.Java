@@ -1,6 +1,6 @@
 package game.engine;
 
-import game.model.World;
+import game.physics.World;
 
 import java.net.*;
 

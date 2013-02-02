@@ -6,11 +6,13 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
-import game.model.Unit;
+import game.Runner;
+import game.physics.objects.Unit;
 
 public final class Renderer {
 	protected final Runner runner;
-	public boolean updated;
+	public boolean updated = false;
+	public int dbg_ticks=0;
 
 	protected BufferedImage buffer;
 	Graphics2D bufferGraphics;
@@ -35,5 +37,6 @@ public final class Renderer {
 			updated = false;
 		}
 		graphics.drawImage(buffer, null, 0, 0);
+		dbg_ticks++;
 	}
 }
