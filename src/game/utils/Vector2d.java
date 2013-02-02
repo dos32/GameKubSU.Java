@@ -33,7 +33,11 @@ public class Vector2d {
 	}
 
 	public double norm() {
-		return Math.sqrt(this.x * this.x + this.y * this.y);
+		return Math.hypot(this.x, this.y);
+	}
+	
+	public double square() {
+		return this.x*this.x+this.y*this.y;
 	}
 
 	public void add(Vector2d vector) {
@@ -43,6 +47,10 @@ public class Vector2d {
 
 	public Vector2d sum(Vector2d v) {
 		return new Vector2d(this.x + v.x, this.y + v.y);
+	}
+	
+	public Vector2d diff(Vector2d v) {
+		return new Vector2d(this.x-v.x, this.y-v.y);
 	}
 	
 	public Vector2d mul(double value) {

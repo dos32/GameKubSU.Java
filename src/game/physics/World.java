@@ -3,7 +3,10 @@ package game.physics;
 import game.Runner;
 import game.engine.Player;
 import game.engine.Settings;
+import game.physics.forces.CollideForce;
+import game.physics.forces.FrictionForce;
 import game.physics.objects.Bonus;
+import game.physics.objects.Circle;
 import game.physics.objects.InfoTip;
 import game.physics.objects.Obstacle;
 import game.physics.objects.Unit;
@@ -70,7 +73,16 @@ public class World implements Externalizable {
 
 	protected void initialize() {
 		clearUnits();
+		runner.physics.globalForces.add(new FrictionForce());
+		runner.physics.globalForces.add(new CollideForce(runner));
 		// test
+		for(int i=0; i<5; i++)
+		{
+			Circle c = new Circle(Math.random()*100);
+			c.position.assign(Math.random()*width, Math.random()*height);
+			c.speed.assign((Math.random()-0.5)*2, (Math.random()-0.5)*2);
+			addUnit(c);
+		}
 		for(int i=0; i<1; i++)
 		{
 			Vehicle vehicle = new Vehicle(100, 200);
@@ -111,8 +123,8 @@ public class World implements Externalizable {
 		else if (unit.getClass() == InfoTip.class)
 			tips.add((InfoTip) unit);
 		else {
-			allUnits.remove(allUnits.size() - 1);
-			System.err.println("World.addUnit::Cant recognize type of object");
+			//allUnits.remove(allUnits.size() - 1);
+			//System.err.println("World.addUnit::Cant recognize type of object");
 		}
 	}
 

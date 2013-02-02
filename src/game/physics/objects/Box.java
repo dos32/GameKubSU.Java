@@ -5,10 +5,10 @@ import java.awt.geom.AffineTransform;
 
 import game.utils.Vector2d;
 
-public class RectShapeUnit extends Unit {
+public class Box extends Unit {
 	public final double width, height;
 	
-	public RectShapeUnit(double width, double height)
+	public Box(double width, double height)
 	{
 		this.width=width;
 		this.height=height;

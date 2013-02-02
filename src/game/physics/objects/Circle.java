@@ -4,7 +4,12 @@ import java.awt.Graphics2D;
 
 import game.utils.Vector2d;
 
-public class CircleShapeUnit extends Unit {
+public class Circle extends Unit {
+	public double radius;
+	
+	public Circle(double radius) {
+		this.radius = radius;
+	}
 
 	@Override
 	public double getPenetrationDepth(Unit unit) {
@@ -20,8 +25,7 @@ public class CircleShapeUnit extends Unit {
 
 	@Override
 	public void draw(Graphics2D graphics) {
-		// TODO Auto-generated method stub
-
+		graphics.drawOval((int)(position.x-radius), (int)(position.y-radius), (int)radius*2, (int)radius*2);
 	}
 
 	@Override

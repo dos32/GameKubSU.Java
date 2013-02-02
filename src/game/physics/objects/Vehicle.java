@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
-public class Vehicle extends RectShapeUnit implements Externalizable {
+public class Vehicle extends Box implements Externalizable {
 	protected int indexInTeam;
 	protected int playerId;
 	protected String playerName;
