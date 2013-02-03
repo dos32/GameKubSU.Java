@@ -76,9 +76,9 @@ public class World implements Externalizable {
 		runner.physics.globalForces.add(new FrictionForce());
 		runner.physics.globalForces.add(new CollideForce(runner));
 		// test
-		for(int i=0; i<5; i++)
+		for(int i=0; i<50; i++)
 		{
-			Circle c = new Circle(Math.random()*100);
+			Circle c = new Circle(Math.random()*10);
 			c.position.assign(Math.random()*width, Math.random()*height);
 			c.speed.assign((Math.random()-0.5)*2, (Math.random()-0.5)*2);
 			addUnit(c);

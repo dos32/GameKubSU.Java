@@ -15,7 +15,7 @@ public final class Renderer {
 	public int dbg_ticks=0;
 
 	protected BufferedImage buffer;
-	Graphics2D bufferGraphics;
+	protected Graphics2D bufferGraphics;
 
 	public Renderer(Runner runner) {
 		this.runner = runner;

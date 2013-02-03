@@ -19,7 +19,9 @@ public class CollideForce extends GlobalForce {
 			for (Unit unit1 : runner.world.allUnits) {
 				if (unit1.getClass() == Circle.class && unit != unit1) {
 					Vector2d dr = unit.position.diff(unit1.position);
-					if (dr.norm() < ((Circle) unit).radius + ((Circle) unit1).radius) {
+					if (dr.norm() < ((Circle) unit).radius + ((Circle) unit1).radius &&
+							unit.isMaterial && unit1.isMaterial &&
+							!unit.isStatic) {
 						dr.scale(unit1.collideCoeff / dr.square());
 						unit.speed.add(dr);
 					}
