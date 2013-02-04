@@ -26,7 +26,7 @@ public abstract class Unit {
 	public boolean isMaterial = true;
 	
 	// Physical mass of an object
-	public double mass;
+	public double mass = Settings.Physics.defaultMass;
 	
 	// Friction coefficient of an object
 	public double frictionCoeff = Settings.Physics.defaultFrictionCoeff;

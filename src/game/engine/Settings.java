@@ -13,7 +13,7 @@ public final class Settings {
 	}
 
 	public final static class World {
-		public static double width = 1000.0d, height = 600.0d;
+		public static double width = 1006.0d, height = 628.0d;
 	}
 
 	public final static class Car {
@@ -28,6 +28,7 @@ public final class Settings {
 	
 	public final static class Physics {
 		public static double defaultFrictionCoeff = 0.001,
-				defaultCollideCoeff = 10;
+				defaultCollideCoeff = 10,
+				defaultMass = 1;
 	}
 }

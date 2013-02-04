@@ -71,4 +71,12 @@ public class Vector2d {
 		x=-x;
 		y=-y;
 	}
+	
+	public void normalize() {
+		double h = norm();
+		if(h!=0) {
+			x/=h;
+			y/=h;
+		}
+	}
 }

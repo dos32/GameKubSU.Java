@@ -27,8 +27,7 @@ public class World implements Externalizable {
 	protected final Runner runner;
 
 	public int tick = 0;
-	public final double width = Settings.World.width,
-			height = Settings.World.height;
+	public final double width, height;
 	public ArrayList<Player> players = new ArrayList<Player>();
 	public ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
 	public ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
@@ -38,6 +37,8 @@ public class World implements Externalizable {
 
 	public World(Runner runner) {
 		this.runner = runner;
+		this.width = runner.mainFrame.contentPane.getWidth();
+		this.height = runner.mainFrame.contentPane.getHeight();
 	}
 	
 	/*public void init() {
@@ -78,12 +79,13 @@ public class World implements Externalizable {
 		// edges:
 		addUnit(new HalfPlane(new Vector2d(0, 0), 0));
 		addUnit(new HalfPlane(new Vector2d(width, 0), Math.PI));
-		addUnit(new HalfPlane(new Vector2d(0, 0), 3*Math.PI/2));
-		addUnit(new HalfPlane(new Vector2d(0, height), Math.PI/2));
+		addUnit(new HalfPlane(new Vector2d(0, height), 3*Math.PI/2));
+		addUnit(new HalfPlane(new Vector2d(0, 0), Math.PI/2));
 		// test:
 		for(int i=0; i<50; i++)
 		{
 			Circle c = new Circle(Math.random()*10);
+			c.mass = Math.pow(c.radius,2)*Math.PI*0.01;
 			c.position.assign(Math.random()*width, Math.random()*height);
 			c.speed.assign((Math.random()-0.5)*2, (Math.random()-0.5)*2);
 			addUnit(c);

@@ -12,7 +12,7 @@ import javax.swing.border.EmptyBorder;
 
 public class MainFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
+	public JPanel contentPane;
 	private Graphics2D mainGraphics;
 	protected final Runner runner;
 	

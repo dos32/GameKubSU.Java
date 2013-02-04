@@ -20,24 +20,11 @@ public class ColliderCircleHalfPlane extends Collider {
 				hp = (HalfPlane) unit1;
 			} else
 				return;
-			/*Vector2d r1 = new Vector2d(hp.position);
-			Vector2d r2 = new Vector2d(-Math.sin(hp.angle),Math.cos(hp.angle));
-			r2.add(r1);
-			//double r1r22 = r1.diff(r2).square(); // but according to calculation of r2:
-			double r1r22 = 1;
-			Vector2d r1r2 = r1.diff(r2);
-			double Alpha = (r2.square()-r1.square()+r1r22+2*circle.position.dotprod(r1r2))/(2*r1r22);
-			Vector2d r = (r1.mul(Alpha).sum(r2.mul(1-Alpha)));
-			double sgn = Math.signum(r.diff(circle.position).dotprod(new Vector2d(Math.cos(hp.angle),Math.sin(hp.angle))));
-			r.negate();
-			r.add(circle.position);
-			double dr = circle.radius - r.norm()*sgn;
-			if(dr>0)
-				circle.speed.add(new Vector2d(Math.cos(hp.angle),Math.sin(hp.angle)).mul(-1/(dr*dr)));*/
 			Vector2d n = new Vector2d(Math.cos(hp.angle), Math.sin(hp.angle));
-			double dr = circle.radius - (circle.position.diff(hp.position).dotprod(n));
-			if(dr>0)
-				circle.speed.add(n.mul(1/dr*dr));
+			double dr = circle.radius - ((circle.position.diff(hp.position)).dotprod(n));
+			double vn = circle.speed.dotprod(n);
+			if(dr>0 && vn<0)
+				circle.speed.add(n.mul(-2*vn));
 		}
 	}
 
