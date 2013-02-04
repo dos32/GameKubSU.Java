@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import game.Runner;
 import game.physics.colliders.Collider;
 import game.physics.colliders.ColliderCircleCircle;
+import game.physics.colliders.ColliderCircleHalfPlane;
 
 public class CollideForce extends GlobalForce {
 	public ArrayList<Collider> colliders = new ArrayList<Collider>();
@@ -12,6 +13,7 @@ public class CollideForce extends GlobalForce {
 	public CollideForce(Runner runner) {
 		super(runner);
 		colliders.add(new ColliderCircleCircle());
+		colliders.add(new ColliderCircleHalfPlane());
 	}
 
 	@Override

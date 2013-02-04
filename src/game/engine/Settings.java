@@ -27,7 +27,7 @@ public final class Settings {
 	}
 	
 	public final static class Physics {
-		public static double defaultFrictionCoeff = 0.003,
+		public static double defaultFrictionCoeff = 0.001,
 				defaultCollideCoeff = 10;
 	}
 }

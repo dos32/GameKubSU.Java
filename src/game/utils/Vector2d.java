@@ -41,8 +41,8 @@ public class Vector2d {
 	}
 
 	public void add(Vector2d vector) {
-		this.x += vector.x;
-		this.y += vector.y;
+		x += vector.x;
+		y += vector.y;
 	}
 
 	public Vector2d sum(Vector2d v) {
@@ -53,17 +53,22 @@ public class Vector2d {
 		return new Vector2d(this.x-v.x, this.y-v.y);
 	}
 	
+	public void sub(Vector2d v) {
+		x-=v.x;
+		y-=v.y;
+	}
+	
 	public Vector2d mul(double value) {
 		return new Vector2d(this.x*value, this.y*value);
 	}
 	
 	public void scale(double value) {
-		this.x*=value;
-		this.y*=value;
+		x*=value;
+		y*=value;
 	}
 	
 	public void negate() {
-		this.x=-this.x;
-		this.y=-this.y;
+		x=-x;
+		y=-y;
 	}
 }

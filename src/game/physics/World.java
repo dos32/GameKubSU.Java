@@ -5,6 +5,7 @@ import game.engine.Player;
 import game.engine.Settings;
 import game.physics.objects.Bonus;
 import game.physics.objects.Circle;
+import game.physics.objects.HalfPlane;
 import game.physics.objects.InfoTip;
 import game.physics.objects.Obstacle;
 import game.physics.objects.Unit;
@@ -74,7 +75,12 @@ public class World implements Externalizable {
 
 	protected void prepare() {
 		clearUnits();
-		// test
+		// edges:
+		addUnit(new HalfPlane(new Vector2d(0, 0), 0));
+		addUnit(new HalfPlane(new Vector2d(width, 0), Math.PI));
+		addUnit(new HalfPlane(new Vector2d(0, 0), 3*Math.PI/2));
+		addUnit(new HalfPlane(new Vector2d(0, height), Math.PI/2));
+		// test:
 		for(int i=0; i<50; i++)
 		{
 			Circle c = new Circle(Math.random()*10);
