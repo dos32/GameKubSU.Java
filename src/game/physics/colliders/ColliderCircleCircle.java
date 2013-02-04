@@ -15,7 +15,8 @@ public class ColliderCircleCircle extends Collider {
 			n.scale(1/dr);
 			double v1 = unit1.speed.dotprod(n);
 			double v2 = unit2.speed.dotprod(n);
-			if(dr < ((Circle) unit1).radius+((Circle) unit2).radius) {
+			if(dr < ((Circle) unit1).radius+((Circle) unit2).radius)
+			if(v1<0 && v2>0 || v1<0 && v2<0 && v1<v2 || v1>0 && v2>0 && v2>v1) {
 				if(!unit1.isStatic)
 					unit1.speed.add(n.mul(-v1));
 					unit1.speed.add(n.mul(((unit1.mass-unit2.mass)*v1+2*unit2.mass*v2)/(unit1.mass+unit2.mass)));
