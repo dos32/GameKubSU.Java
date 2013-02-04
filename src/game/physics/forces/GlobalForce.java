@@ -1,7 +1,13 @@
 package game.physics.forces;
 
-import game.physics.objects.Unit;
+import game.Runner;
 
 public abstract class GlobalForce {
-	public abstract void apply(Unit unit);
+	public final Runner runner;
+	
+	public GlobalForce(Runner runner) {
+		this.runner=runner;
+	}
+	
+	public abstract void apply();
 }

@@ -1,33 +1,25 @@
 package game.physics.forces;
 
+import java.util.ArrayList;
+
 import game.Runner;
-import game.physics.objects.Circle;
-import game.physics.objects.Unit;
-import game.utils.Vector2d;
+import game.physics.colliders.Collider;
+import game.physics.colliders.ColliderCircleCircle;
 
 public class CollideForce extends GlobalForce {
-	public final Runner runner;
+	public ArrayList<Collider> colliders = new ArrayList<Collider>();
 
 	public CollideForce(Runner runner) {
-		this.runner = runner;
+		super(runner);
+		colliders.add(new ColliderCircleCircle());
 	}
 
 	@Override
-	public void apply(Unit unit) {
-		// TODO +law keeping of impulse 
-		if (unit.getClass() == Circle.class) {
-			for (Unit unit1 : runner.world.allUnits) {
-				if (unit1.getClass() == Circle.class && unit != unit1) {
-					Vector2d dr = unit.position.diff(unit1.position);
-					if (dr.norm() < ((Circle) unit).radius + ((Circle) unit1).radius &&
-							unit.isMaterial && unit1.isMaterial &&
-							!unit.isStatic) {
-						dr.scale(unit1.collideCoeff / dr.square());
-						unit.speed.add(dr);
-					}
-				}
-			}
-		}
+	public void apply() {
+		for(int i=0; i<runner.world.allUnits.size(); i++)
+			for(int j=i+1; j<runner.world.allUnits.size(); j++)
+				for(Collider collider : colliders)
+					collider.Collide(runner.world.allUnits.get(i), runner.world.allUnits.get(j));
 	}
 
 }

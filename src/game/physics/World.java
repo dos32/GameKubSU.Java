@@ -3,8 +3,6 @@ package game.physics;
 import game.Runner;
 import game.engine.Player;
 import game.engine.Settings;
-import game.physics.forces.CollideForce;
-import game.physics.forces.FrictionForce;
 import game.physics.objects.Bonus;
 import game.physics.objects.Circle;
 import game.physics.objects.InfoTip;
@@ -41,6 +39,9 @@ public class World implements Externalizable {
 		this.runner = runner;
 	}
 	
+	/*public void init() {
+	}*/
+	
 	protected void delay(long time) {
 		try {
 			Thread.sleep(time);
@@ -52,7 +53,7 @@ public class World implements Externalizable {
 	public void start() {
 		showGreeting();
 		delay(Settings.waitBeforeDuration);
-		initialize();
+		prepare();
 		while (this.tick < Settings.maxTicksCount)
 		{
 			tick();
@@ -71,10 +72,8 @@ public class World implements Externalizable {
 		runner.mainFrame.repaint();
 	}
 
-	protected void initialize() {
+	protected void prepare() {
 		clearUnits();
-		runner.physics.globalForces.add(new FrictionForce());
-		runner.physics.globalForces.add(new CollideForce(runner));
 		// test
 		for(int i=0; i<50; i++)
 		{

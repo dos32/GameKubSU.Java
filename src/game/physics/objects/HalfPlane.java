@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 
 public class HalfPlane extends Unit {
 	// position of this object is control point
-	public Vector2d normal;
+	// normal to the edge of plane sets by an angle
 
 	@Override
 	public void draw(Graphics2D graphics) {
