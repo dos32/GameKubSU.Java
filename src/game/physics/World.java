@@ -86,11 +86,11 @@ public class World implements Externalizable {
 		c.mass = Math.pow(c.radius,2)*Math.PI*0.01;
 		c.position.assign(Math.random()*width, Math.random()*height);
 		c.speed.assign(Math.random()-0.5, Math.random()-0.5);
-		c.speed.scale(2);
+		c.speed.scale(50);
 		addUnit(c);
-		for(int i=0; i<100; i++)
+		for(int i=0; i<500; i++)
 		{
-			c = new Circle(Math.random()*10);
+			c = new Circle((Math.random()+0.5)*10);
 			c.mass = Math.pow(c.radius,2)*Math.PI*0.01;
 			c.position.assign(Math.random()*width, Math.random()*height);
 			c.speed.assign(Math.random()-0.5, Math.random()-0.5);

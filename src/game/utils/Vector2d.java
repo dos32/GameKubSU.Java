@@ -45,6 +45,11 @@ public class Vector2d {
 		y += vector.y;
 	}
 
+	public void add(double x, double y) {
+		this.x+=x;
+		this.y+=y;
+	}
+
 	public Vector2d sum(Vector2d v) {
 		return new Vector2d(this.x + v.x, this.y + v.y);
 	}
@@ -56,6 +61,11 @@ public class Vector2d {
 	public void sub(Vector2d v) {
 		x-=v.x;
 		y-=v.y;
+	}
+	
+	public void sub(double x, double y) {
+		this.x-=x;
+		this.y-=y;
 	}
 	
 	public Vector2d mul(double value) {
