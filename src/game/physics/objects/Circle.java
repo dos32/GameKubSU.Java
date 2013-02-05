@@ -1,8 +1,9 @@
 package game.physics.objects;
 
-import java.awt.Graphics2D;
+import game.utils.Rectd;
 
-import game.utils.Vector2d;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 
 public class Circle extends Unit {
 	public double radius;
@@ -10,27 +11,21 @@ public class Circle extends Unit {
 	public Circle(double radius) {
 		this.radius = radius;
 	}
-
-	@Override
-	public double getPenetrationDepth(Unit unit) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Vector2d getNorm(Unit unit) {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public Rectd getApproxBox() {
+		return Rectd.createSquare(position, radius);
 	}
 
 	@Override
 	public void draw(Graphics2D graphics) {
-		graphics.drawOval((int)(position.x-radius), (int)(position.y-radius), (int)radius*2, (int)radius*2);
+		AffineTransform oldTransform = graphics.getTransform();
+		graphics.translate(position.x-radius, position.y-radius);
+		graphics.drawOval(0, 0, (int)radius*2, (int)radius*2);
+		graphics.setTransform(oldTransform);
 	}
 
 	@Override
 	public double getSquare() {
-		// TODO Auto-generated method stub
-		return 0;
+		return Math.PI*radius*radius;
 	}
 }

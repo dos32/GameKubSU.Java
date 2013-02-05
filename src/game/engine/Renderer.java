@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
 
 import game.Runner;
 import game.physics.objects.Unit;
@@ -13,30 +12,35 @@ public final class Renderer {
 	protected final Runner runner;
 	public boolean updated = false;
 	public int dbg_ticks=0;
-
-	protected BufferedImage buffer;
-	protected Graphics2D bufferGraphics;
+	public double fps;
+	
+	protected int framesCount = 0;
+	protected long Time = 0;
 
 	public Renderer(Runner runner) {
 		this.runner = runner;
-		buffer = new BufferedImage(Settings.Frame.width, Settings.Frame.height,
-				BufferedImage.TYPE_INT_ARGB);
-		bufferGraphics = (Graphics2D) buffer.getGraphics();
-		bufferGraphics.setFont(new Font("Courier new", Font.PLAIN, 14));
-		bufferGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-		bufferGraphics.setBackground(Color.white);
-		bufferGraphics.setColor(Color.black);
 	}
 
 	public void render(Graphics2D graphics) {
-		if (updated) {
-			bufferGraphics.clearRect(0, 0, buffer.getWidth(), buffer.getHeight());
+		long t1 = System.nanoTime();
+		if (updated)
+		{
+			graphics.setFont(new Font("Courier new", Font.PLAIN, 14));
+			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+			graphics.setBackground(Color.white);
+			graphics.setColor(Color.black);
+			graphics.clearRect(0, 0, (int)Settings.World.width, (int)Settings.World.height);
 			for (Unit unit : runner.world.allUnits)
-				unit.draw(bufferGraphics);
+				unit.draw(graphics);
 			updated = false;
 		}
-		graphics.drawImage(buffer, null, 0, 0);
+		Time+=System.nanoTime()-t1;
+		framesCount++;
+		if(framesCount>Settings.Renderer.FPSFramesCount) {
+			fps = framesCount*1e9/Time;
+			framesCount=0;
+			Time=0;
+		}
 		dbg_ticks++;
 	}
 }

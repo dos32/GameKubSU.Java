@@ -18,9 +18,9 @@ public class Runner {
 	}
 
 	public Runner() {
-		renderer = new Renderer(this);
 		physics = new Physics(this);
 		mainFrame = new MainFrame(this);
+		renderer = new Renderer(this);
 		world = new World(this);
 		world.start();
 	}

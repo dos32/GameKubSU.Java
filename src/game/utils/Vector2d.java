@@ -53,9 +53,17 @@ public class Vector2d {
 	public Vector2d sum(Vector2d v) {
 		return new Vector2d(this.x + v.x, this.y + v.y);
 	}
+
+	public Vector2d sum(double x, double y) {
+		return new Vector2d(this.x + x, this.y + y);
+	}
 	
 	public Vector2d diff(Vector2d v) {
 		return new Vector2d(this.x-v.x, this.y-v.y);
+	}
+	
+	public Vector2d diff(double x, double y) {
+		return new Vector2d(this.x-x, this.y-y);
 	}
 	
 	public void sub(Vector2d v) {

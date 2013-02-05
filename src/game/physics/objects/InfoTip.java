@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
-import game.utils.Vector2d;
-
 /*
  * Animation object for showing text label on screen
  */
@@ -17,16 +15,6 @@ public class InfoTip extends Unit {
 	public InfoTip(String message) {
 		this.message = message;
 		this.isMaterial = false;
-	}
-
-	@Override
-	public double getPenetrationDepth(Unit unit) {
-		return 0;
-	}
-
-	@Override
-	public Vector2d getNorm(Unit unit) {
-		return new Vector2d();
 	}
 
 	/*

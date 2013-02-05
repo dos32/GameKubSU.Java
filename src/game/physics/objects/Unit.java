@@ -69,12 +69,4 @@ public abstract class Unit {
 	public abstract void draw(Graphics2D graphics);
 	
 	public abstract double getSquare();
-	
-	public abstract double getPenetrationDepth(Unit unit);
-
-	public abstract Vector2d getNorm(Unit unit);
-	
-	//public abstract Vector2d calcForce();
-	
-	//public abstract boolean isCollide(Unit unit);
 }

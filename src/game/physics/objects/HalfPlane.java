@@ -11,6 +11,7 @@ public class HalfPlane extends Unit {
 	public HalfPlane(Vector2d position, double angle) {
 		this.position.assign(position);
 		this.angle = angle;
+		isStatic = true;
 	}
 
 	@Override
@@ -23,18 +24,6 @@ public class HalfPlane extends Unit {
 	public double getSquare() {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	@Override
-	public double getPenetrationDepth(Unit unit) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Vector2d getNorm(Unit unit) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

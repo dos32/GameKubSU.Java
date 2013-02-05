@@ -13,7 +13,7 @@ public final class Settings {
 	}
 
 	public final static class World {
-		public static double width = 1006.0d, height = 628.0d;
+		public static double width = 1300.0d, height = 700.0d;
 	}
 
 	public final static class Car {
@@ -31,5 +31,9 @@ public final class Settings {
 				defaultMass = 1;
 		@Deprecated
 		public static double defaultCollideCoeff = 10;
+	}
+	
+	public final static class Renderer {
+		public static int FPSFramesCount = 100;
 	}
 }

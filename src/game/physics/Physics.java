@@ -6,7 +6,9 @@ import game.Runner;
 import game.physics.forces.CollideForce;
 import game.physics.forces.FrictionForce;
 import game.physics.forces.GlobalForce;
+import game.physics.forces.GravityForce;
 import game.physics.objects.Unit;
+import game.utils.Vector2d;
 
 public final class Physics {
 	public final Runner runner;
@@ -15,6 +17,7 @@ public final class Physics {
 	public Physics(Runner runner) {
 		this.runner = runner;
 		globalForces.add(new FrictionForce(runner));
+		//globalForces.add(new GravityForce(runner, new Vector2d(0, 5e-3)));
 		globalForces.add(new CollideForce(runner));
 	}
 

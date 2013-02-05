@@ -2,25 +2,11 @@ package game.physics.objects;
 
 import java.awt.Graphics2D;
 
-import game.utils.Vector2d;
-
 public class Bonus extends Unit {
 	protected BonusType type;
 
 	public Bonus(BonusType bonusType) {
 		type = bonusType;
-	}
-
-	@Override
-	public double getPenetrationDepth(Unit unit) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Vector2d getNorm(Unit unit) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
