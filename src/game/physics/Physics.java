@@ -17,7 +17,7 @@ public final class Physics {
 	public Physics(Runner runner) {
 		this.runner = runner;
 		globalForces.add(new FrictionForce(runner));
-		//globalForces.add(new GravityForce(runner, new Vector2d(0, 5e-3)));
+		globalForces.add(new GravityForce(runner, new Vector2d(0, 5e-4)));
 		globalForces.add(new CollideForce(runner));
 	}
 
