@@ -6,8 +6,11 @@ public final class Settings {
 	public static int waitBeforeDuration = 1000;
 	public static int waitAfterDuration = 1000;
 	public static int waitInterval = 1;
+	
+	public static int playersCount = 6;
 
 	public final static class AIListener {
+		public static int acceptTimeout = 1000;
 		public static int timeout = 5000;
 		public static int port = 4000;
 		public static String ip = "127.0.0.1";

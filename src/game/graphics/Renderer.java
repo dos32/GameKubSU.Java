@@ -30,14 +30,14 @@ public final class Renderer {
 
 	public void render(Graphics2D graphics) {
 		long t1 = System.nanoTime();
-		if (updated)
+		if(updated)
 		{
 			graphics.setFont(new Font("Courier new", Font.PLAIN, 14));
 			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 			graphics.setBackground(Color.white);
 			graphics.setColor(Color.black);
 			graphics.clearRect(0, 0, (int)Settings.World.width, (int)Settings.World.height);
-			for (Unit unit : runner.physics.objects)
+			for(Unit unit : runner.physics.objects)
 				unit.draw(graphics);
 			updated = false;
 		}

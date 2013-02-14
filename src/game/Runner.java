@@ -2,7 +2,6 @@ package game;
 
 import java.awt.Color;
 
-import game.engine.AIListener;
 import game.engine.Settings;
 import game.engine.World;
 import game.graphics.MainFrame;
@@ -12,13 +11,14 @@ import game.physics.objects.Circle;
 import game.physics.objects.HalfPlane;
 import game.physics.objects.InfoTip;
 import game.physics.objects.Unit;
+import game.server.Server;
 import game.utils.Vector2d;
 
 public class Runner {
 	public final MainFrame mainFrame;
 	public final World world;
 	public final Renderer renderer;
-	protected AIListener ailistener;
+	protected Server server;
 	public final Physics physics;
 	
 	public InfoTip infoTick, infoRendererFPS, infoPhysFPS;
@@ -30,7 +30,7 @@ public class Runner {
 		mainFrame = new MainFrame(this);
 		renderer = new Renderer(this);
 		world = new World(this);
-		ailistener = new AIListener(this);
+		server = new Server(this);
 	}
 	
 	protected void delay(long time) {
