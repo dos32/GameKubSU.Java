@@ -11,6 +11,7 @@ import game.physics.World;
 import game.physics.objects.Circle;
 import game.physics.objects.HalfPlane;
 import game.physics.objects.InfoTip;
+import game.physics.objects.Unit;
 import game.utils.Vector2d;
 
 public class Runner {
@@ -36,6 +37,10 @@ public class Runner {
 			e.printStackTrace();
 		}
 	}
+	
+	public void addUnit(Unit unit) {
+		// TODO
+	}
 
 	public static void main(String[] args) {
 		Runner runner = new Runner();
@@ -47,8 +52,6 @@ public class Runner {
 		mainFrame = new MainFrame(this);
 		renderer = new Renderer(this);
 		world = new World(this);
-		//world.start();
-		
 	}
 	
 	protected void showGreeting() {
@@ -68,7 +71,6 @@ public class Runner {
 		// test:
 		Circle c = new Circle(100);
 		c.mass = Math.pow(c.radius,2)*Math.PI*0.01;
-		//c.mass = Double.POSITIVE_INFINITY;
 		c.position.assign(Math.random()*world.width, Math.random()*world.height);
 		c.speed.assign(Math.random()-0.5, Math.random()-0.5);
 		c.speed.scale(20);
@@ -82,24 +84,24 @@ public class Runner {
 			c.speed.scale(2);
 			world.addUnit(c);
 		}
-		/*for(int i=0; i<1; i++)
-		{
-			Vehicle vehicle = new Vehicle(100, 200);
-			vehicle.angle = Math.PI / 6;
-			vehicle.angularSpeed = 0.01 * Math.PI / 3;
-			vehicle.position.assign(50, 100);
-			vehicle.speed.assign(1.1, 0.5);
-			addUnit(vehicle);
-		}*/
 		world.infoTick = new InfoTip(String.format("Ticks=%s", world.tick));
 		world.infoTick.isStatic = true;
 		world.infoTick.color = Color.red;
 		world.addUnit(world.infoTick);
-		world.infoFPS = new InfoTip(String.format("FPS=%s", Math.round(renderer.fps)));
-		world.infoFPS.isStatic = true;
-		world.infoFPS.position.assign(0, 16);
-		world.infoFPS.color = Color.red;
-		world.addUnit(world.infoFPS);
+		
+		world.infoRendererFPS = new InfoTip("");
+		world.infoRendererFPS.isStatic = true;
+		world.infoRendererFPS.position.assign(0, 16);
+		world.infoRendererFPS.color = Color.red;
+		renderer.updateFPS();
+		world.addUnit(world.infoRendererFPS);
+		
+		world.infoPhysFPS = new InfoTip("");
+		world.infoPhysFPS.isStatic = true;
+		world.infoPhysFPS.position.assign(0, 32);
+		world.infoPhysFPS.color = Color.red;
+		physics.updateFPS();
+		world.addUnit(world.infoPhysFPS);
 	}
 	
 	protected void showStats() {
@@ -115,11 +117,6 @@ public class Runner {
 		mainFrame.mainCanvas.render();
 		world.tick++;
 		world.infoTick.message = String.format("Ticks=%s", world.tick);
-		// TODO move FPS ouput to renderer
-		if(world.tick<Settings.Renderer.FPSFramesCount)
-			world.infoFPS.message = "FPS calculating...";
-		else
-			world.infoFPS.message = String.format("FPS=%s", Math.round(renderer.fps));
 	}
 	
 	public void Start() {

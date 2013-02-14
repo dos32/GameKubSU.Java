@@ -30,12 +30,12 @@ public class World implements Serializable, Externalizable {
 	public ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
 	public ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 	public ArrayList<Bonus> bonuses = new ArrayList<Bonus>();
-	// TODO move tips
+	// TODO move tips to Physics
 	public ArrayList<InfoTip> tips = new ArrayList<InfoTip>();
 	public ArrayList<Unit> allUnits = new ArrayList<Unit>();
 	
 	// TODO delete depend of InfoTips
-	public InfoTip infoTick, infoFPS;
+	public InfoTip infoTick, infoRendererFPS, infoPhysFPS;
 
 	public World(Runner runner) {
 		this.runner = runner;

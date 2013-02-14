@@ -12,13 +12,20 @@ public final class Renderer {
 	protected final Runner runner;
 	public boolean updated = false;
 	public int dbg_ticks=0;
-	public double fps;
 	
-	protected int framesCount = 0;
-	protected long Time = 0;
+	public double fps = 0;
+	protected long framesCount = 0, time = 0;
 
 	public Renderer(Runner runner) {
 		this.runner = runner;
+	}
+	
+	public void updateFPS() {
+		if(fps == 0)
+			runner.world.infoRendererFPS.message = String.format("Renderer.FPS = %s", "n/a");
+		else {
+			runner.world.infoRendererFPS.message = String.format("Renderer.FPS = %s", Math.round(fps));
+		}
 	}
 
 	public void render(Graphics2D graphics) {
@@ -34,12 +41,13 @@ public final class Renderer {
 				unit.draw(graphics);
 			updated = false;
 		}
-		Time+=System.nanoTime()-t1;
+		time+=System.nanoTime()-t1;
 		framesCount++;
-		if(framesCount>Settings.Renderer.FPSFramesCount) {
-			fps = framesCount*1e9/Time;
+		if(framesCount > Settings.Renderer.FPSFramesCount) {
+			fps = framesCount * 1e9 / time;
+			updateFPS();
 			framesCount=0;
-			Time=0;
+			time=0;
 		}
 		dbg_ticks++;
 	}

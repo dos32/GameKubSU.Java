@@ -29,6 +29,7 @@ public final class Settings {
 	public final static class Physics {
 		public static double defaultFrictionCoeff = 0.003,
 				defaultMass = 1;
+		public static double FPSFramesCount = 100;
 		@Deprecated
 		public static double defaultCollideCoeff = 10;
 	}
