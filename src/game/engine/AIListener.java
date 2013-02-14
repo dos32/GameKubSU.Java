@@ -1,21 +1,18 @@
 package game.engine;
 
+import game.Runner;
 import game.physics.World;
 
 import java.net.*;
 
 @SuppressWarnings("unused")
-public final class AIListener {// AIImplementer
+public final class AIListener {
+	Runner runner;
 	public int port;
 	public String ip;
-	public World world;
-
-	protected void sendRequest() {
-		// TODO
-	}
-
-	protected void getResponse() {
-		// TODO
+	
+	public AIListener(Runner runner) {
+		this.runner = runner;
 	}
 
 	/*
@@ -23,6 +20,6 @@ public final class AIListener {// AIImplementer
 	 * which includes changes in controls which manages by client AI
 	 */
 	public void tick() {
-		// TODO
+		// TODO sale place for code there :)
 	}
 }

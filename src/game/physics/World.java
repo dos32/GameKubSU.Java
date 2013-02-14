@@ -30,11 +30,12 @@ public class World implements Serializable, Externalizable {
 	public ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
 	public ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 	public ArrayList<Bonus> bonuses = new ArrayList<Bonus>();
-	// TODO move tips to Physics
+	// TODO move tips to Physics -> just remove tips from there 
 	public ArrayList<InfoTip> tips = new ArrayList<InfoTip>();
+	// TODO move allUnits to Physics
 	public ArrayList<Unit> allUnits = new ArrayList<Unit>();
 	
-	// TODO delete depend of InfoTips
+	// TODO delete depend of InfoTips -> move to Runner
 	public InfoTip infoTick, infoRendererFPS, infoPhysFPS;
 
 	public World(Runner runner) {
@@ -52,9 +53,11 @@ public class World implements Serializable, Externalizable {
 			obstacles.add((Obstacle) unit);
 		else if (unit.getClass() == Bonus.class)
 			bonuses.add((Bonus) unit);
+		// TODO delme:
 		else if (unit.getClass() == InfoTip.class)
 			tips.add((InfoTip) unit);
 		else {
+			// TODO to be or not to be ?
 			//allUnits.remove(allUnits.size() - 1);
 			//System.err.println("World.addUnit::Cant recognize type of object");
 		}

@@ -21,6 +21,16 @@ public class Runner {
 	protected AIListener ailistener;
 	public final Physics physics;
 	
+	public long tick = 0;
+
+	public Runner() {
+		physics = new Physics(this);
+		mainFrame = new MainFrame(this);
+		renderer = new Renderer(this);
+		world = new World(this);
+		ailistener = new AIListener(this);
+	}
+	
 	protected void delay(long time) {
 		try {
 			Thread.sleep(time);
@@ -32,26 +42,18 @@ public class Runner {
 	protected void waitForTime(long time) {
 		try {
 			while(System.currentTimeMillis()<time)
-				Thread.sleep(1);
+				Thread.sleep(Settings.waitInterval);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
 	
+	public void updateTick() {
+		world.infoTick.message = String.format("ticks = %s", tick);
+	}
+	
 	public void addUnit(Unit unit) {
 		// TODO
-	}
-
-	public static void main(String[] args) {
-		Runner runner = new Runner();
-		runner.Start();
-	}
-
-	public Runner() {
-		physics = new Physics(this);
-		mainFrame = new MainFrame(this);
-		renderer = new Renderer(this);
-		world = new World(this);
 	}
 	
 	protected void showGreeting() {
@@ -115,15 +117,17 @@ public class Runner {
 	protected void tick() {
 		physics.tick();
 		mainFrame.mainCanvas.render();
-		world.tick++;
-		world.infoTick.message = String.format("Ticks=%s", world.tick);
+		tick++;
+		// TODO remove field tick from World
+		/*world.tick++;
+		world.infoTick.message = String.format("Ticks=%s", world.tick);*/
 	}
 	
 	public void Start() {
 		showGreeting();
 		delay(Settings.waitBeforeDuration);
 		prepareGame();
-		while (world.tick < Settings.maxTicksCount)
+		while(world.tick < Settings.maxTicksCount)
 		{
 			long t1 = System.currentTimeMillis();
 			tick();
@@ -134,6 +138,11 @@ public class Runner {
 		delay(Settings.waitAfterDuration);
 		System.out.println(renderer.dbg_ticks);
 		mainFrame.dispose();
+	}
+
+	public static void main(String[] args) {
+		Runner runner = new Runner();
+		runner.Start();
 	}
 
 }

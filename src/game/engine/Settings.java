@@ -5,6 +5,7 @@ public final class Settings {
 	public static int maxTicksCount = 5000;
 	public static int waitBeforeDuration = 1000;
 	public static int waitAfterDuration = 1000;
+	public static int waitInterval = 1;
 
 	public final static class AIListener {
 		public static int timeout = 5000;
