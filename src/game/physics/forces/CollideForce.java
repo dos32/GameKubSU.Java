@@ -1,6 +1,7 @@
 package game.physics.forces;
 
 import java.util.ArrayList;
+import java.util.List;
 //import java.util.Hashtable;
 
 import game.Runner;
@@ -50,12 +51,12 @@ public class CollideForce extends GlobalForce {
 	}
 
 	@Override
-	public void apply() {
-		for(int i=0; i<runner.world.allUnits.size(); i++)
-			for(int j=i+1; j<runner.world.allUnits.size(); j++)
+	public void apply(List<Unit> objects) {
+		for(int i=0; i<objects.size(); i++)
+			for(int j=i+1; j<objects.size(); j++)
 			{
-				Unit unit1 = runner.world.allUnits.get(i);
-				Unit unit2 = runner.world.allUnits.get(j);
+				Unit unit1 = objects.get(i);
+				Unit unit2 = objects.get(j);
 				for(Collider collider : colliders)
 					if(unit1.getClass() == Circle.class && unit2.getClass() == Circle.class)
 					{

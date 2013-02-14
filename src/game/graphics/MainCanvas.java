@@ -1,4 +1,4 @@
-package game.engine;
+package game.graphics;
 
 import game.Runner;
 

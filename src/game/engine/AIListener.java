@@ -1,7 +1,6 @@
 package game.engine;
 
 import game.Runner;
-import game.physics.World;
 
 import java.net.*;
 

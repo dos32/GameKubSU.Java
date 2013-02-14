@@ -30,7 +30,6 @@ public abstract class Unit {
 	
 	// Friction coefficient of an object
 	public double frictionCoeff = Settings.Physics.defaultFrictionCoeff;
-	//public double collideCoeff = Settings.Physics.defaultCollideCoeff;
 
 	public Unit() {
 		id = lastid;

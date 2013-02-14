@@ -1,4 +1,4 @@
-package game.engine;
+package game.graphics;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -6,14 +6,14 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
 import game.Runner;
+import game.engine.Settings;
 import game.physics.objects.Unit;
 
 public final class Renderer {
 	protected final Runner runner;
 	public boolean updated = false;
-	public int dbg_ticks=0;
 	
-	public double fps = 0;
+	protected double fps = 0;
 	protected long framesCount = 0, time = 0;
 
 	public Renderer(Runner runner) {
@@ -22,9 +22,9 @@ public final class Renderer {
 	
 	public void updateFPS() {
 		if(fps == 0)
-			runner.world.infoRendererFPS.message = String.format("Renderer.FPS = %s", "n/a");
+			runner.infoRendererFPS.message = String.format("Renderer.FPS = %s", "n/a");
 		else {
-			runner.world.infoRendererFPS.message = String.format("Renderer.FPS = %s", Math.round(fps));
+			runner.infoRendererFPS.message = String.format("Renderer.FPS = %s", Math.round(fps));
 		}
 	}
 
@@ -37,7 +37,7 @@ public final class Renderer {
 			graphics.setBackground(Color.white);
 			graphics.setColor(Color.black);
 			graphics.clearRect(0, 0, (int)Settings.World.width, (int)Settings.World.height);
-			for (Unit unit : runner.world.allUnits)
+			for (Unit unit : runner.physics.objects)
 				unit.draw(graphics);
 			updated = false;
 		}
@@ -49,6 +49,5 @@ public final class Renderer {
 			framesCount=0;
 			time=0;
 		}
-		dbg_ticks++;
 	}
 }

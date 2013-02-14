@@ -1,10 +1,7 @@
-package game.physics;
+package game.engine;
 
 import game.Runner;
-import game.engine.Player;
-import game.engine.Settings;
 import game.physics.objects.Bonus;
-import game.physics.objects.InfoTip;
 import game.physics.objects.Obstacle;
 import game.physics.objects.Unit;
 import game.physics.objects.Vehicle;
@@ -16,10 +13,6 @@ import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/*
- * Contains all visible objects,
- * and info about players
- */
 public class World implements Serializable, Externalizable {
 	private static final long serialVersionUID = 5624391324336770137L;
 	protected final Runner runner;
@@ -30,13 +23,6 @@ public class World implements Serializable, Externalizable {
 	public ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
 	public ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 	public ArrayList<Bonus> bonuses = new ArrayList<Bonus>();
-	// TODO move tips to Physics -> just remove tips from there 
-	public ArrayList<InfoTip> tips = new ArrayList<InfoTip>();
-	// TODO move allUnits to Physics
-	public ArrayList<Unit> allUnits = new ArrayList<Unit>();
-	
-	// TODO delete depend of InfoTips -> move to Runner
-	public InfoTip infoTick, infoRendererFPS, infoPhysFPS;
 
 	public World(Runner runner) {
 		this.runner = runner;
@@ -45,7 +31,6 @@ public class World implements Serializable, Externalizable {
 	}
 
 	public void addUnit(Unit unit) {
-		allUnits.add(unit);
 		runner.renderer.updated = true;
 		if (unit.getClass() == Vehicle.class)
 			vehicles.add((Vehicle) unit);
@@ -53,22 +38,16 @@ public class World implements Serializable, Externalizable {
 			obstacles.add((Obstacle) unit);
 		else if (unit.getClass() == Bonus.class)
 			bonuses.add((Bonus) unit);
-		// TODO delme:
-		else if (unit.getClass() == InfoTip.class)
-			tips.add((InfoTip) unit);
-		else {
-			// TODO to be or not to be ?
-			//allUnits.remove(allUnits.size() - 1);
-			//System.err.println("World.addUnit::Cant recognize type of object");
-		}
 	}
 
 	public void clearUnits() {
-		allUnits.clear();
 		vehicles.clear();
 		obstacles.clear();
 		bonuses.clear();
-		tips.clear();
+	}
+	
+	public void loadMap() {
+		// TODO
 	}
 	
 	@Override

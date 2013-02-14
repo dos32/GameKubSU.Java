@@ -3,11 +3,11 @@ package game;
 import java.awt.Color;
 
 import game.engine.AIListener;
-import game.engine.MainFrame;
-import game.engine.Renderer;
 import game.engine.Settings;
+import game.engine.World;
+import game.graphics.MainFrame;
+import game.graphics.Renderer;
 import game.physics.Physics;
-import game.physics.World;
 import game.physics.objects.Circle;
 import game.physics.objects.HalfPlane;
 import game.physics.objects.InfoTip;
@@ -21,7 +21,9 @@ public class Runner {
 	protected AIListener ailistener;
 	public final Physics physics;
 	
-	public long tick = 0;
+	public InfoTip infoTick, infoRendererFPS, infoPhysFPS;
+	
+	public int tick = 0;
 
 	public Runner() {
 		physics = new Physics(this);
@@ -49,34 +51,40 @@ public class Runner {
 	}
 	
 	public void updateTick() {
-		world.infoTick.message = String.format("ticks = %s", tick);
+		infoTick.message = String.format("ticks = %s", tick);
 	}
 	
 	public void addUnit(Unit unit) {
-		// TODO
+		world.addUnit(unit);
+		physics.addUnit(unit);
+	}
+	
+	public void clearUnits() {
+		world.clearUnits();
+		physics.clearUnits();
 	}
 	
 	protected void showGreeting() {
 		InfoTip info = new InfoTip("Wait for client AI");
 		info.position.assign(world.width/2, world.height/2);
-		world.addUnit(info);
+		addUnit(info);
 		mainFrame.mainCanvas.render();
 	}
 
 	protected void prepareGame() {
-		world.clearUnits();
+		clearUnits();
 		// edges:
-		world.addUnit(new HalfPlane(new Vector2d(0, 0), 0));
-		world.addUnit(new HalfPlane(new Vector2d(world.width, 0), Math.PI));
-		world.addUnit(new HalfPlane(new Vector2d(0, world.height), 3*Math.PI/2));
-		world.addUnit(new HalfPlane(new Vector2d(0, 0), Math.PI/2));
+		addUnit(new HalfPlane(new Vector2d(0, 0), 0));
+		addUnit(new HalfPlane(new Vector2d(world.width, 0), Math.PI));
+		addUnit(new HalfPlane(new Vector2d(0, world.height), 3*Math.PI/2));
+		addUnit(new HalfPlane(new Vector2d(0, 0), Math.PI/2));
 		// test:
 		Circle c = new Circle(100);
 		c.mass = Math.pow(c.radius,2)*Math.PI*0.01;
 		c.position.assign(Math.random()*world.width, Math.random()*world.height);
 		c.speed.assign(Math.random()-0.5, Math.random()-0.5);
 		c.speed.scale(20);
-		world.addUnit(c);
+		addUnit(c);
 		for(int i=0; i<1000; i++)
 		{
 			c = new Circle((Math.random()+0.5)*8);
@@ -84,33 +92,34 @@ public class Runner {
 			c.position.assign(Math.random()*world.width, Math.random()*world.height);
 			c.speed.assign(Math.random()-0.5, Math.random()-0.5);
 			c.speed.scale(2);
-			world.addUnit(c);
+			addUnit(c);
 		}
-		world.infoTick = new InfoTip(String.format("Ticks=%s", world.tick));
-		world.infoTick.isStatic = true;
-		world.infoTick.color = Color.red;
-		world.addUnit(world.infoTick);
 		
-		world.infoRendererFPS = new InfoTip("");
-		world.infoRendererFPS.isStatic = true;
-		world.infoRendererFPS.position.assign(0, 16);
-		world.infoRendererFPS.color = Color.red;
+		infoTick = new InfoTip(String.format("Ticks=%s", tick));
+		infoTick.isStatic = true;
+		infoTick.color = Color.red;
+		addUnit(infoTick);
+		
+		infoRendererFPS = new InfoTip("");
+		infoRendererFPS.isStatic = true;
+		infoRendererFPS.position.assign(0, 16);
+		infoRendererFPS.color = Color.red;
 		renderer.updateFPS();
-		world.addUnit(world.infoRendererFPS);
+		addUnit(infoRendererFPS);
 		
-		world.infoPhysFPS = new InfoTip("");
-		world.infoPhysFPS.isStatic = true;
-		world.infoPhysFPS.position.assign(0, 32);
-		world.infoPhysFPS.color = Color.red;
+		infoPhysFPS = new InfoTip("");
+		infoPhysFPS.isStatic = true;
+		infoPhysFPS.position.assign(0, 32);
+		infoPhysFPS.color = Color.red;
 		physics.updateFPS();
-		world.addUnit(world.infoPhysFPS);
+		addUnit(infoPhysFPS);
 	}
 	
 	protected void showStats() {
-		world.clearUnits();
+		clearUnits();
 		InfoTip info = new InfoTip("Game over");
 		info.position = new Vector2d(world.width/2, world.height/2);
-		world.addUnit(info);
+		addUnit(info);
 		mainFrame.mainCanvas.render();
 	}
 
@@ -118,16 +127,15 @@ public class Runner {
 		physics.tick();
 		mainFrame.mainCanvas.render();
 		tick++;
-		// TODO remove field tick from World
-		/*world.tick++;
-		world.infoTick.message = String.format("Ticks=%s", world.tick);*/
+		world.tick = tick;
+		updateTick();
 	}
 	
 	public void Start() {
 		showGreeting();
 		delay(Settings.waitBeforeDuration);
 		prepareGame();
-		while(world.tick < Settings.maxTicksCount)
+		while(tick < Settings.maxTicksCount)
 		{
 			long t1 = System.currentTimeMillis();
 			tick();
@@ -136,7 +144,6 @@ public class Runner {
 		}
 		showStats();
 		delay(Settings.waitAfterDuration);
-		System.out.println(renderer.dbg_ticks);
 		mainFrame.dispose();
 	}
 

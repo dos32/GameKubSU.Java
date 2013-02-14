@@ -12,32 +12,43 @@ import game.physics.objects.Unit;
 import game.utils.Vector2d;
 
 public final class Physics {
+	public final Runner runner;
 	protected int ticks;
 	protected long ticksCount = 0, time = 0;
 	protected double fps = 0;
 	
-	public final Runner runner;
+	public ArrayList<Unit> objects = new ArrayList<Unit>();
+	
 	public ArrayList<GlobalForce> globalForces = new ArrayList<GlobalForce>();
 
 	public Physics(Runner runner) {
 		this.runner = runner;
 		globalForces.add(new FrictionForce(runner));
+		// simple demo for gravity force:
 		globalForces.add(new GravityForce(runner, new Vector2d(0, 5e-4)));
 		globalForces.add(new CollideForce(runner));
 	}
 	
 	public void updateFPS() {
 		if(fps == 0)
-			runner.world.infoPhysFPS.message = String.format("Phys.FPS = %s", "n/a");
+			runner.infoPhysFPS.message = String.format("Phys.FPS = %s", "n/a");
 		else {
-			runner.world.infoPhysFPS.message = String.format("Phys.FPS = %s", Math.round(fps));
+			runner.infoPhysFPS.message = String.format("Phys.FPS = %s", Math.round(fps));
 		}
+	}
+	
+	public void addUnit(Unit unit) {
+		objects.add(unit);
+	}
+	
+	public void clearUnits() {
+		objects.clear();
 	}
 
 	public void tick() {
 		long t1 = System.nanoTime();
 		
-		for (Unit unit : runner.world.allUnits)
+		for (Unit unit : objects)
 		{
 			// Inertial moving:
 			if (!unit.isStatic) {
@@ -48,7 +59,7 @@ public final class Physics {
 		
 		// Forces:
 		for(GlobalForce force : globalForces)
-			force.apply();
+			force.apply(objects);
 		
 		runner.renderer.updated = true;
 		

@@ -17,22 +17,20 @@ public final class Settings {
 		public static double width = 1300.0d, height = 700.0d;
 	}
 
-	public final static class Car {
+	public final static class Vehicle {
 		public static double maxHealth = 100, maxArmor = 200, maxFuel = 100,
 				maxNitro = 10, maxSpeed = 1, maxAcceleration = 0.1;
 	}
 
 	public final static class Frame {
-		public static int width = (int) World.width,
-				height = (int) World.height;
+		public static int contentWidth = (int) World.width,
+				contentHeight = (int) World.height;
 	}
 	
 	public final static class Physics {
 		public static double defaultFrictionCoeff = 0.003,
 				defaultMass = 1;
 		public static double FPSFramesCount = 100;
-		@Deprecated
-		public static double defaultCollideCoeff = 10;
 	}
 	
 	public final static class Renderer {

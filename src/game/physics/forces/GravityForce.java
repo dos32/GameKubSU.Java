@@ -1,5 +1,7 @@
 package game.physics.forces;
 
+import java.util.List;
+
 import game.Runner;
 import game.physics.objects.Unit;
 import game.utils.Vector2d;
@@ -13,8 +15,8 @@ public class GravityForce extends GlobalForce {
 	}
 
 	@Override
-	public void apply() {
-		for(Unit unit : runner.world.allUnits)
+	public void apply(List<Unit> objects) {
+		for(Unit unit : objects)
 			if(!unit.isStatic)
 			unit.speed.add(value.mul(unit.mass));
 	}
