@@ -1,12 +1,15 @@
 package game.physics.objects;
 
-import java.awt.Color;
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
+import game.physics.Physics;
+import game.physics.forces.ControlForce;
+import game.utils.Vector2d;
 
-public class Vehicle extends Box implements Externalizable {
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.io.Serializable;
+
+public class Vehicle extends Circle implements Serializable {
+	private static final long serialVersionUID = 1563688715048158514L;
 	protected int indexInTeam;
 	protected int playerId;
 	protected String playerName;
@@ -17,26 +20,28 @@ public class Vehicle extends Box implements Externalizable {
 	protected double armor;
 	protected double fuel;
 	protected double nitroFuel;
-
-	// AI's controllers
-	protected double motorPower;
-	protected double turnAngle;
 	
-	public Vehicle(double width, double height) {
-		super(width, height);
+	public ControlForce engine;
+	
+	private Vehicle() {
+		super(0);
 	}
-
-	@Override
-	public void readExternal(ObjectInput in) throws IOException,
-			ClassNotFoundException {
-		// TODO Auto-generated method stub
-
+	
+	public Vehicle(Physics physics, double radius) {
+		super(radius);
+		new ControlForce(this);
+		engine.powerFactor = 0.1;
+		engine.turnFactor = 0.1;
+		physics.bindedForces.add(engine);
 	}
-
+	
 	@Override
-	public void writeExternal(ObjectOutput out) throws IOException {
-		// TODO Auto-generated method stub
-
+	public void draw(Graphics2D graphics) {
+		super.draw(graphics);
+		Vector2d n = new Vector2d(Math.sin(angle), Math.cos(angle));
+		n.scale(radius);
+		n.add(position);
+		graphics.drawLine((int)position.x, (int)position.y, (int)n.x, (int)n.y);
 	}
 
 }

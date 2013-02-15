@@ -8,7 +8,7 @@ import java.net.ServerSocket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
-public class Server {
+public final class Server {
 	Runner runner;
 	ServerSocket server;
 	ArrayList<ClientListener> clients = new ArrayList<ClientListener>();
@@ -36,11 +36,15 @@ public class Server {
 		}
 		for(int i=0; i<Settings.playersCount; i++)
 		{
+			clients.add(new ClientListener(runner, null));
 			try {
-				clients.add(new ClientListener(runner, server.accept()));
+				// ? multi thread accepting
+				clients.get(i).client = server.accept();
 			} catch (IOException e) {
-				System.err.println(String.format("Can't accept %s client", i));
-				e.printStackTrace();
+				if(e.getClass() == java.net.SocketTimeoutException.class)
+					System.err.println(String.format("Can't accept %s client: timeout has been reached", i));
+				else
+					e.printStackTrace();
 			}
 		}
 	}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import game.Runner;
 import game.engine.Settings;
+import game.physics.forces.BindedForce;
 import game.physics.forces.CollideForce;
 import game.physics.forces.FrictionForce;
 import game.physics.forces.GlobalForce;
@@ -14,12 +15,14 @@ import game.utils.Vector2d;
 public final class Physics {
 	public final Runner runner;
 	protected int ticks;
-	protected long ticksCount = 0, time = 0;
+	protected long ticksCount = 0, time = 0, predTime = 0;
 	protected double fps = 0;
 	
 	public ArrayList<Unit> objects = new ArrayList<Unit>();
 	
 	public ArrayList<GlobalForce> globalForces = new ArrayList<GlobalForce>();
+	
+	public ArrayList<BindedForce> bindedForces = new ArrayList<BindedForce>();
 
 	public Physics(Runner runner) {
 		this.runner = runner;
@@ -30,6 +33,8 @@ public final class Physics {
 	}
 	
 	public void updateFPS() {
+		if(runner.infoPhysFPS == null)
+			return;
 		if(fps == 0)
 			runner.infoPhysFPS.message = String.format("Phys.FPS = %s", "n/a");
 		else {
@@ -58,6 +63,9 @@ public final class Physics {
 		}
 		
 		// Forces:
+		for(BindedForce force : bindedForces)
+			force.apply();
+		
 		for(GlobalForce force : globalForces)
 			force.apply(objects);
 		
@@ -65,7 +73,8 @@ public final class Physics {
 		
 		time+=System.nanoTime()-t1;
 		ticksCount++;
-		if(ticksCount>Settings.Physics.FPSFramesCount) {
+		if(time > Settings.Physics.FPSMeasureTimeMs * 1e6 ||
+				System.nanoTime() - predTime > Settings.Renderer.FPSMeasureTimeMs) {
 			fps = ticksCount * 1e9 / time;
 			updateFPS();
 			ticksCount = 0;

@@ -6,14 +6,10 @@ import game.physics.objects.Obstacle;
 import game.physics.objects.Unit;
 import game.physics.objects.Vehicle;
 
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class World implements Serializable, Externalizable {
+public class World implements Serializable {
 	private static final long serialVersionUID = 5624391324336770137L;
 	protected final Runner runner;
 
@@ -48,28 +44,6 @@ public class World implements Serializable, Externalizable {
 	
 	public void loadMap() {
 		// TODO
-	}
-	
-	@Override
-	public void readExternal(ObjectInput arg0) throws IOException,
-			ClassNotFoundException {
-		/*
-		 * tick = arg0.readInt(); playersCount=arg0.readInt(); width =
-		 * arg0.readDouble(); height = arg0.readDouble(); cars =
-		 * (ArrayList<Car>) arg0.readObject(); obstacles = (ArrayList<Obstacle>)
-		 * arg0.readObject(); bonuses = (ArrayList<Bonus>) arg0.readObject();
-		 */
-	}
-
-	@Override
-	public void writeExternal(ObjectOutput arg0) throws IOException {
-		arg0.writeInt(tick);
-		arg0.writeInt(players.size());
-		arg0.writeDouble(width);
-		arg0.writeDouble(height);
-		arg0.writeObject(vehicles);
-		arg0.writeObject(obstacles);
-		arg0.writeObject(bonuses);
 	}
 
 }

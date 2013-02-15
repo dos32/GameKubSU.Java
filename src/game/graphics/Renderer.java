@@ -21,6 +21,8 @@ public final class Renderer {
 	}
 	
 	public void updateFPS() {
+		if(runner.infoRendererFPS == null)
+			return;
 		if(fps == 0)
 			runner.infoRendererFPS.message = String.format("Renderer.FPS = %s", "n/a");
 		else {
@@ -43,7 +45,7 @@ public final class Renderer {
 		}
 		time+=System.nanoTime()-t1;
 		framesCount++;
-		if(framesCount > Settings.Renderer.FPSFramesCount) {
+		if(time > Settings.Renderer.FPSMeasureTimeMs * 1e6) {
 			fps = framesCount * 1e9 / time;
 			updateFPS();
 			framesCount=0;

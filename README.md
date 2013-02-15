@@ -1,1 +1,1 @@
-Simple game engine
+Game engine for bot battles contest

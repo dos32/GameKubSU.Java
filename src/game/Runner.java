@@ -11,6 +11,7 @@ import game.physics.objects.Circle;
 import game.physics.objects.HalfPlane;
 import game.physics.objects.InfoTip;
 import game.physics.objects.Unit;
+import game.physics.objects.Vehicle;
 import game.server.Server;
 import game.utils.Vector2d;
 
@@ -69,6 +70,7 @@ public class Runner {
 		info.position.assign(world.width/2, world.height/2);
 		addUnit(info);
 		mainFrame.mainCanvas.render();
+		server.acceptClients();
 	}
 
 	protected void prepareGame() {
@@ -85,7 +87,7 @@ public class Runner {
 		c.speed.assign(Math.random()-0.5, Math.random()-0.5);
 		c.speed.scale(20);
 		addUnit(c);
-		for(int i=0; i<1000; i++)
+		for(int i=0; i<10; i++)
 		{
 			c = new Circle((Math.random()+0.5)*8);
 			c.mass = Math.pow(c.radius,2)*Math.PI*0.01;
@@ -94,6 +96,11 @@ public class Runner {
 			c.speed.scale(2);
 			addUnit(c);
 		}
+		
+		// test vehicle:
+		Vehicle v = new Vehicle(physics, 10);
+		v.position.assign(10, 10);
+		addUnit(v);
 		
 		infoTick = new InfoTip(String.format("Ticks=%s", tick));
 		infoTick.isStatic = true;
@@ -124,6 +131,7 @@ public class Runner {
 	}
 
 	protected void tick() {
+		server.tick();
 		physics.tick();
 		mainFrame.mainCanvas.render();
 		tick++;

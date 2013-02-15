@@ -1,9 +1,12 @@
 package game.engine;
 
-public class Player {
+import java.io.Serializable;
+
+public class Player implements Serializable {
+	private static final long serialVersionUID = 8814139469470501756L;
 	protected int id;
 	protected String name;
-	protected boolean isCrashed;
+	protected boolean isAlive;
 	protected int score;
 
 	/*

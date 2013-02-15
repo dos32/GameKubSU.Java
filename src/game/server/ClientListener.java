@@ -14,8 +14,8 @@ public final class ClientListener implements Runnable {
 	public Runner runner;
 	public Socket client;
 	public boolean crashed;
-	ClientResponse response;
-	boolean waiting;
+	public ClientResponse response;
+	public boolean waiting;
 	
 	public ClientListener(Runner runner, Socket client) {
 		this.runner = runner;
@@ -28,9 +28,12 @@ public final class ClientListener implements Runnable {
 	 */
 	@Override
 	public void run() {
+		if(client == null)
+			return;
 		try {
 			waiting = true;
-			BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+			BufferedReader in = new BufferedReader(
+					new InputStreamReader(client.getInputStream()));
 			ObjectOutputStream sendData = new ObjectOutputStream(client.getOutputStream());
 			sendData.writeObject(runner.world);
 			sendData.close();// or sendData.flush();
@@ -47,6 +50,8 @@ public final class ClientListener implements Runnable {
 				try {
 					response = (ClientResponse)receivedData.readObject();
 				} catch (ClassNotFoundException e) {
+					System.err.println("Something wrong with"+
+						" reading object from client response");
 					e.printStackTrace();
 				}
 			}
