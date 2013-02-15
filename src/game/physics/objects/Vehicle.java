@@ -30,8 +30,6 @@ public class Vehicle extends Circle implements Serializable {
 	public Vehicle(Physics physics, double radius) {
 		super(radius);
 		new ControlForce(this);
-		engine.powerFactor = 0.1;
-		engine.turnFactor = 0.1;
 		physics.bindedForces.add(engine);
 	}
 	

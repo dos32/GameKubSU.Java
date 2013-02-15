@@ -100,6 +100,8 @@ public class Runner {
 		// test vehicle:
 		Vehicle v = new Vehicle(physics, 10);
 		v.position.assign(10, 10);
+		v.engine.powerFactor = 0.1;
+		v.engine.turnFactor = 0.1;
 		addUnit(v);
 		
 		infoTick = new InfoTip(String.format("Ticks=%s", tick));

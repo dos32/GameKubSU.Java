@@ -2,6 +2,7 @@ package client;
 
 import game.engine.Settings;
 import game.engine.World;
+import game.server.BotAction;
 
 import java.io.IOException;
 import java.net.Socket;

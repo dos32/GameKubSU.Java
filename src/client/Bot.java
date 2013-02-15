@@ -1,6 +1,7 @@
 package client;
 
 import game.engine.World;
+import game.server.BotAction;
 
 public class Bot {
 	public void init() {

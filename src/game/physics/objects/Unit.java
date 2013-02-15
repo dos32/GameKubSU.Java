@@ -31,6 +31,8 @@ public abstract class Unit {
 	// Friction coefficient of an object
 	public double frictionCoeff = Settings.Physics.defaultFrictionCoeff;
 
+	// TODO add new param Physics for
+	//  automatical adding to array after creation 
 	public Unit() {
 		id = lastid;
 		lastid++;

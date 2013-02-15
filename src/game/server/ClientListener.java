@@ -14,7 +14,7 @@ public final class ClientListener implements Runnable {
 	public Runner runner;
 	public Socket client;
 	public boolean crashed;
-	public ClientResponse response;
+	public BotAction response;
 	public boolean waiting;
 	
 	public ClientListener(Runner runner, Socket client) {
@@ -48,7 +48,7 @@ public final class ClientListener implements Runnable {
 				ObjectInputStream receivedData = 
 					new ObjectInputStream(client.getInputStream());
 				try {
-					response = (ClientResponse)receivedData.readObject();
+					response = (BotAction)receivedData.readObject();
 				} catch (ClassNotFoundException e) {
 					System.err.println("Something wrong with"+
 						" reading object from client response");

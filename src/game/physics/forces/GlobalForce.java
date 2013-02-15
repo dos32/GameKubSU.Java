@@ -8,6 +8,7 @@ import game.physics.objects.Unit;
 public abstract class GlobalForce {
 	public final Runner runner;
 	
+	// TODO add auto adding into Physics.globalForces
 	public GlobalForce(Runner runner) {
 		this.runner=runner;
 	}
