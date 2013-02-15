@@ -39,7 +39,7 @@ public final class ClientListener implements Runnable {
 			sendData.close();// or sendData.flush();
 			long t1 = System.currentTimeMillis();
 			while(!in.ready()) {
-				if(System.currentTimeMillis() - t1 > Settings.AIListener.timeout)
+				if(System.currentTimeMillis() - t1 > Settings.Server.timeout)
 				{
 					crashed = true;
 					waiting = false;

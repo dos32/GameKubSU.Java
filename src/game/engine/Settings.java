@@ -9,7 +9,7 @@ public final class Settings {
 	
 	public static int playersCount = 1;
 
-	public final static class AIListener {
+	public final static class Server {
 		public static int acceptTimeout = 100;
 		public static int timeout = 5000;
 		public static int port = 4000;

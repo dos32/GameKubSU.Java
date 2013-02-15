@@ -16,10 +16,10 @@ public final class Server {
 	public Server(Runner runner) {
 		this.runner = runner;
 		try {
-			server = new ServerSocket(Settings.AIListener.port);
+			server = new ServerSocket(Settings.Server.port);
 		} catch (IOException e) {
 			System.err.println(String.format("Failed open server on port %s",
-					Settings.AIListener.port));
+					Settings.Server.port));
 			e.printStackTrace();
 		}
 	}
@@ -30,7 +30,7 @@ public final class Server {
 	 */
 	public void acceptClients() {
 		try {
-			server.setSoTimeout(Settings.AIListener.acceptTimeout);
+			server.setSoTimeout(Settings.Server.acceptTimeout);
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
