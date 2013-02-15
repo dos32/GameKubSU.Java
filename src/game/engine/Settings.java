@@ -10,7 +10,7 @@ public final class Settings {
 	public static int playersCount = 1;
 
 	public final static class Server {
-		public static int acceptTimeout = 100;
+		public static int acceptTimeout = 10000;
 		public static int timeout = 5000;
 		public static int port = 4000;
 		public static String ip = "127.0.0.1";

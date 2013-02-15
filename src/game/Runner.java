@@ -19,7 +19,7 @@ public class Runner {
 	public final MainFrame mainFrame;
 	public final World world;
 	public final Renderer renderer;
-	protected Server server;
+	public final Server server;
 	public final Physics physics;
 	
 	public InfoTip infoTick, infoRendererFPS, infoPhysFPS;

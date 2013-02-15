@@ -2,6 +2,7 @@ package game.server;
 
 import game.Runner;
 import game.engine.Settings;
+import game.physics.objects.Vehicle;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -9,9 +10,9 @@ import java.net.SocketException;
 import java.util.ArrayList;
 
 public final class Server {
-	Runner runner;
-	ServerSocket server;
-	ArrayList<ClientListener> clients = new ArrayList<ClientListener>();
+	public Runner runner;
+	public ServerSocket server;
+	public ArrayList<ClientListener> clients = new ArrayList<ClientListener>();
 	
 	public Server(Runner runner) {
 		this.runner = runner;
@@ -54,6 +55,13 @@ public final class Server {
 	 */
 	public void tick() {
 		for(ClientListener clientListener : clients) {
+			clientListener.run();
+			for(Vehicle vehicle : clientListener.player.vehicles) {
+				vehicle.engine.powerFactor = clientListener.response.power;
+				vehicle.engine.turnFactor = clientListener.response.turn;
+			}
+		}
+		/*for(ClientListener clientListener : clients) {
 			new Thread(clientListener).start();
 		}
 		boolean clientsThinking = true;
@@ -68,6 +76,6 @@ public final class Server {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 	}
 }

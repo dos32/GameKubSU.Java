@@ -15,7 +15,7 @@ import game.utils.Vector2d;
 public final class Physics {
 	public final Runner runner;
 	protected int ticks;
-	protected long ticksCount = 0, time = 0, predTime = 0;
+	protected long ticksCount = 0, innerTime = 0, predRealTime = 0;
 	protected double fps = 0;
 	
 	public ArrayList<Unit> objects = new ArrayList<Unit>();
@@ -71,14 +71,14 @@ public final class Physics {
 		
 		runner.renderer.updated = true;
 		
-		time+=System.nanoTime()-t1;
+		innerTime+=System.nanoTime()-t1;
 		ticksCount++;
-		if(time > Settings.Physics.FPSMeasureTimeMs * 1e6 ||
-				System.nanoTime() - predTime > Settings.Renderer.FPSMeasureTimeMs) {
-			fps = ticksCount * 1e9 / time;
+		if(innerTime > Settings.Physics.FPSMeasureTimeMs * 1e6 ||
+				System.nanoTime() - predRealTime > Settings.Renderer.FPSMeasureTimeMs) {
+			fps = ticksCount * 1e9 / innerTime;
 			updateFPS();
 			ticksCount = 0;
-			time = 0;
+			innerTime = 0;
 		}
 	}
 }

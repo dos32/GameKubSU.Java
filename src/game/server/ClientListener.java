@@ -1,6 +1,7 @@
 package game.server;
 
 import game.Runner;
+import game.engine.Player;
 import game.engine.Settings;
 
 import java.io.BufferedReader;
@@ -13,6 +14,7 @@ import java.net.*;
 public final class ClientListener implements Runnable {
 	public Runner runner;
 	public Socket client;
+	public Player player = new Player();
 	public boolean crashed;
 	public BotAction response;
 	public boolean waiting;
@@ -35,8 +37,10 @@ public final class ClientListener implements Runnable {
 			BufferedReader in = new BufferedReader(
 					new InputStreamReader(client.getInputStream()));
 			ObjectOutputStream sendData = new ObjectOutputStream(client.getOutputStream());
-			sendData.writeObject(runner.world);
-			sendData.close();// or sendData.flush();
+			//sendData.writeObject(runner.world);
+			sendData.writeObject(0);
+			//sendData.close();
+			sendData.flush();
 			long t1 = System.currentTimeMillis();
 			while(!in.ready()) {
 				if(System.currentTimeMillis() - t1 > Settings.Server.timeout)
