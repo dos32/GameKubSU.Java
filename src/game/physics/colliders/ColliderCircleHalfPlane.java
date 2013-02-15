@@ -12,10 +12,10 @@ public class ColliderCircleHalfPlane extends Collider {
 		if(unit1.isMaterial && unit2.isMaterial) {
 			Circle circle;
 			HalfPlane hp;
-			if (unit1.getClass() == Circle.class && unit2.getClass() == HalfPlane.class) {
+			if (Circle.class.isAssignableFrom(unit1.getClass()) && HalfPlane.class.isAssignableFrom(unit2.getClass())) {
 				circle = (Circle) unit1;
 				hp = (HalfPlane) unit2;
-			} else if (unit1.getClass() == HalfPlane.class && unit2.getClass() == Circle.class) {
+			} else if (HalfPlane.class.isAssignableFrom(unit1.getClass()) && Circle.class.isAssignableFrom(unit2.getClass())) {
 				circle = (Circle) unit2;
 				hp = (HalfPlane) unit1;
 			} else

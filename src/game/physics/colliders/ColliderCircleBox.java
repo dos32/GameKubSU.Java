@@ -12,11 +12,11 @@ public class ColliderCircleBox extends Collider {
 	public void Collide(Unit unit1, Unit unit2) {
 		Circle circle;
 		Box box;
-		if(unit1.getClass() == Circle.class && unit2.getClass() == Box.class) {
+		if(Circle.class.isAssignableFrom(unit1.getClass()) && Box.class.isAssignableFrom(unit2.getClass())) {
 			circle = (Circle)unit1;
 			box = (Box)unit2;
 		}
-		else if(unit1.getClass() == Box.class && unit2.getClass() == Circle.class) {
+		else if(Box.class.isAssignableFrom(unit1.getClass()) && Circle.class.isAssignableFrom(unit2.getClass())) {
 			circle = (Circle)unit2;
 			box = (Box)unit1;
 		}

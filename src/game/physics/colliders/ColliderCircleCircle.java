@@ -8,7 +8,7 @@ public class ColliderCircleCircle extends Collider {
 	
 	@Override
 	public void Collide(Unit unit1, Unit unit2) {
-		if(unit1.getClass() == Circle.class && unit2.getClass() == Circle.class &&
+		if(Circle.class.isAssignableFrom(unit1.getClass()) && Circle.class.isAssignableFrom(unit2.getClass()) &&
 				unit1.isMaterial && unit2.isMaterial) {
 			double R = ((Circle)unit1).radius+((Circle)unit2).radius;
 			if(Math.abs(unit1.position.x-unit2.position.x)<=R && Math.abs(unit1.position.y-unit2.position.y)<=R)
