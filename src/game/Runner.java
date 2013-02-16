@@ -2,6 +2,8 @@ package game;
 
 import java.awt.Color;
 
+import client.ClientRunner;
+
 import game.engine.Settings;
 import game.engine.World;
 import game.graphics.MainFrame;
@@ -70,6 +72,9 @@ public class Runner {
 		info.position.assign(world.width/2, world.height/2);
 		addUnit(info);
 		mainFrame.mainCanvas.render();
+		// test client
+		new Thread(new ClientRunner()).start();
+		//
 		server.acceptClients();
 	}
 
@@ -103,6 +108,7 @@ public class Runner {
 		v.engine.powerFactor = 0.1;
 		v.engine.turnFactor = 0.1;
 		addUnit(v);
+		server.clients.get(0).player.vehicles.add(v);
 		
 		infoTick = new InfoTip(String.format("Ticks=%s", tick));
 		infoTick.isStatic = true;

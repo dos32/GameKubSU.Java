@@ -19,7 +19,7 @@ public class ControlForce extends BindedForce {
 		Vector2d n = new Vector2d(Math.sin(bindUnit.angle), Math.cos(bindUnit.angle));
 		bindUnit.speed.add(
 			n.mul(Math.signum(powerFactor)*Math.min(1, Math.abs(powerFactor))*maxPowerConstraint));
-		bindUnit.angularSpeed += Math.signum(turnFactor)*Math.min(1, turnFactor)*maxTurnConstraint;
+		bindUnit.angularSpeed += Math.signum(turnFactor)*Math.min(1, Math.abs(turnFactor))*maxTurnConstraint;
 	}
 
 }
