@@ -9,6 +9,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import javax.swing.JFrame;
+
 public class ClientRunner implements Runnable {
 	public ClientFrame frame;
 	public Socket listener;
@@ -18,6 +20,7 @@ public class ClientRunner implements Runnable {
 		frame = new ClientFrame();
 		frame.setVisible(true);
 		frame.setSize(500, 500);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		bot = new Bot(this);
 	}
 	
@@ -30,10 +33,16 @@ public class ClientRunner implements Runnable {
 				ObjectInputStream oin = new ObjectInputStream(listener.getInputStream());
 				ObjectOutputStream oout = new ObjectOutputStream(listener.getOutputStream());
 				World world = null;
+				int signal = -1;
 				try {
-					oin.readObject();
+					signal = (int) oin.readObject();
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
+				}
+				if(signal == -1)
+				{
+					frame.dispose();
+					return;
 				}
 				BotAction action = new BotAction();
 				bot.move(world, action);

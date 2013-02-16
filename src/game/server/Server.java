@@ -78,4 +78,11 @@ public final class Server {
 			}
 		}*/
 	}
+	
+	public void releaseClients() {
+		for(ClientListener c : clients) {
+			c.release();
+		}
+	}
+	
 }

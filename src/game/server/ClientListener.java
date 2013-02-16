@@ -51,4 +51,15 @@ public final class ClientListener implements Runnable {
 			e.printStackTrace();
 		}
 	}
+	
+	public void release() {
+		try {
+			ObjectOutputStream sendData = new ObjectOutputStream(client.getOutputStream());
+			int temp = -1;
+			sendData.writeObject(temp);
+			sendData.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

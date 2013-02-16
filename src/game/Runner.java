@@ -147,7 +147,7 @@ public class Runner {
 		updateTick();
 	}
 	
-	public void Start() {
+	public void start() {
 		showGreeting();
 		delay(Settings.waitBeforeDuration);
 		prepareGame();
@@ -160,12 +160,13 @@ public class Runner {
 		}
 		showStats();
 		delay(Settings.waitAfterDuration);
+		server.releaseClients();
 		mainFrame.dispose();
 	}
 
 	public static void main(String[] args) {
 		Runner runner = new Runner();
-		runner.Start();
+		runner.start();
 	}
 
 }

@@ -2,7 +2,7 @@ package game.engine;
 
 public final class Settings {
 	public static int tickDuration = 12;
-	public static int maxTicksCount = 5000;
+	public static int maxTicksCount = 500;
 	public static int waitBeforeDuration = 1000;
 	public static int waitAfterDuration = 1000;
 	public static int waitInterval = 1;
