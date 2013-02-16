@@ -2,6 +2,7 @@ package game.server;
 
 import game.Runner;
 import game.engine.Player;
+import game.engine.Settings;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -14,9 +15,9 @@ public final class ClientListener implements Runnable {
 	public Player player = new Player();
 	public boolean crashed;
 	public BotAction response;
-	public boolean waiting;
 	
 	public ClientListener(Runner runner, Socket client) {
+		super();
 		this.runner = runner;
 		this.client = client;
 	}
@@ -29,8 +30,8 @@ public final class ClientListener implements Runnable {
 	public void run() {
 		if(client == null)
 			return;
+		crashed = false;
 		try {
-			waiting = true;
 			ObjectOutputStream sendData = new ObjectOutputStream(
 					client.getOutputStream());
 			int tmp = 101;
@@ -38,15 +39,16 @@ public final class ClientListener implements Runnable {
 			sendData.flush();
 			ObjectInputStream receivedData = new ObjectInputStream(
 					client.getInputStream());
-			// client.setSoTimeout(Settings.Server.timeout);
+			client.setSoTimeout(Settings.Server.timeout);
 			try {
 				response = (BotAction) receivedData.readObject();
 			} catch (ClassNotFoundException e) {
 				System.err.println("Something wrong with"
 						+ " reading object from client response");
 				e.printStackTrace();
+			} catch (java.net.SocketTimeoutException e) {
+				crashed = true;
 			}
-			waiting = false;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

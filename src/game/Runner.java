@@ -18,6 +18,14 @@ import game.server.Server;
 import game.utils.Vector2d;
 
 public class Runner {
+	// Current instance of Runner
+	// Important: because it is not singleton,
+	//	using multiple instances of this class
+	//	suggest manual switch field current to
+	//	each of runners, when its nested components
+	//	can need to access its fields
+	public static Runner current;
+	
 	public final MainFrame mainFrame;
 	public final World world;
 	public final Renderer renderer;
@@ -74,6 +82,7 @@ public class Runner {
 		mainFrame.mainCanvas.render();
 		// test client
 		new Thread(new ClientRunner()).start();
+		new Thread(new ClientRunner()).start();
 		//
 		server.acceptClients();
 	}
@@ -109,6 +118,12 @@ public class Runner {
 		v.engine.turnFactor = 0.1;
 		addUnit(v);
 		server.clients.get(0).player.vehicles.add(v);
+		v = new Vehicle(physics, 20);
+		v.position.assign(100, 10);
+		v.engine.powerFactor = 0.1;
+		v.engine.turnFactor = 0.1;
+		addUnit(v);
+		server.clients.get(1).player.vehicles.add(v);
 		
 		infoTick = new InfoTip(String.format("Ticks=%s", tick));
 		infoTick.isStatic = true;

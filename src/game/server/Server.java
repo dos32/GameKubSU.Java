@@ -39,7 +39,7 @@ public final class Server {
 		{
 			clients.add(new ClientListener(runner, null));
 			try {
-				// ? multi thread accepting
+				// TODO multi thread accepting
 				clients.get(i).client = server.accept();
 			} catch (IOException e) {
 				if(e.getClass() == java.net.SocketTimeoutException.class)
@@ -54,29 +54,25 @@ public final class Server {
 	 * Broadcast to all clients
 	 */
 	public void tick() {
+		Thread[] threads = new Thread[clients.size()];
+		for(int i = 0; i<clients.size(); i++) {
+			ClientListener clientListener = clients.get(i);
+			threads[i] = new Thread(clientListener);
+			threads[i].start();
+		}
+		// Wait for end of listening:
+		for(Thread thread : threads)
+			try {
+				thread.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		for(ClientListener clientListener : clients) {
-			clientListener.run();
 			for(Vehicle vehicle : clientListener.player.vehicles) {
 				vehicle.engine.powerFactor = clientListener.response.power;
 				vehicle.engine.turnFactor = clientListener.response.turn;
 			}
 		}
-		/*for(ClientListener clientListener : clients) {
-			new Thread(clientListener).start();
-		}
-		boolean clientsThinking = true;
-		while(clientsThinking)
-		{
-			clientsThinking = false;
-			for(ClientListener cl : clients)
-				if(cl.waiting)
-					clientsThinking |= true;
-			try {
-				Thread.sleep(1);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}*/
 	}
 	
 	public void releaseClients() {

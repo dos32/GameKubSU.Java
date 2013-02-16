@@ -19,7 +19,9 @@ public class ClientRunner implements Runnable {
 	public ClientRunner() {
 		frame = new ClientFrame();
 		frame.setVisible(true);
-		frame.setSize(500, 500);
+		frame.setLocation(800, 660);
+		frame.setSize(500, 100);
+		frame.setTitle("Press arrow keys to move the vehicle");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		bot = new Bot(this);
 	}
