@@ -7,5 +7,6 @@ import game.physics.objects.Unit;
  *  and calls collide events, if it occurs
  */
 public abstract class Collider {
-	public abstract void Collide(Unit unit1, Unit unit2);
+	public boolean isCollide(Unit unit1, Unit unit2) {return false;}
+	public void Collide(Unit unit1, Unit unit2) {}
 }

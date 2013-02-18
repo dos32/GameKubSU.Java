@@ -18,14 +18,17 @@ public final class Physics {
 	protected long ticksCount = 0, innerTime = 0, lastRealTime = 0;
 	protected double fps = 0;
 	
+	// List of all physics objects:
 	public ArrayList<Unit> objects = new ArrayList<Unit>();
 	
+	// List for additional minor global forces:
 	public ArrayList<GlobalForce> globalForces = new ArrayList<GlobalForce>();
+	
+	// Main global forces:
+	public FrictionForce frictionForce = new FrictionForce();
+	public CollideForce collideForce = new CollideForce();
 
 	public Physics() {
-		globalForces.add(new FrictionForce());
-		//globalForces.add(new GravityForce(new Vector2d(0, 5e-4)));
-		globalForces.add(new CollideForce());
 	}
 	
 	public void updateFPS() {
@@ -61,12 +64,12 @@ public final class Physics {
 					force.apply();
 		}
 		
-		// Forces:
-		/*for(BindedForce force : bindedForces)
-			force.apply();*/
-		
+		// Minor global forces:
 		for(GlobalForce force : globalForces)
 			force.apply(objects);
+		
+		frictionForce.apply(objects);
+		collideForce.apply(objects);
 		
 		Runner.inst().renderer.updated = true;
 		

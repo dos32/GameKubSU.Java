@@ -84,9 +84,8 @@ public class Runner {
 	protected void showGreeting() {
 		InfoTip info = new InfoTip("Wait for client AI");
 		info.position.assign(world.width/2, world.height/2);
-		addUnit(info);
 		mainFrame.mainCanvas.render();
-		// test client
+		// test client:
 		new Thread(new ClientRunner()).start();
 		new Thread(new ClientRunner()).start();
 		//
@@ -96,25 +95,23 @@ public class Runner {
 	protected void prepareGame() {
 		clearUnits();
 		// edges:
-		addUnit(new HalfPlane(new Vector2d(0, 0), 0));
-		addUnit(new HalfPlane(new Vector2d(world.width, 0), Math.PI));
-		addUnit(new HalfPlane(new Vector2d(0, world.height), 3*Math.PI/2));
-		addUnit(new HalfPlane(new Vector2d(0, 0), Math.PI/2));
+		new HalfPlane(new Vector2d(0, 0), 0);
+		new HalfPlane(new Vector2d(world.width, 0), Math.PI);
+		new HalfPlane(new Vector2d(0, world.height), 3*Math.PI/2);
+		new HalfPlane(new Vector2d(0, 0), Math.PI/2);
 		// test:
 		Circle c = new Circle(100);
 		c.mass = Math.pow(c.radius,2)*Math.PI*0.01;
 		c.position.assign(Math.random()*world.width, Math.random()*world.height);
 		c.speed.assign(Math.random()-0.5, Math.random()-0.5);
 		c.speed.scale(20);
-		addUnit(c);
-		for(int i=0; i<10; i++)
+		for(int i=0; i<1000; i++)
 		{
 			c = new Circle((Math.random()+0.5)*8);
 			c.mass = Math.pow(c.radius,2)*Math.PI*0.01;
 			c.position.assign(Math.random()*world.width, Math.random()*world.height);
 			c.speed.assign(Math.random()-0.5, Math.random()-0.5);
 			c.speed.scale(2);
-			addUnit(c);
 		}
 		
 		// test vehicle:
@@ -122,40 +119,34 @@ public class Runner {
 		v.position.assign(10, 10);
 		v.engine.powerFactor = 0.1;
 		v.engine.turnFactor = 0.1;
-		addUnit(v);
 		server.clients.get(0).player.vehicles.add(v);
 		v = new Vehicle(physics, 20);
 		v.position.assign(100, 100);
 		v.engine.powerFactor = 0.1;
 		v.engine.turnFactor = 0.1;
-		addUnit(v);
 		server.clients.get(1).player.vehicles.add(v);
 		
 		infoTick = new InfoTip(String.format("Ticks=%s", tick));
 		infoTick.isStatic = true;
 		infoTick.color = Color.red;
-		addUnit(infoTick);
 		
 		infoRendererFPS = new InfoTip("");
 		infoRendererFPS.isStatic = true;
 		infoRendererFPS.position.assign(0, 16);
 		infoRendererFPS.color = Color.red;
 		renderer.updateFPS();
-		addUnit(infoRendererFPS);
 		
 		infoPhysFPS = new InfoTip("");
 		infoPhysFPS.isStatic = true;
 		infoPhysFPS.position.assign(0, 32);
 		infoPhysFPS.color = Color.red;
 		physics.updateFPS();
-		addUnit(infoPhysFPS);
 	}
 	
 	protected void showStats() {
 		clearUnits();
 		InfoTip info = new InfoTip("Game over");
 		info.position = new Vector2d(world.width/2, world.height/2);
-		addUnit(info);
 		mainFrame.mainCanvas.render();
 	}
 

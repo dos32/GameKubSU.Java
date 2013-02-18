@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import game.Runner;
 import game.engine.Settings;
 import game.physics.colliders.listeners.CollideEventListener;
 import game.physics.forces.BindedForce;
@@ -27,13 +28,13 @@ public abstract class Unit implements Serializable {
 	
 	/*
 	 * When object becomes static it
-	 * ignores self speed, friction and all collisions
+	 * 	ignores self speed, friction and all collisions
 	 */
 	public boolean isStatic = false;
 	
 	/*
 	 * When object becomes not material it
-	 * ignores all collisions
+	 * 	ignores all collisions
 	 */
 	public boolean isMaterial = true;
 	
@@ -43,11 +44,11 @@ public abstract class Unit implements Serializable {
 	// Friction coefficient of an object
 	public double frictionCoeff = Settings.Physics.defaultFrictionCoeff;
 
-	// TODO add new param Physics for
-	//  automatical adding to array after creation 
 	public Unit() {
 		id = lastid;
 		lastid++;
+		Runner.inst().world.addUnit(this);
+		Runner.inst().physics.addUnit(this);
 	}
 
 	public Unit(double mass) {
@@ -55,7 +56,7 @@ public abstract class Unit implements Serializable {
 		this.mass = mass;
 	}
 
-	public int getId() {
+	/*public int getId() {
 		return id;
 	}
 
@@ -77,7 +78,7 @@ public abstract class Unit implements Serializable {
 
 	protected double getMass() {
 		return mass;
-	}
+	}*/
 
 	public abstract void draw(Graphics2D graphics);
 	

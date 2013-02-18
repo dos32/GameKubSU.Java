@@ -2,15 +2,17 @@ package game.physics.colliders;
 
 import game.physics.objects.Box;
 import game.physics.objects.Circle;
-import game.physics.objects.Unit;
 import game.utils.Vector2d;
 
 public class ColliderCircleBox extends Collider {
 
+	public boolean isCollide(Circle unit1, Box unit2) {
+		return false;
+	}
+
 	@SuppressWarnings("unused")
-	@Override
-	public void Collide(Unit unit1, Unit unit2) {
-		Circle circle;
+	public void Collide(Circle unit1, Box unit2) {
+		/*Circle circle;
 		Box box;
 		if(Circle.class.isAssignableFrom(unit1.getClass()) && Box.class.isAssignableFrom(unit2.getClass())) {
 			circle = (Circle)unit1;
@@ -21,9 +23,9 @@ public class ColliderCircleBox extends Collider {
 			box = (Box)unit1;
 		}
 		else
-			return;
-		if(circle.isMaterial && box.isMaterial) {
-			Vector2d n1 = new Vector2d(Math.cos(box.angle), Math.sin(box.angle));
+			return;*/
+		if(unit1.isMaterial && unit2.isMaterial) {
+			Vector2d n1 = new Vector2d(Math.cos(unit2.angle), Math.sin(unit2.angle));
 			Vector2d n2 = new Vector2d(-n1.y, n1.x);
 			
 		}
