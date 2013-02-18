@@ -48,7 +48,7 @@ public final class Settings {
 	
 	public final static class PerfMonitor {
 		public final static class FPS {
-			public static int resetPeriod = 100; // number of ticks, after that stats reset; ticks
+			public static int resetPeriod = 500; // number of ticks, after that stats reset
 			public static long realTimeSpan = (long)1e9; // span of real time in which stats must be recalculated; ns
 		}
 	}
