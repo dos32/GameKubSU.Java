@@ -18,13 +18,18 @@ import game.server.Server;
 import game.utils.Vector2d;
 
 public class Runner {
-	// Current instance of Runner
-	// Important: because it is not singleton,
-	//	using multiple instances of this class
-	//	suggest manual switch field current to
-	//	each of runners, when its nested components
-	//	can need to access its fields
-	public static Runner current;
+	/* 
+	 * Current instance of Runner
+	 * Important: because it is not singleton,
+	 *	using multiple instances of this class
+	 *	suggest manual switch field current to
+	 *	each of runners, when its nested components
+	 *	can need to access its fields
+	 */
+	private static Runner currentInstance;
+	public static Runner inst() {
+		return currentInstance;
+	}
 	
 	public final MainFrame mainFrame;
 	public final World world;
@@ -37,11 +42,12 @@ public class Runner {
 	public int tick = 0;
 
 	public Runner() {
-		physics = new Physics(this);
-		mainFrame = new MainFrame(this);
-		renderer = new Renderer(this);
-		world = new World(this);
-		server = new Server(this);
+		currentInstance = this;
+		physics = new Physics();
+		mainFrame = new MainFrame();
+		renderer = new Renderer();
+		world = new World();
+		server = new Server();
 	}
 	
 	protected void delay(long time) {

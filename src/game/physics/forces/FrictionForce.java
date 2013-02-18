@@ -2,13 +2,12 @@ package game.physics.forces;
 
 import java.util.List;
 
-import game.Runner;
 import game.physics.objects.Unit;
 
 public class FrictionForce extends GlobalForce {
 
-	public FrictionForce(Runner runner) {
-		super(runner);
+	public FrictionForce() {
+		super();
 	}
 
 	@Override

@@ -13,9 +13,8 @@ import game.physics.objects.Unit;
 import game.utils.Vector2d;
 
 public final class Physics {
-	public final Runner runner;
 	protected int ticks;
-	protected long ticksCount = 0, innerTime = 0, predRealTime = 0;
+	protected long ticksCount = 0, innerTime = 0, lastRealTime = 0;
 	protected double fps = 0;
 	
 	public ArrayList<Unit> objects = new ArrayList<Unit>();
@@ -24,21 +23,19 @@ public final class Physics {
 	
 	public ArrayList<BindedForce> bindedForces = new ArrayList<BindedForce>();
 
-	public Physics(Runner runner) {
-		this.runner = runner;
-		globalForces.add(new FrictionForce(runner));
-		// simple demo for gravity force:
-		globalForces.add(new GravityForce(runner, new Vector2d(0, 5e-4)));
-		globalForces.add(new CollideForce(runner));
+	public Physics() {
+		globalForces.add(new FrictionForce());
+		globalForces.add(new GravityForce(new Vector2d(0, 5e-4)));
+		globalForces.add(new CollideForce());
 	}
 	
 	public void updateFPS() {
-		if(runner.infoPhysFPS == null)
+		if(Runner.inst().infoPhysFPS == null)
 			return;
 		if(fps == 0)
-			runner.infoPhysFPS.message = String.format("Phys.FPS = %s", "n/a");
+			Runner.inst().infoPhysFPS.message = String.format("Phys.FPS = %s", "n/a");
 		else {
-			runner.infoPhysFPS.message = String.format("Phys.FPS = %s", Math.round(fps));
+			Runner.inst().infoPhysFPS.message = String.format("Phys.FPS = %s", Math.round(fps));
 		}
 	}
 	
@@ -69,16 +66,18 @@ public final class Physics {
 		for(GlobalForce force : globalForces)
 			force.apply(objects);
 		
-		runner.renderer.updated = true;
+		Runner.inst().renderer.updated = true;
 		
 		innerTime+=System.nanoTime()-t1;
 		ticksCount++;
-		if(innerTime > Settings.Physics.FPSMeasureTimeMs * 1e6 ||
-				System.nanoTime() - predRealTime > Settings.Renderer.FPSMeasureTimeMs) {
+		if(System.nanoTime() - lastRealTime > Settings.PerfMonitor.FPS.realTimeSpan) {
+			lastRealTime = System.nanoTime();
 			fps = ticksCount * 1e9 / innerTime;
 			updateFPS();
-			ticksCount = 0;
-			innerTime = 0;
+			if(ticksCount > Settings.PerfMonitor.FPS.resetPeriod) {
+				ticksCount = 0;
+				innerTime = 0;
+			}
 		}
 	}
 }

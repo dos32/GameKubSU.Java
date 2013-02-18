@@ -1,11 +1,14 @@
 package game.physics.objects;
 
 import java.awt.Graphics2D;
+import java.io.Serializable;
 
 import game.engine.Settings;
 import game.utils.*;
 
-public abstract class Unit {
+public abstract class Unit implements Serializable {
+	private static final long serialVersionUID = 1714619678919428922L;
+	
 	protected static int lastid = 1;
 	public final int id;
 	public Vector2d position = new Vector2d();

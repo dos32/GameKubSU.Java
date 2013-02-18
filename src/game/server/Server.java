@@ -1,6 +1,5 @@
 package game.server;
 
-import game.Runner;
 import game.engine.Settings;
 import game.physics.objects.Vehicle;
 
@@ -10,12 +9,10 @@ import java.net.SocketException;
 import java.util.ArrayList;
 
 public final class Server {
-	public Runner runner;
 	public ServerSocket server;
 	public ArrayList<ClientListener> clients = new ArrayList<ClientListener>();
 	
-	public Server(Runner runner) {
-		this.runner = runner;
+	public Server() {
 		try {
 			server = new ServerSocket(Settings.Server.port);
 		} catch (IOException e) {
@@ -37,7 +34,7 @@ public final class Server {
 		}
 		for(int i=0; i<Settings.playersCount; i++)
 		{
-			clients.add(new ClientListener(runner, null));
+			clients.add(new ClientListener(null));
 			try {
 				// TODO multi thread accepting
 				clients.get(i).client = server.accept();

@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 public class World implements Serializable {
 	private static final long serialVersionUID = 5624391324336770137L;
-	protected final Runner runner;
 
 	public int tick = 0;
 	public final double width, height;
@@ -20,14 +19,13 @@ public class World implements Serializable {
 	public ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 	public ArrayList<Bonus> bonuses = new ArrayList<Bonus>();
 
-	public World(Runner runner) {
-		this.runner = runner;
+	public World() {
 		this.width = Settings.World.width;
 		this.height = Settings.World.height;
 	}
 
 	public void addUnit(Unit unit) {
-		runner.renderer.updated = true;
+		Runner.inst().renderer.updated = true;
 		if (unit.getClass() == Vehicle.class)
 			vehicles.add((Vehicle) unit);
 		else if (unit.getClass() == Obstacle.class)

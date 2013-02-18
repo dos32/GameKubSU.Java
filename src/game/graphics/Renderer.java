@@ -10,23 +10,18 @@ import game.engine.Settings;
 import game.physics.objects.Unit;
 
 public final class Renderer {
-	protected final Runner runner;
 	public boolean updated = false;
 	
 	protected double fps = 0;
-	protected long framesCount = 0, time = 0;
-
-	public Renderer(Runner runner) {
-		this.runner = runner;
-	}
+	protected long framesCount = 0, time = 0, lastRealTime = 0;
 	
 	public void updateFPS() {
-		if(runner.infoRendererFPS == null)
+		if(Runner.inst().infoRendererFPS == null)
 			return;
 		if(fps == 0)
-			runner.infoRendererFPS.message = String.format("Renderer.FPS = %s", "n/a");
+			Runner.inst().infoRendererFPS.message = String.format("Renderer.FPS = %s", "n/a");
 		else {
-			runner.infoRendererFPS.message = String.format("Renderer.FPS = %s", Math.round(fps));
+			Runner.inst().infoRendererFPS.message = String.format("Renderer.FPS = %s", Math.round(fps));
 		}
 	}
 
@@ -39,17 +34,20 @@ public final class Renderer {
 			graphics.setBackground(Color.white);
 			graphics.setColor(Color.black);
 			graphics.clearRect(0, 0, (int)Settings.World.width, (int)Settings.World.height);
-			for(Unit unit : runner.physics.objects)
+			for(Unit unit : Runner.inst().physics.objects)
 				unit.draw(graphics);
 			updated = false;
 		}
 		time+=System.nanoTime()-t1;
 		framesCount++;
-		if(time > Settings.Renderer.FPSMeasureTimeMs * 1e6) {
+		if(System.nanoTime() - lastRealTime > Settings.PerfMonitor.FPS.realTimeSpan) {
+			lastRealTime = System.nanoTime();
 			fps = framesCount * 1e9 / time;
 			updateFPS();
-			framesCount=0;
-			time=0;
+			if (framesCount > Settings.PerfMonitor.FPS.resetPeriod) {
+				framesCount = 0;
+				time = 0;
+			}
 		}
 	}
 }

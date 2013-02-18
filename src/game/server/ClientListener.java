@@ -1,6 +1,5 @@
 package game.server;
 
-import game.Runner;
 import game.engine.Player;
 import game.engine.Settings;
 
@@ -10,15 +9,12 @@ import java.io.ObjectOutputStream;
 import java.net.*;
 
 public final class ClientListener implements Runnable {
-	public Runner runner;
 	public Socket client;
 	public Player player = new Player();
 	public boolean crashed;
 	public BotAction response;
 	
-	public ClientListener(Runner runner, Socket client) {
-		super();
-		this.runner = runner;
+	public ClientListener(Socket client) {
 		this.client = client;
 	}
 

@@ -2,15 +2,14 @@ package game.physics.forces;
 
 import java.util.List;
 
-import game.Runner;
 import game.physics.objects.Unit;
 import game.utils.Vector2d;
 
 public class GravityForce extends GlobalForce {
 	public Vector2d value = new Vector2d();
 
-	public GravityForce(Runner runner, Vector2d value) {
-		super(runner);
+	public GravityForce(Vector2d value) {
+		super();
 		this.value.assign(value);
 	}
 

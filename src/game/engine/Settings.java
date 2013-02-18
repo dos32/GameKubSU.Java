@@ -22,7 +22,7 @@ public final class Settings {
 
 	public final static class Vehicle {
 		public static double maxHealth = 100, maxArmor = 200, maxFuel = 100,
-				maxNitro = 10, maxSpeed = 1, maxPower = 0.1, maxTurn = 0.01 * Math.PI / 180;
+				maxNitroPower = 0.05, maxPower = 0.03, maxTurn = 0.03 * Math.PI / 180;
 	}
 
 	public final static class Frame {
@@ -31,12 +31,17 @@ public final class Settings {
 	}
 	
 	public final static class Physics {
-		public static double defaultFrictionCoeff = 0.003,
+		public static double defaultFrictionCoeff = 0.01,
 				defaultMass = 1;
-		public static double FPSMeasureTimeMs = 1000;
 	}
 	
 	public final static class Renderer {
-		public static int FPSMeasureTimeMs = 1000;
+	}
+	
+	public final static class PerfMonitor {
+		public final static class FPS {
+			public static int resetPeriod = 100; // number of ticks, after that stats reset; ticks
+			public static long realTimeSpan = (long)1e9; // span of real time in which stats must be recalculated; ns
+		}
 	}
 }

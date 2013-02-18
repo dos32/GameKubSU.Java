@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 //import java.util.Hashtable;
 
-import game.Runner;
 import game.physics.colliders.Collider;
 import game.physics.colliders.ColliderCircleCircle;
 import game.physics.colliders.ColliderCircleHalfPlane;
@@ -42,8 +41,8 @@ public class CollideForce extends GlobalForce {
 	
 	public Hashtable<UnitPairClass, Collider> CollideMatrix = new Hashtable<CollideForce.UnitPairClass, Collider>();*/
 
-	public CollideForce(Runner runner) {
-		super(runner);
+	public CollideForce() {
+		super();
 		colliders.add(new ColliderCircleCircle());
 		colliders.add(new ColliderCircleHalfPlane());
 		/*CollideMatrix.put(new UnitPairClass(Circle.class, Circle.class), new ColliderCircleCircle());
