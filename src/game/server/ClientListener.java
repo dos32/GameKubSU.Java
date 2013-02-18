@@ -1,7 +1,9 @@
 package game.server;
 
+import game.Runner;
 import game.engine.Player;
 import game.engine.Settings;
+import game.engine.World;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -27,35 +29,37 @@ public final class ClientListener implements Runnable {
 		if(client == null)
 			return;
 		crashed = false;
-		try {
-			ObjectOutputStream sendData = new ObjectOutputStream(
-					client.getOutputStream());
-			int tmp = 101;
-			sendData.writeObject(tmp);
-			sendData.flush();
-			ObjectInputStream receivedData = new ObjectInputStream(
-					client.getInputStream());
-			client.setSoTimeout(Settings.Server.timeout);
+		if (!client.isClosed())
 			try {
-				response = (BotAction) receivedData.readObject();
-			} catch (ClassNotFoundException e) {
-				System.err.println("Something wrong with"
-						+ " reading object from client response");
+				ObjectOutputStream sendData = new ObjectOutputStream(
+						client.getOutputStream());
+				//int tmp = 101;
+				sendData.writeObject(Runner.inst().world);
+				sendData.flush();
+				ObjectInputStream receivedData = new ObjectInputStream(
+						client.getInputStream());
+				client.setSoTimeout(Settings.Server.timeout);
+				try {
+					response = (BotAction) receivedData.readObject();
+				} catch (ClassNotFoundException e) {
+					System.err.println("Something wrong with"
+							+ " reading object from client response");
+					e.printStackTrace();
+				} catch (java.net.SocketTimeoutException e) {
+					crashed = true;
+				}
+			} catch (IOException e) {
 				e.printStackTrace();
-			} catch (java.net.SocketTimeoutException e) {
-				crashed = true;
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public void release() {
 		try {
 			ObjectOutputStream sendData = new ObjectOutputStream(client.getOutputStream());
-			int temp = -1;
+			World temp = null;
 			sendData.writeObject(temp);
 			sendData.flush();
+			//client.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -1,5 +1,6 @@
 package game.physics.colliders;
 
+import game.physics.colliders.listeners.CollideEventListener;
 import game.physics.objects.Circle;
 import game.physics.objects.Unit;
 import game.utils.Vector2d;
@@ -16,6 +17,14 @@ public class ColliderCircleCircle extends Collider {
 				Vector2d n = (unit1.position.diff(unit2.position));
 				double dr = n.norm();
 				if(dr <= R) {
+					// Collide detected, invoke the event listeners:
+					if(unit1.collideEventListeners != null)
+						for(CollideEventListener listener : unit1.collideEventListeners)
+							listener.onEvent(unit2, R-dr);
+					if(unit2.collideEventListeners != null)
+						for(CollideEventListener listener : unit2.collideEventListeners)
+							listener.onEvent(unit1, R-dr);
+					// Continue calculations:
 					n.scale(1/dr);
 					double v1 = unit1.speed.dotprod(n);
 					double v2 = unit2.speed.dotprod(n);

@@ -31,17 +31,16 @@ public class ClientRunner implements Runnable {
 		try {
 			listener = new Socket("localhost", Settings.Server.port);
 			// Wait for server signal loop
-			while (true) {
+			while (!listener.isClosed()&&!listener.isInputShutdown()&&!listener.isOutputShutdown()) {
 				ObjectInputStream oin = new ObjectInputStream(listener.getInputStream());
 				ObjectOutputStream oout = new ObjectOutputStream(listener.getOutputStream());
 				World world = null;
-				int signal = -1;
 				try {
-					signal = (int) oin.readObject();
+					world = (World) oin.readObject();
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
-				if(signal == -1)
+				if(world == null)
 				{
 					frame.dispose();
 					return;

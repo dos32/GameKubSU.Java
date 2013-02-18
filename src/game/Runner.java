@@ -125,7 +125,7 @@ public class Runner {
 		addUnit(v);
 		server.clients.get(0).player.vehicles.add(v);
 		v = new Vehicle(physics, 20);
-		v.position.assign(100, 10);
+		v.position.assign(100, 100);
 		v.engine.powerFactor = 0.1;
 		v.engine.turnFactor = 0.1;
 		addUnit(v);

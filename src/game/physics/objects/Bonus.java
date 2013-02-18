@@ -9,6 +9,7 @@ public class Bonus extends Circle implements Serializable {
 
 	public Bonus(BonusType bonusType) {
 		super(10);
+		isMaterial = false;
 		type = bonusType;
 	}
 

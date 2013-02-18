@@ -8,6 +8,8 @@ import java.awt.geom.AffineTransform;
  * Animation object for showing text label on screen
  */
 public class InfoTip extends Unit {
+	private static final long serialVersionUID = 1896431443802950820L;
+	
 	public String message;
 	public Color color;
 	public int TextSize;

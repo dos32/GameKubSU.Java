@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
 public class Circle extends Unit {
+	private static final long serialVersionUID = -2503510928736687406L;
 	public double radius;
 	
 	public Circle(double radius) {

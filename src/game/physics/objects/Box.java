@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
 public class Box extends Unit {
+	private static final long serialVersionUID = 8112815845676840482L;
 	public final double width, height;
 	
 	public Box(double width, double height)

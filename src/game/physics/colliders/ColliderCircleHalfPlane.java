@@ -1,5 +1,6 @@
 package game.physics.colliders;
 
+import game.physics.colliders.listeners.CollideEventListener;
 import game.physics.objects.Circle;
 import game.physics.objects.HalfPlane;
 import game.physics.objects.Unit;
@@ -23,8 +24,17 @@ public class ColliderCircleHalfPlane extends Collider {
 			Vector2d n = new Vector2d(Math.cos(hp.angle), Math.sin(hp.angle));
 			double dr = circle.radius - ((circle.position.diff(hp.position)).dotprod(n));
 			double vn = circle.speed.dotprod(n);
-			if(dr>0 && vn<0)
+			if(dr>0 && vn<0) {
+				// Collide detected, invoke the event listeners:
+				if(unit1.collideEventListeners != null)
+					for(CollideEventListener listener : unit1.collideEventListeners)
+						listener.onEvent(unit2, dr);
+				if(unit2.collideEventListeners != null)
+					for(CollideEventListener listener : unit2.collideEventListeners)
+						listener.onEvent(unit1, dr);
+				// Continue calculations:
 				circle.speed.add(n.mul(-2*vn));
+			}
 		}
 	}
 

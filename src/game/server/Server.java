@@ -36,7 +36,6 @@ public final class Server {
 		{
 			clients.add(new ClientListener(null));
 			try {
-				// TODO multi thread accepting
 				clients.get(i).client = server.accept();
 			} catch (IOException e) {
 				if(e.getClass() == java.net.SocketTimeoutException.class)

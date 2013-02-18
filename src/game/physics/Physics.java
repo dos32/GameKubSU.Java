@@ -12,6 +12,7 @@ import game.physics.forces.GravityForce;
 import game.physics.objects.Unit;
 import game.utils.Vector2d;
 
+@SuppressWarnings("unused")
 public final class Physics {
 	protected int ticks;
 	protected long ticksCount = 0, innerTime = 0, lastRealTime = 0;
@@ -20,12 +21,10 @@ public final class Physics {
 	public ArrayList<Unit> objects = new ArrayList<Unit>();
 	
 	public ArrayList<GlobalForce> globalForces = new ArrayList<GlobalForce>();
-	
-	public ArrayList<BindedForce> bindedForces = new ArrayList<BindedForce>();
 
 	public Physics() {
 		globalForces.add(new FrictionForce());
-		globalForces.add(new GravityForce(new Vector2d(0, 5e-4)));
+		//globalForces.add(new GravityForce(new Vector2d(0, 5e-4)));
 		globalForces.add(new CollideForce());
 	}
 	
@@ -50,18 +49,21 @@ public final class Physics {
 	public void tick() {
 		long t1 = System.nanoTime();
 		
+		// Inertial moving:
 		for (Unit unit : objects)
 		{
-			// Inertial moving:
 			if (!unit.isStatic) {
 				unit.position.add(unit.speed);
 				unit.angle += unit.angularSpeed;
 			}
+			if(unit.bindedForces != null)
+				for(BindedForce force : unit.bindedForces)
+					force.apply();
 		}
 		
 		// Forces:
-		for(BindedForce force : bindedForces)
-			force.apply();
+		/*for(BindedForce force : bindedForces)
+			force.apply();*/
 		
 		for(GlobalForce force : globalForces)
 			force.apply(objects);

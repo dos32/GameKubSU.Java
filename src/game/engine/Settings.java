@@ -1,5 +1,7 @@
 package game.engine;
 
+import java.awt.Color;
+
 public final class Settings {
 	public static int tickDuration = 12;
 	public static int maxTicksCount = 5000;
@@ -23,6 +25,12 @@ public final class Settings {
 	public final static class Vehicle {
 		public static double maxHealth = 100, maxArmor = 200, maxFuel = 100,
 				maxNitroPower = 0.05, maxPower = 0.03, maxTurn = 0.03 * Math.PI / 180;
+		public static double damageFactor = 1e-2;
+		public final static class HealthBar {
+			public static int height = 5;
+			public static int descent = 7;
+			public static Color defaultColor = Color.blue;
+		}
 	}
 
 	public final static class Frame {

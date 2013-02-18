@@ -2,10 +2,16 @@ package game.physics.objects;
 
 import java.awt.Graphics2D;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import game.engine.Settings;
+import game.physics.colliders.listeners.CollideEventListener;
+import game.physics.forces.BindedForce;
 import game.utils.*;
 
+/*
+ * Base class for physical object
+ */
 public abstract class Unit implements Serializable {
 	private static final long serialVersionUID = 1714619678919428922L;
 	
@@ -15,6 +21,9 @@ public abstract class Unit implements Serializable {
 	public Vector2d speed = new Vector2d();
 	public double angle = 0;
 	public double angularSpeed = 0;
+	
+	public transient ArrayList<BindedForce> bindedForces = null; // beware of null !
+	public transient ArrayList<CollideEventListener> collideEventListeners = null; // beware of null !
 	
 	/*
 	 * When object becomes static it

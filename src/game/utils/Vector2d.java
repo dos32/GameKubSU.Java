@@ -1,6 +1,10 @@
 package game.utils;
 
-public class Vector2d {
+import java.io.Serializable;
+
+public class Vector2d implements Serializable {
+	private static final long serialVersionUID = -7197366098173773030L;
+	
 	public double x, y;
 
 	public Vector2d() {
