@@ -54,9 +54,9 @@ public final class Settings {
 	}
 	
 	public final static class BonusSpawner {
-		public static double probability = 1/10; // Probability that bonus spawns in tick
-		public static double pFlag = 7/10;
-		public static double pMedKit = 3/10;
+		public static double probability = 0.001; // Probability that bonus spawns in tick
+		public static double pFlag = 0.7;
+		public static double pMedKit = 0.3;
 		public static int placementTries = 10;
 		public static double defaultRadius = 10;
 	}

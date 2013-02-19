@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import client.ClientRunner;
 
+import game.engine.BonusSpawner;
 import game.engine.Settings;
 import game.engine.World;
 import game.graphics.MainFrame;
@@ -36,6 +37,7 @@ public class Runner {
 	public final Renderer renderer;
 	public final Server server;
 	public final Physics physics;
+	public final BonusSpawner bonusSpawner;
 	
 	public InfoTip infoTick, infoRendererFPS, infoPhysFPS;
 	
@@ -48,6 +50,7 @@ public class Runner {
 		renderer = new Renderer();
 		world = new World();
 		server = new Server();
+		bonusSpawner = new BonusSpawner();
 	}
 	
 	protected void delay(long time) {
@@ -99,13 +102,14 @@ public class Runner {
 		new HalfPlane(new Vector2d(world.width, 0), Math.PI);
 		new HalfPlane(new Vector2d(0, world.height), 3*Math.PI/2);
 		new HalfPlane(new Vector2d(0, 0), Math.PI/2);
+		
 		// test:
 		Circle c = new Circle(100);
 		c.mass = Math.pow(c.radius,2)*Math.PI*0.01;
 		c.position.assign(Math.random()*world.width, Math.random()*world.height);
 		c.speed.assign(Math.random()-0.5, Math.random()-0.5);
 		c.speed.scale(20);
-		for(int i=0; i<1000; i++)
+		for(int i=0; i<10; i++)
 		{
 			c = new Circle((Math.random()+0.5)*8);
 			c.mass = Math.pow(c.radius,2)*Math.PI*0.01;
@@ -125,6 +129,9 @@ public class Runner {
 		v.engine.powerFactor = 0.1;
 		v.engine.turnFactor = 0.1;
 		server.clients.get(1).player.vehicles.add(v);
+		
+		/*for(int i=0; i<10; i++)
+			bonusSpawner.place(new Bonus(BonusType.MED_KIT));*/
 		
 		infoTick = new InfoTip(String.format("Ticks=%s", tick));
 		infoTick.isStatic = true;
@@ -151,6 +158,7 @@ public class Runner {
 	}
 
 	protected void tick() {
+		bonusSpawner.tick();
 		server.tick();
 		physics.tick();
 		mainFrame.mainCanvas.render();

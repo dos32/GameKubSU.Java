@@ -3,6 +3,7 @@ package game.server;
 import game.Runner;
 import game.engine.Player;
 import game.engine.Settings;
+import game.engine.Settings.Vehicle;
 import game.engine.World;
 
 import java.io.IOException;
@@ -57,8 +58,10 @@ public final class ClientListener implements Runnable {
 	public void release() {
 		try {
 			ObjectOutputStream sendData = new ObjectOutputStream(client.getOutputStream());
-			World temp = null;
-			sendData.writeObject(temp);
+			World temp1 = null;
+			sendData.writeObject(temp1);
+			Vehicle temp2 = null;
+			sendData.writeObject(temp2);
 			sendData.flush();
 			//client.close();
 		} catch (IOException e) {

@@ -43,7 +43,7 @@ public class ClientRunner implements Runnable {
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
-				if(world == null)
+				if(world == null || self == null)
 				{
 					frame.dispose();
 					return;

@@ -20,7 +20,8 @@ public class CollideForce extends GlobalForce {
 		else if((unit2 instanceof Circle) && (unit1 instanceof HalfPlane))
 			return chp.isCollide((Circle)unit2,(HalfPlane)unit1);
 		else {
-			System.err.println("CollideForce.isCollide::Unknown types of params");
+			/*System.err.println(String.format("CollideForce.isCollide()::Unknown types of params,%s,%s",
+					unit1.getClass().getName(), unit2.getClass().getName()));*/
 			return false;
 		}
 	}
@@ -38,6 +39,9 @@ public class CollideForce extends GlobalForce {
 					chp.Collide((Circle)unit1,(HalfPlane)unit2);
 				else if((unit2 instanceof Circle) && (unit1 instanceof HalfPlane))
 					chp.Collide((Circle)unit2,(HalfPlane)unit1);
+				else
+					;/*System.err.println(String.format("CollideForce.apply()::Unknown types of params,%s,%s",
+							unit1.getClass().getName(), unit2.getClass().getName()));*/
 			}
 	}
 

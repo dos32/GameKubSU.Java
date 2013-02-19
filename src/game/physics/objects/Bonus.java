@@ -1,6 +1,5 @@
 package game.physics.objects;
 
-import game.Runner;
 import game.engine.Settings;
 
 import java.awt.Graphics2D;
@@ -12,21 +11,25 @@ public class Bonus extends Circle implements Serializable {
 
 	public Bonus(BonusType bonusType) {
 		super(Settings.BonusSpawner.defaultRadius);
-		isMaterial = false;
 		type = bonusType;
-		for(int i=0; i<Settings.BonusSpawner.placementTries; i++) {
-			boolean isCollide = false;
-			for(Unit unit : Runner.inst().physics.objects)
-				if(unit!=this)
-					isCollide |= Runner.inst().physics.collideForce.isCollide(this, unit);
-			if(!isCollide)
-				break;
-		}
 	}
 
-	@Override
 	public void draw(Graphics2D graphics) {
-		// TODO Auto-generated method stub
 		super.draw(graphics);
+		switch(type) {
+			case MED_KIT:
+				graphics.drawLine((int)(position.x-radius), (int)position.y, (int)(position.x+radius), (int)position.y);
+				graphics.drawLine((int)position.x, (int)(position.y-radius), (int)position.x, (int)(position.y+radius));
+				break;
+			case FLAG:
+				graphics.drawLine((int)position.x, (int)(position.y-radius), (int)position.x, (int)(position.y+radius));
+				break;
+			case NITRO_FUEL:
+				break;
+			case REPAIR_KIT:
+				break;
+			default:
+				break;
+		}
 	}
 }
