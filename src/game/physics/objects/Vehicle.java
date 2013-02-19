@@ -2,7 +2,6 @@ package game.physics.objects;
 
 import game.engine.Player;
 import game.engine.Settings;
-import game.physics.Physics;
 import game.physics.colliders.listeners.CollideEventListener;
 import game.physics.colliders.listeners.VehicleCollide;
 import game.physics.forces.BindedForce;
@@ -35,8 +34,10 @@ public class Vehicle extends Circle implements Serializable {
 		super(0);
 	}
 	
-	public Vehicle(Physics physics, double radius) {
-		super(radius);
+	public Vehicle(Player player) {
+		super(Settings.Vehicle.defaultRadius);
+		this.player = player;
+		player.vehicles.add(this);
 		new ControlForce(this);
 		bindedForces = new ArrayList<BindedForce>();
 		bindedForces.add(engine);
@@ -47,6 +48,10 @@ public class Vehicle extends Circle implements Serializable {
 	public void doDamage(double healthDelta) {
 		health = Math.min(Math.max(0, health - healthDelta), 1);
 		// TODO add animation
+	}
+	
+	public void addGoalPoints(int ptsCount) {
+		player.score += ptsCount;
 	}
 	
 	@Override

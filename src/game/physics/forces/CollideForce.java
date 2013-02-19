@@ -2,6 +2,7 @@ package game.physics.forces;
 
 import java.util.List;
 
+import game.Runner;
 import game.physics.colliders.ColliderCircleCircle;
 import game.physics.colliders.ColliderCircleHalfPlane;
 import game.physics.objects.Circle;
@@ -11,6 +12,27 @@ import game.physics.objects.Unit;
 public class CollideForce extends GlobalForce {
 	public ColliderCircleCircle cc = new ColliderCircleCircle();
 	public ColliderCircleHalfPlane chp = new ColliderCircleHalfPlane();
+	
+	/*
+	 * Change position of unit until it collides with other objects
+	 *	or operation repeats more than tryCount times  
+	 */
+	public void placeNoCollide(Unit unit, int tryCount) {
+		for(int i=0; i<tryCount; i++) {
+			unit.position.assign(Runner.inst().world.width*Math.random(),
+					Runner.inst().world.height*Math.random());
+			boolean isCollide = false;
+			for(Unit unit2 : Runner.inst().physics.objects) {
+				if(unit2!=unit) {
+					isCollide |= isCollide(unit, unit2);
+					if(isCollide)
+						break;
+				}
+			}
+			if(!isCollide)
+				break;
+		}
+	}
 	
 	public boolean isCollide(Unit unit1, Unit unit2) {
 		if((unit1 instanceof Circle) && (unit2 instanceof Circle))

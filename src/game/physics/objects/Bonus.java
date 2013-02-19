@@ -18,9 +18,11 @@ public class Bonus extends Circle implements Serializable {
 	public void collect(Vehicle vehicle) {
 		switch (type) {
 		case FLAG:
+			vehicle.addGoalPoints(Settings.Bonus.Flag.goalPoints);
 			break;
 		case MED_KIT:
-			vehicle.doDamage(-Settings.Bonus.healthSize);
+			vehicle.doDamage(-Settings.Bonus.Medkit.healthSize);
+			vehicle.addGoalPoints(Settings.Bonus.Medkit.goalPoints);
 			break;
 		default:
 			break;

@@ -8,7 +8,7 @@ public final class Settings {
 	public static int waitBeforeDuration = 1000;
 	public static int waitAfterDuration = 1000;
 	public static int waitInterval = 1;
-	
+
 	public static int playersCount = 2;
 
 	public final static class Server {
@@ -26,6 +26,8 @@ public final class Settings {
 		public static double maxHealth = 100, maxArmor = 200, maxFuel = 100,
 				maxNitroPower = 0.05, maxPower = 0.03, maxTurn = 0.03 * Math.PI / 180;
 		public static double damageFactor = 1e-2;
+		public static double defaultRadius = 10;
+		public static int placeTryCount = 10;
 		public final static class HealthBar {
 			public static int height = 5;
 			public static int descent = 7;
@@ -54,7 +56,7 @@ public final class Settings {
 	}
 	
 	public final static class BonusSpawner {
-		public static double probability = 0.001; // Probability that bonus spawns in tick
+		public static double probability = 0.005; // Probability that bonus spawns in tick
 		public static double pFlag = 0.7;
 		public static double pMedKit = 0.3;
 		public static int placementTries = 100;
@@ -62,6 +64,12 @@ public final class Settings {
 	}
 	
 	public final static class Bonus {
-		public static double healthSize = 0.2;
+		public final static class Medkit {
+			public static double healthSize = 0.2;
+			public static int goalPoints = 10;
+		}
+		public final static class Flag {
+			public static int goalPoints = 100;
+		}
 	}
 }

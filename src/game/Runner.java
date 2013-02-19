@@ -114,7 +114,7 @@ public class Runner {
 		c.position.assign(Math.random()*world.width, Math.random()*world.height);
 		c.speed.assign(Math.random()-0.5, Math.random()-0.5);
 		c.speed.scale(20);
-		for(int i=0; i<10; i++) {
+		for(int i=0; i<1000; i++) {
 			c = new Circle((Math.random()+0.5)*8);
 			c.mass = Math.pow(c.radius,2)*Math.PI*0.01;
 			c.position.assign(Math.random()*world.width, Math.random()*world.height);
@@ -122,17 +122,11 @@ public class Runner {
 			c.speed.scale(2);
 		}
 		
-		// test vehicle:
-		Vehicle v = new Vehicle(physics, 10);
-		v.position.assign(10, 10);
-		v.engine.powerFactor = 0.1;
-		v.engine.turnFactor = 0.1;
-		server.clients.get(0).player.vehicles.add(v);
-		v = new Vehicle(physics, 20);
-		v.position.assign(100, 100);
-		v.engine.powerFactor = 0.1;
-		v.engine.turnFactor = 0.1;
-		server.clients.get(1).player.vehicles.add(v);
+		// vehicles:
+		for(int i=0; i<server.clients.size(); i++) {
+			Vehicle v = new Vehicle(server.clients.get(i).player);
+			physics.collideForce.placeNoCollide(v, Settings.Vehicle.placeTryCount);
+		}
 		
 		infoTick = new InfoTip(String.format("Ticks=%s", tick));
 		infoTick.isStatic = true;
