@@ -2,6 +2,7 @@ package client;
 
 import game.engine.Settings;
 import game.engine.World;
+import game.physics.objects.Vehicle;
 import game.server.BotAction;
 
 import java.io.IOException;
@@ -35,8 +36,10 @@ public class ClientRunner implements Runnable {
 				ObjectInputStream oin = new ObjectInputStream(listener.getInputStream());
 				ObjectOutputStream oout = new ObjectOutputStream(listener.getOutputStream());
 				World world = null;
+				Vehicle self = null;
 				try {
 					world = (World) oin.readObject();
+					self = (Vehicle) oin.readObject();
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
@@ -46,7 +49,7 @@ public class ClientRunner implements Runnable {
 					return;
 				}
 				BotAction action = new BotAction();
-				bot.move(world, action);
+				bot.move(world, self, action);
 				oout.writeObject(action);
 				oout.flush();
 			}

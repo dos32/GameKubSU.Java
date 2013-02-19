@@ -35,6 +35,7 @@ public final class ClientListener implements Runnable {
 						client.getOutputStream());
 				//int tmp = 101;
 				sendData.writeObject(Runner.inst().world);
+				sendData.writeObject(player.vehicles.get(0));
 				sendData.flush();
 				ObjectInputStream receivedData = new ObjectInputStream(
 						client.getInputStream());

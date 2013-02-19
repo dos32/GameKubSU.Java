@@ -1,6 +1,7 @@
 package client;
 
 import game.engine.World;
+import game.physics.objects.Vehicle;
 import game.server.BotAction;
 
 public class Bot {
@@ -13,7 +14,7 @@ public class Bot {
 		
 	}
 	
-	public void move(World world, BotAction action) {
+	public void move(World world, Vehicle self, BotAction action) {
 		if (runner.frame.leftPressed ){
 			action.turn = 1;
 		}
