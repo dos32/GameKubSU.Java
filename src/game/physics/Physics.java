@@ -27,9 +27,6 @@ public final class Physics {
 	// Main global forces:
 	public FrictionForce frictionForce = new FrictionForce();
 	public CollideForce collideForce = new CollideForce();
-
-	public Physics() {
-	}
 	
 	public void updateFPS() {
 		if(Runner.inst().infoPhysFPS == null)
@@ -43,6 +40,10 @@ public final class Physics {
 	
 	public void addUnit(Unit unit) {
 		objects.add(unit);
+	}
+	
+	public void removeUnit(Unit unit) {
+		objects.remove(unit);
 	}
 	
 	public void clearUnits() {

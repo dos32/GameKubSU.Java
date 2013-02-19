@@ -79,6 +79,11 @@ public class Runner {
 		physics.addUnit(unit);
 	}
 	
+	public void removeUnit(Unit unit) {
+		world.removeUnit(unit);
+		physics.removeUnit(unit);
+	}
+	
 	public void clearUnits() {
 		world.clearUnits();
 		physics.clearUnits();
@@ -109,8 +114,7 @@ public class Runner {
 		c.position.assign(Math.random()*world.width, Math.random()*world.height);
 		c.speed.assign(Math.random()-0.5, Math.random()-0.5);
 		c.speed.scale(20);
-		for(int i=0; i<10; i++)
-		{
+		for(int i=0; i<10; i++) {
 			c = new Circle((Math.random()+0.5)*8);
 			c.mass = Math.pow(c.radius,2)*Math.PI*0.01;
 			c.position.assign(Math.random()*world.width, Math.random()*world.height);
@@ -129,9 +133,6 @@ public class Runner {
 		v.engine.powerFactor = 0.1;
 		v.engine.turnFactor = 0.1;
 		server.clients.get(1).player.vehicles.add(v);
-		
-		/*for(int i=0; i<10; i++)
-			bonusSpawner.place(new Bonus(BonusType.MED_KIT));*/
 		
 		infoTick = new InfoTip(String.format("Ticks=%s", tick));
 		infoTick.isStatic = true;

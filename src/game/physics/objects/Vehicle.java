@@ -1,9 +1,10 @@
 package game.physics.objects;
 
+import game.engine.Player;
 import game.engine.Settings;
 import game.physics.Physics;
 import game.physics.colliders.listeners.CollideEventListener;
-import game.physics.colliders.listeners.VehicleDamage;
+import game.physics.colliders.listeners.VehicleCollide;
 import game.physics.forces.BindedForce;
 import game.physics.forces.ControlForce;
 import game.utils.Vector2d;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 
 public class Vehicle extends Circle implements Serializable {
 	private static final long serialVersionUID = 1563688715048158514L;
+	// TODO add bind
+	public transient Player player;
 	protected int indexInTeam;
 	protected int playerId;
 	protected String playerName;
@@ -38,11 +41,11 @@ public class Vehicle extends Circle implements Serializable {
 		bindedForces = new ArrayList<BindedForce>();
 		bindedForces.add(engine);
 		collideEventListeners = new ArrayList<CollideEventListener>();
-		collideEventListeners.add(new VehicleDamage(this));
+		collideEventListeners.add(new VehicleCollide(this));
 	}
 	
 	public void doDamage(double healthDelta) {
-		health = Math.max(0, health - healthDelta);
+		health = Math.min(Math.max(0, health - healthDelta), 1);
 		// TODO add animation
 	}
 	

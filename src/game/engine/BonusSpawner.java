@@ -18,7 +18,8 @@ public class BonusSpawner {
 
 	public void place(Bonus bonus) {
 		for(int i=0; i<Settings.BonusSpawner.placementTries; i++) {
-			bonus.position.assign(Runner.inst().world.width*Math.random(),Runner.inst().world.height*Math.random());
+			bonus.position.assign(Runner.inst().world.width*Math.random(),
+				Runner.inst().world.height*Math.random());
 			boolean isCollide = false;
 			for(Unit unit : Runner.inst().physics.objects)
 				if(unit != bonus)
@@ -29,7 +30,7 @@ public class BonusSpawner {
 	}
 	
 	public void tick() {
-		if(Math.random() < Settings.BonusSpawner.probability) {
+		if(Math.random() > 1-Settings.BonusSpawner.probability) {
 			place(new Bonus(genType()));
 		}
 	}

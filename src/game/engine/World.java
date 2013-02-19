@@ -33,6 +33,12 @@ public class World implements Serializable {
 		else if (unit.getClass() == Bonus.class)
 			bonuses.add((Bonus) unit);
 	}
+	
+	public void removeUnit(Unit unit) {
+		vehicles.remove(unit);
+		obstacles.remove(unit);
+		bonuses.remove(unit);
+	}
 
 	public void clearUnits() {
 		vehicles.clear();
