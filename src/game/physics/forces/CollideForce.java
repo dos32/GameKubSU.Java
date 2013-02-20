@@ -12,7 +12,7 @@ import game.physics.objects.Unit;
 public class CollideForce extends GlobalForce {
 	public ColliderCircleCircle cc = new ColliderCircleCircle();
 	public ColliderCircleHalfPlane chp = new ColliderCircleHalfPlane();
-	
+
 	/*
 	 * Change position of unit until it collides with other objects
 	 *	or operation repeats more than tryCount times  
@@ -33,7 +33,7 @@ public class CollideForce extends GlobalForce {
 				break;
 		}
 	}
-	
+
 	public boolean isCollide(Unit unit1, Unit unit2) {
 		if((unit1 instanceof Circle) && (unit2 instanceof Circle))
 			return cc.isCollide((Circle)unit1, (Circle)unit2);
@@ -51,8 +51,7 @@ public class CollideForce extends GlobalForce {
 	@Override
 	public void apply(List<Unit> objects) {
 		for(int i=0; i<objects.size(); i++)
-			for(int j=i+1; j<objects.size(); j++)
-			{
+			for(int j=i+1; j<objects.size(); j++) {
 				Unit unit1 = objects.get(i);
 				Unit unit2 = objects.get(j);
 				if((unit1 instanceof Circle) && (unit2 instanceof Circle))

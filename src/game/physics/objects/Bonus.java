@@ -26,6 +26,7 @@ public class Bonus extends Circle implements Serializable {
 		default:
 			break;
 		}
+		dispose();
 	}
 
 	public void draw(Graphics2D graphics) {

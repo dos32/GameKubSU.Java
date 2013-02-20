@@ -1,6 +1,6 @@
 package game.physics.colliders;
 
-import game.physics.colliders.listeners.CollideEventHook;
+import game.physics.colliders.hooks.CollideEventHook;
 import game.physics.objects.Circle;
 import game.physics.objects.HalfPlane;
 import game.utils.Vector2d;
@@ -25,11 +25,11 @@ public class ColliderCircleHalfPlane extends Collider {
 			if(vn<0) {
 				boolean bContinue = true;
 				// Collide detected, invoke the event listeners:
-				if (circle.collideEventListeners != null)
-					for (CollideEventHook listener : circle.collideEventListeners)
+				if (circle.collideEventHooks != null)
+					for (CollideEventHook listener : circle.collideEventHooks)
 						bContinue &= !listener.onEvent(hp, dr);
-				if (hp.collideEventListeners != null)
-					for (CollideEventHook listener : hp.collideEventListeners)
+				if (hp.collideEventHooks != null)
+					for (CollideEventHook listener : hp.collideEventHooks)
 						bContinue &= !listener.onEvent(circle, dr);
 				if(bContinue) {
 					// Continue calculations:

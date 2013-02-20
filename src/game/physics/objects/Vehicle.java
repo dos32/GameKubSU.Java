@@ -2,8 +2,8 @@ package game.physics.objects;
 
 import game.engine.Player;
 import game.engine.Settings;
-import game.physics.colliders.listeners.CollideEventHook;
-import game.physics.colliders.listeners.VehicleCollide;
+import game.physics.colliders.hooks.CollideEventHook;
+import game.physics.colliders.hooks.VehicleCollide;
 import game.physics.forces.BindedForce;
 import game.physics.forces.ControlForce;
 import game.utils.Vector2d;
@@ -21,7 +21,7 @@ public class Vehicle extends Circle implements Serializable {
 	protected int playerId;
 	protected String playerName;
 	protected boolean isTeammate;
-	protected Color color = Color.black;
+	protected transient Color color = Color.black;
 
 	protected double health = 0.5;
 	/*protected double armor;
@@ -41,8 +41,8 @@ public class Vehicle extends Circle implements Serializable {
 		new ControlForce(this);
 		bindedForces = new ArrayList<BindedForce>();
 		bindedForces.add(engine);
-		collideEventListeners = new ArrayList<CollideEventHook>();
-		collideEventListeners.add(new VehicleCollide(this));
+		collideEventHooks = new ArrayList<CollideEventHook>();
+		collideEventHooks.add(new VehicleCollide(this));
 	}
 	
 	public void doDamage(double healthDelta) {

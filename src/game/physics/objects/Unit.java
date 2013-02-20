@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import game.Runner;
 import game.engine.Settings;
-import game.physics.colliders.listeners.CollideEventHook;
+import game.physics.colliders.hooks.CollideEventHook;
 import game.physics.forces.BindedForce;
 import game.utils.*;
 
@@ -24,7 +24,7 @@ public abstract class Unit implements Serializable {
 	public double angularSpeed = 0;
 	
 	public transient ArrayList<BindedForce> bindedForces = null; // beware of null !
-	public transient ArrayList<CollideEventHook> collideEventListeners = null; // beware of null !
+	public transient ArrayList<CollideEventHook> collideEventHooks = null; // beware of null !
 	
 	/*
 	 * When object becomes static it
@@ -55,30 +55,11 @@ public abstract class Unit implements Serializable {
 		this();
 		this.mass = mass;
 	}
-
-	/*public int getId() {
-		return id;
+	
+	public void dispose() {
+		Runner.inst().world.removeUnit(this);
+		Runner.inst().physics.removeUnit(this);
 	}
-
-	public Vector2d getPosition() {
-		return position;
-	}
-
-	public Vector2d getSpeed() {
-		return speed;
-	}
-
-	public double getAngle() {
-		return angle;
-	}
-
-	public double getAngularSpeed() {
-		return angularSpeed;
-	}
-
-	protected double getMass() {
-		return mass;
-	}*/
 
 	public abstract void draw(Graphics2D graphics);
 	

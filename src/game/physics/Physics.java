@@ -1,6 +1,7 @@
 package game.physics;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import game.Runner;
 import game.engine.Settings;
@@ -54,8 +55,7 @@ public final class Physics {
 		long t1 = System.nanoTime();
 		
 		// Inertial moving:
-		for (Unit unit : objects)
-		{
+		for (Unit unit : objects) {
 			if (!unit.isStatic) {
 				unit.position.add(unit.speed);
 				unit.angle += unit.angularSpeed;
