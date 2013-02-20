@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import game.Runner;
 import game.engine.Settings;
-import game.physics.colliders.listeners.CollideEventListener;
+import game.physics.colliders.listeners.CollideEventHook;
 import game.physics.forces.BindedForce;
 import game.utils.*;
 
@@ -24,7 +24,7 @@ public abstract class Unit implements Serializable {
 	public double angularSpeed = 0;
 	
 	public transient ArrayList<BindedForce> bindedForces = null; // beware of null !
-	public transient ArrayList<CollideEventListener> collideEventListeners = null; // beware of null !
+	public transient ArrayList<CollideEventHook> collideEventListeners = null; // beware of null !
 	
 	/*
 	 * When object becomes static it

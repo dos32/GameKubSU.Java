@@ -2,7 +2,7 @@ package game.physics.objects;
 
 import game.engine.Player;
 import game.engine.Settings;
-import game.physics.colliders.listeners.CollideEventListener;
+import game.physics.colliders.listeners.CollideEventHook;
 import game.physics.colliders.listeners.VehicleCollide;
 import game.physics.forces.BindedForce;
 import game.physics.forces.ControlForce;
@@ -41,7 +41,7 @@ public class Vehicle extends Circle implements Serializable {
 		new ControlForce(this);
 		bindedForces = new ArrayList<BindedForce>();
 		bindedForces.add(engine);
-		collideEventListeners = new ArrayList<CollideEventListener>();
+		collideEventListeners = new ArrayList<CollideEventHook>();
 		collideEventListeners.add(new VehicleCollide(this));
 	}
 	

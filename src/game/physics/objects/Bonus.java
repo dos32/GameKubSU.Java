@@ -12,7 +12,6 @@ public class Bonus extends Circle implements Serializable {
 	public Bonus(BonusType bonusType) {
 		super(Settings.BonusSpawner.defaultRadius);
 		type = bonusType;
-		mass = 0;
 	}
 	
 	public void collect(Vehicle vehicle) {
