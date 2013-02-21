@@ -1,6 +1,11 @@
 package game;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import client.ClientRunner;
 
@@ -39,6 +44,8 @@ public class Runner {
 	public final Physics physics;
 	public final BonusSpawner bonusSpawner;
 	
+	public BufferedImage circleImg = null;
+	
 	public InfoTip infoTick, infoRendererFPS, infoPhysFPS;
 	
 	public int tick = 0;
@@ -51,6 +58,11 @@ public class Runner {
 		world = new World();
 		server = new Server();
 		bonusSpawner = new BonusSpawner();
+		try {
+			circleImg = ImageIO.read(new File("res/circle.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	protected void delay(long time) {
@@ -94,8 +106,12 @@ public class Runner {
 		info.position.assign(world.width/2, world.height/2);
 		mainFrame.mainCanvas.render();
 		// test client:
-		new Thread(new ClientRunner()).start();
-		new Thread(new ClientRunner()).start();
+		for(int i=0; i<Settings.playersCount/2; i++) {
+			new Thread(new ClientRunner()).start();
+		}
+		for(int i=0; i<(Settings.playersCount-Settings.playersCount/2); i++) {
+			new Thread(new testBot.ClientRunner()).start();
+		}
 		//
 		server.acceptClients();
 	}

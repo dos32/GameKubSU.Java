@@ -9,7 +9,7 @@ public final class Settings {
 	public static int waitAfterDuration = 1000;
 	public static int waitInterval = 1;
 
-	public static int playersCount = 2;
+	public static int playersCount = 6;
 
 	public final static class Server {
 		public static int acceptTimeout = 10000;
@@ -46,6 +46,7 @@ public final class Settings {
 	}
 	
 	public final static class Renderer {
+		public static boolean drawImages = false;
 	}
 	
 	public final static class PerfMonitor {
@@ -56,7 +57,7 @@ public final class Settings {
 	}
 	
 	public final static class BonusSpawner {
-		public static double probability = 0.005; // Probability that bonus spawns in tick
+		public static double probability = 0.015; // Probability that bonus spawns in tick
 		public static double pFlag = 0.7;
 		public static double pMedKit = 0.3;
 		public static int placementTries = 100;

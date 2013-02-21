@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 public class Bonus extends Circle implements Serializable {
 	private static final long serialVersionUID = 8357488035574848722L;
-	protected BonusType type;
+	public BonusType type;
 
 	public Bonus(BonusType bonusType) {
 		super(Settings.BonusSpawner.defaultRadius);
