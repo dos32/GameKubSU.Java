@@ -32,7 +32,6 @@ public class MainCanvas extends Canvas {
 		}
 		Graphics2D graphics = (Graphics2D) bs.getDrawGraphics();
 		Runner.inst().renderer.render(graphics);
-		//Runner.inst().mainFrame.repaint();
 		bs.show();
 	}
 	

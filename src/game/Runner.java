@@ -1,15 +1,11 @@
 package game;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import client.ClientRunner;
 
 import game.engine.BonusSpawner;
+import game.engine.UnitContainer;
 import game.engine.Settings;
 import game.engine.World;
 import game.graphics.MainFrame;
@@ -23,7 +19,7 @@ import game.physics.objects.Vehicle;
 import game.server.Server;
 import game.utils.Vector2d;
 
-public class Runner {
+public class Runner implements UnitContainer {
 	/* 
 	 * Current instance of Runner
 	 * Important: because it is not singleton,
@@ -44,8 +40,6 @@ public class Runner {
 	public final Physics physics;
 	public final BonusSpawner bonusSpawner;
 	
-	public BufferedImage circleImg = null;
-	
 	public InfoTip infoTick, infoRendererFPS, infoPhysFPS;
 	
 	public int tick = 0;
@@ -58,10 +52,9 @@ public class Runner {
 		world = new World();
 		server = new Server();
 		bonusSpawner = new BonusSpawner();
-		try {
-			circleImg = ImageIO.read(new File("res/circle.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
+		// Load resources:
+		if(Settings.Renderer.drawImages) {
+			Vehicle.loadImages();
 		}
 	}
 	
@@ -86,26 +79,32 @@ public class Runner {
 		infoTick.message = String.format("ticks = %s", tick);
 	}
 	
+	@Override
 	public void addUnit(Unit unit) {
 		world.addUnit(unit);
 		physics.addUnit(unit);
+		renderer.addUnit(unit);
 	}
-	
+
+	@Override
 	public void removeUnit(Unit unit) {
 		world.removeUnit(unit);
 		physics.removeUnit(unit);
+		renderer.removeUnit(unit);
 	}
-	
+
+	@Override
 	public void clearUnits() {
 		world.clearUnits();
 		physics.clearUnits();
+		renderer.clearUnits();
 	}
 	
 	protected void showGreeting() {
 		InfoTip info = new InfoTip("Wait for client AI");
 		info.position.assign(world.width/2, world.height/2);
 		mainFrame.mainCanvas.render();
-		// test client:
+		// test clients:
 		for(int i=0; i<Settings.playersCount/2; i++) {
 			new Thread(new ClientRunner()).start();
 		}

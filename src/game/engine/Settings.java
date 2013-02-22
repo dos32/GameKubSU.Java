@@ -9,7 +9,7 @@ public final class Settings {
 	public static int waitAfterDuration = 1000;
 	public static int waitInterval = 1;
 
-	public static int playersCount = 6;
+	public static int playersCount = 0;
 
 	public final static class Server {
 		public static int acceptTimeout = 10000;
@@ -24,7 +24,7 @@ public final class Settings {
 
 	public final static class Vehicle {
 		public static double maxHealth = 100, maxArmor = 200, maxFuel = 100,
-				maxNitroPower = 0.05, maxPower = 0.03, maxTurn = 0.03 * Math.PI / 180;
+				maxNitroPower = 0.05, maxPower = 0.1, maxTurn = 0.1 * Math.PI / 180;
 		public static double damageFactor = 1e-2;
 		public static double defaultRadius = 10;
 		public static int placeTryCount = 10;
@@ -32,6 +32,7 @@ public final class Settings {
 			public static int height = 5;
 			public static int descent = 7;
 			public static Color defaultColor = Color.blue;
+			public static Color borderColor = Color.black;
 		}
 	}
 
@@ -46,7 +47,7 @@ public final class Settings {
 	}
 	
 	public final static class Renderer {
-		public static boolean drawImages = false;
+		public static boolean drawImages = true;
 	}
 	
 	public final static class PerfMonitor {
@@ -57,7 +58,7 @@ public final class Settings {
 	}
 	
 	public final static class BonusSpawner {
-		public static double probability = 0.015; // Probability that bonus spawns in tick
+		public static double probability = 0.005; // Probability that bonus spawns in tick
 		public static double pFlag = 0.7;
 		public static double pMedKit = 0.3;
 		public static int placementTries = 100;

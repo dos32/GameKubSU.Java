@@ -10,12 +10,19 @@ import game.utils.Vector2d;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
+
 public class Vehicle extends Circle implements Serializable {
 	private static final long serialVersionUID = 1563688715048158514L;
-	// TODO add bind
+	
+	private static transient BufferedImage image = null;
 	public transient Player player;
 	protected int indexInTeam;
 	protected int playerId;
@@ -52,26 +59,47 @@ public class Vehicle extends Circle implements Serializable {
 	
 	public void addGoalPoints(int ptsCount) {
 		player.score += ptsCount;
+		// TODO add animation
+	}
+	
+	public static void loadImages() {
+		if(image == null)
+			try {
+				image = ImageIO.read(new File("res/car1.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 	}
 	
 	@Override
 	public void draw(Graphics2D graphics) {
-		super.draw(graphics);
 		Color oldColor = graphics.getColor();
-		
+		if(Settings.Renderer.drawImages) {
+			// loadImages();
+			if(image != null) {
+				AffineTransform oldTransform = graphics.getTransform();
+				graphics.rotate(-angle, position.x, position.y);
+				graphics.drawImage(image, (int)(position.x-radius), (int)(position.y-2*radius),
+						(int)(2*radius), (int)(4*radius), null);
+				graphics.setTransform(oldTransform);
+			}
+			else
+				System.err.println("Vehicle::img not loaded");
+		}
+		else {
+			graphics.setColor(color);
+			super.draw(graphics);
+			Vector2d n = new Vector2d(Math.sin(angle), Math.cos(angle));
+			n.scale(radius);
+			n.add(position);
+			graphics.drawLine((int)position.x, (int)position.y, (int)n.x, (int)n.y);
+		}
 		graphics.setColor(Settings.Vehicle.HealthBar.defaultColor);
 		graphics.fillRect((int)(position.x-radius), (int)(position.y-radius-Settings.Vehicle.HealthBar.descent-Settings.Vehicle.HealthBar.height),
 				(int)(health*2*radius), Settings.Vehicle.HealthBar.height);
-		
-		graphics.setColor(color);
-		Vector2d n = new Vector2d(Math.sin(angle), Math.cos(angle));
-		n.scale(radius);
-		n.add(position);
-		graphics.drawLine((int)position.x, (int)position.y, (int)n.x, (int)n.y);
-		
+		graphics.setColor(Settings.Vehicle.HealthBar.borderColor);
 		graphics.drawRect((int)(position.x-radius), (int)(position.y-radius-Settings.Vehicle.HealthBar.descent-Settings.Vehicle.HealthBar.height),
 				(int)(2*radius), Settings.Vehicle.HealthBar.height);
-		
 		graphics.setColor(oldColor);
 	}
 

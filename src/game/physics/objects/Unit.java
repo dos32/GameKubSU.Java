@@ -13,7 +13,7 @@ import game.utils.*;
 /*
  * Base class for physical object
  */
-public abstract class Unit implements Serializable {
+public abstract class Unit implements Serializable, Comparable<Unit> {
 	private static final long serialVersionUID = 1714619678919428922L;
 	
 	protected static int lastid = 1;
@@ -22,6 +22,7 @@ public abstract class Unit implements Serializable {
 	public Vector2d speed = new Vector2d();
 	public double angle = 0;
 	public double angularSpeed = 0;
+	public transient int zIndex = 0;
 	
 	public transient ArrayList<BindedForce> bindedForces = null; // beware of null !
 	public transient ArrayList<CollideEventHook> collideEventHooks = null; // beware of null !
@@ -47,8 +48,7 @@ public abstract class Unit implements Serializable {
 	public Unit() {
 		id = lastid;
 		lastid++;
-		Runner.inst().world.addUnit(this);
-		Runner.inst().physics.addUnit(this);
+		Runner.inst().addUnit(this);
 	}
 
 	public Unit(double mass) {
@@ -57,11 +57,25 @@ public abstract class Unit implements Serializable {
 	}
 	
 	public void dispose() {
-		Runner.inst().world.removeUnit(this);
-		Runner.inst().physics.removeUnit(this);
+		Runner.inst().removeUnit(this);
+	}
+	
+	public static void loadImages() {
+		
 	}
 
 	public abstract void draw(Graphics2D graphics);
 	
+	@Deprecated
 	public abstract double getSquare();
+	
+	@Override
+	public int compareTo(Unit unit) {
+		int res = this.zIndex - unit.zIndex;
+		if(res==0)
+			res= this.id-unit.id;
+		if(res == 0 && this!=unit)
+			System.err.println("Unit.compareTo()::res==0");
+		return res;
+	}
 }

@@ -1,7 +1,5 @@
 package game.physics.objects;
 
-import game.Runner;
-import game.engine.Settings;
 import game.utils.Rectd;
 
 import java.awt.Graphics2D;
@@ -21,19 +19,19 @@ public class Circle extends Unit {
 
 	@Override
 	public void draw(Graphics2D graphics) {
-		if(Settings.Renderer.drawImages) {
+		/*if(Settings.Renderer.drawImages) {
 			if(Runner.inst().circleImg != null)
 				graphics.drawImage(Runner.inst().circleImg, (int)(position.x-radius), (int)(position.y-radius),
 						(int)(2*radius), (int)(2*radius), null);
 			else
 				System.err.println("img not loaded");
 		}
-		else {
+		else {*/
 			AffineTransform oldTransform = graphics.getTransform();
 			graphics.translate(position.x-radius, position.y-radius);
 			graphics.drawOval(0, 0, (int)radius*2, (int)radius*2);
 			graphics.setTransform(oldTransform);
-		}
+		//}
 	}
 
 	@Override

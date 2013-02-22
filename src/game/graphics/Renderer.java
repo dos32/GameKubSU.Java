@@ -4,16 +4,35 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.TreeSet;
 
 import game.Runner;
+import game.engine.UnitContainer;
 import game.engine.Settings;
 import game.physics.objects.Unit;
 
-public final class Renderer {
+public final class Renderer implements UnitContainer {
 	public boolean updated = false;
 	
 	protected double fps = 0;
 	protected long framesCount = 0, time = 0, lastRealTime = 0;
+	
+	protected TreeSet<Unit> objects = new TreeSet<Unit>();
+	
+	@Override
+	public void addUnit(Unit unit) {
+		objects.add(unit);
+	}
+
+	@Override
+	public void removeUnit(Unit unit) {
+		objects.remove(unit);
+	}
+
+	@Override
+	public void clearUnits() {
+		objects.clear();
+	}
 	
 	public void updateFPS() {
 		if(Runner.inst().infoRendererFPS == null)
@@ -34,7 +53,7 @@ public final class Renderer {
 			graphics.setBackground(Color.white);
 			graphics.setColor(Color.black);
 			graphics.clearRect(0, 0, (int)Settings.World.width, (int)Settings.World.height);
-			for(Unit unit : Runner.inst().physics.objects)
+			for(Unit unit : objects)
 				unit.draw(graphics);
 			updated = false;
 		}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import game.Runner;
+import game.engine.UnitContainer;
 import game.engine.Settings;
 import game.physics.forces.BindedForce;
 import game.physics.forces.CollideForce;
@@ -14,7 +15,7 @@ import game.physics.objects.Unit;
 import game.utils.Vector2d;
 
 @SuppressWarnings("unused")
-public final class Physics {
+public final class Physics implements UnitContainer {
 	protected int ticks;
 	protected long ticksCount = 0, innerTime = 0, lastRealTime = 0;
 	protected double fps = 0;
@@ -38,15 +39,18 @@ public final class Physics {
 			Runner.inst().infoPhysFPS.message = String.format("Phys.FPS = %s", Math.round(fps));
 		}
 	}
-	
+
+	@Override
 	public void addUnit(Unit unit) {
 		objects.add(unit);
 	}
-	
+
+	@Override
 	public void removeUnit(Unit unit) {
 		objects.remove(unit);
 	}
-	
+
+	@Override
 	public void clearUnits() {
 		objects.clear();
 	}

@@ -9,7 +9,7 @@ import game.physics.objects.Vehicle;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class World implements Serializable {
+public class World implements Serializable, UnitContainer {
 	private static final long serialVersionUID = 5624391324336770137L;
 
 	public int tick = 0;
@@ -24,6 +24,7 @@ public class World implements Serializable {
 		this.height = Settings.World.height;
 	}
 
+	@Override
 	public void addUnit(Unit unit) {
 		Runner.inst().renderer.updated = true;
 		if (unit.getClass() == Vehicle.class)
@@ -33,13 +34,15 @@ public class World implements Serializable {
 		else if (unit.getClass() == Bonus.class)
 			bonuses.add((Bonus) unit);
 	}
-	
+
+	@Override
 	public void removeUnit(Unit unit) {
 		vehicles.remove(unit);
 		obstacles.remove(unit);
 		bonuses.remove(unit);
 	}
 
+	@Override
 	public void clearUnits() {
 		vehicles.clear();
 		obstacles.clear();
