@@ -30,7 +30,7 @@ public class Vehicle extends Circle implements Serializable {
 	protected boolean isTeammate;
 	protected transient Color color = Color.black;
 
-	protected double health = 0.5;
+	public double health = 0.5;
 	/*protected double armor;
 	protected double fuel;
 	protected double nitroFuel;*/

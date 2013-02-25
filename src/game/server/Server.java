@@ -5,6 +5,7 @@ import game.physics.objects.Vehicle;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
@@ -36,7 +37,11 @@ public final class Server {
 		{
 			clients.add(new ClientListener(null));
 			try {
-				clients.get(i).client = server.accept();
+				Socket client = server.accept();
+				client.setSendBufferSize(Settings.Connection.buffer_size);
+				clients.get(i).client = client;
+				client.setReceiveBufferSize(Settings.Connection.buffer_size);
+				client.setSoTimeout(Settings.Server.timeout);
 			} catch (IOException e) {
 				if(e.getClass() == java.net.SocketTimeoutException.class)
 					System.err.println(String.format("Can't accept %s client: timeout has been reached", i));

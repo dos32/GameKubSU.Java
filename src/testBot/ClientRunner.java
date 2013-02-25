@@ -22,10 +22,17 @@ public class ClientRunner implements Runnable {
 	public void run() {
 		try {
 			listener = new Socket("localhost", Settings.Server.port);
+			listener.setReceiveBufferSize(Settings.Connection.buffer_size);
+			listener.setSendBufferSize(Settings.Connection.buffer_size);
+			ObjectInputStream oin = null;
+			ObjectOutputStream oout = null;
 			// Wait for server signal loop
 			while (true) {
-				ObjectInputStream oin = new ObjectInputStream(listener.getInputStream());
-				ObjectOutputStream oout = new ObjectOutputStream(listener.getOutputStream());
+				if(oin == null) {
+					oout = new ObjectOutputStream(listener.getOutputStream());
+					oout.flush();
+					oin = new ObjectInputStream(listener.getInputStream());
+				}
 				World world = null;
 				Vehicle self = null;
 				try {

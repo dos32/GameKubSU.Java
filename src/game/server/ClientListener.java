@@ -14,8 +14,11 @@ import java.net.*;
 public final class ClientListener implements Runnable {
 	public Socket client;
 	public Player player = new Player();
-	public boolean crashed;
+	public boolean crashed = false;
 	public BotAction response;
+	
+	protected ObjectOutputStream out = null;
+	protected ObjectInputStream in = null;
 	
 	public ClientListener(Socket client) {
 		this.client = client;
@@ -23,47 +26,52 @@ public final class ClientListener implements Runnable {
 
 	/*
 	 * Send to client serialization of World object and wait to its response,
-	 * which includes changes in controls which manages by client AI
+	 *	which includes changes in controls which manages by client AI
 	 */
 	@Override
 	public void run() {
 		if(client == null)
 			return;
-		crashed = false;
-		if (!client.isClosed())
+		if (!client.isClosed() && player.isAlive())
 			try {
-				ObjectOutputStream sendData = new ObjectOutputStream(
-						client.getOutputStream());
-				//int tmp = 101;
-				sendData.writeObject(Runner.inst().world);
-				sendData.writeObject(player.vehicles.get(0));
-				sendData.flush();
-				ObjectInputStream receivedData = new ObjectInputStream(
-						client.getInputStream());
-				client.setSoTimeout(Settings.Server.timeout);
+				if(out == null) {
+					out = new ObjectOutputStream(client.getOutputStream());
+					out.flush();
+					in = new ObjectInputStream(client.getInputStream());
+				}
+				out.reset();
+				out.writeObject(Runner.inst().world);
+				out.writeObject(player.vehicles.get(0));
+				out.flush();
 				try {
-					response = (BotAction) receivedData.readObject();
+					response = (BotAction) in.readObject();
 				} catch (ClassNotFoundException e) {
 					System.err.println("Something wrong with"
 							+ " reading object from client response");
 					e.printStackTrace();
 				} catch (java.net.SocketTimeoutException e) {
+					System.out.println(String.format("Strategy crashed::timeout, player=%s", player.name));
 					crashed = true;
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		else {
+			if(response == null)
+				response = new BotAction(0, 0);
+			else
+				response.assign(0, 0);
+		}
 	}
 	
 	public void release() {
 		try {
-			ObjectOutputStream sendData = new ObjectOutputStream(client.getOutputStream());
+			// ObjectOutputStream sendData = new ObjectOutputStream(client.getOutputStream());
 			World temp1 = null;
-			sendData.writeObject(temp1);
+			out.writeObject(temp1);
 			Vehicle temp2 = null;
-			sendData.writeObject(temp2);
-			sendData.flush();
-			//client.close();
+			out.writeObject(temp2);
+			out.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

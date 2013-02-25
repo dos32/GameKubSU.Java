@@ -105,10 +105,10 @@ public class Runner implements UnitContainer {
 		info.position.assign(world.width/2, world.height/2);
 		mainFrame.mainCanvas.render();
 		// test clients:
-		for(int i=0; i<Settings.playersCount/2; i++) {
+		/*for(int i=0; i<Settings.playersCount/2; i++) {
 			new Thread(new ClientRunner()).start();
-		}
-		for(int i=0; i<(Settings.playersCount-Settings.playersCount/2); i++) {
+		}*/
+		for(int i=0; i<(Settings.playersCount/*-Settings.playersCount/2*/); i++) {
 			new Thread(new testBot.ClientRunner()).start();
 		}
 		//

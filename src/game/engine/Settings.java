@@ -9,7 +9,11 @@ public final class Settings {
 	public static int waitAfterDuration = 1000;
 	public static int waitInterval = 1;
 
-	public static int playersCount = 0;
+	public static int playersCount = 6;
+	
+	public final static class Connection {
+		public static int buffer_size = 1<<20;
+	}
 
 	public final static class Server {
 		public static int acceptTimeout = 10000;
