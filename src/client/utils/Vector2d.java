@@ -1,4 +1,4 @@
-package game.utils;
+package client.utils;
 
 import game.json.JSONObject;
 import game.json.JSONSerializable;

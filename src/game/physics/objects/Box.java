@@ -22,9 +22,4 @@ public class Box extends Unit {
 				(int)this.width, (int)this.height);
 		graphics.setTransform(oldTransform);
 	}
-
-	@Override
-	public double getSquare() {
-		return width*height;
-	}
 }

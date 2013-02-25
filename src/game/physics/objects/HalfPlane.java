@@ -17,14 +17,6 @@ public class HalfPlane extends Unit {
 
 	@Override
 	public void draw(Graphics2D graphics) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public double getSquare() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 }

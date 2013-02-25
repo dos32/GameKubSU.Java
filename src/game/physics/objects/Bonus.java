@@ -1,13 +1,42 @@
 package game.physics.objects;
 
 import game.engine.Settings;
+import game.json.JSONClassCheckException;
+import game.json.JSONObject;
+import game.json.JSONSerializable;
 
 import java.awt.Graphics2D;
 import java.io.Serializable;
 
-public class Bonus extends Circle implements Serializable {
+public class Bonus extends Circle implements Serializable, JSONSerializable {
 	private static final long serialVersionUID = 8357488035574848722L;
 	public BonusType type;
+	
+	protected String typeToString(BonusType bonusType) {
+		switch (type) {
+		case MED_KIT:
+			return "MED_KIT";
+		case FLAG:
+			return "FLAG";
+		case NITRO_FUEL:
+			return "NITRO_FUEL";
+		default:
+			return "";
+		}
+	}
+	
+	protected BonusType stringToType(String string) {
+		switch (string) {
+		case "MED_KIT":
+			return BonusType.MED_KIT;
+		case "FLAG":
+			return BonusType.FLAG;
+		case "NITRO_FUEL":
+			return BonusType.NITRO_FUEL;
+		default:
+			return BonusType.FLAG;
+		}
+	}
 
 	public Bonus(BonusType bonusType) {
 		super(Settings.BonusSpawner.defaultRadius);
@@ -46,5 +75,23 @@ public class Bonus extends Circle implements Serializable {
 			default:
 				break;
 		}
+	}
+	
+	@Override
+	public String getClassName() {
+		return "Bonus";
+	}
+
+	@Override
+	public JSONObject toJSON() {
+		JSONObject json = super.toJSON();
+		json.put("type", typeToString(type));
+		return json;
+	}
+
+	@Override
+	public void fromJSON(JSONObject json) throws JSONClassCheckException {
+		super.fromJSON(json);
+		this.type = stringToType(json.getString("type"));
 	}
 }

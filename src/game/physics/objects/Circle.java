@@ -1,41 +1,44 @@
 package game.physics.objects;
 
-import game.utils.Rectd;
+import game.json.JSONClassCheckException;
+import game.json.JSONObject;
+import game.json.JSONSerializable;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.io.Serializable;
 
-public class Circle extends Unit {
+public class Circle extends Unit implements Serializable, JSONSerializable {
 	private static final long serialVersionUID = -2503510928736687406L;
 	public double radius;
 	
 	public Circle(double radius) {
 		this.radius = radius;
 	}
-	
-	public Rectd getApproxBox() {
-		return Rectd.createSquare(position, radius);
-	}
 
 	@Override
 	public void draw(Graphics2D graphics) {
-		/*if(Settings.Renderer.drawImages) {
-			if(Runner.inst().circleImg != null)
-				graphics.drawImage(Runner.inst().circleImg, (int)(position.x-radius), (int)(position.y-radius),
-						(int)(2*radius), (int)(2*radius), null);
-			else
-				System.err.println("img not loaded");
-		}
-		else {*/
-			AffineTransform oldTransform = graphics.getTransform();
-			graphics.translate(position.x-radius, position.y-radius);
-			graphics.drawOval(0, 0, (int)radius*2, (int)radius*2);
-			graphics.setTransform(oldTransform);
-		//}
+		AffineTransform oldTransform = graphics.getTransform();
+		graphics.translate(position.x-radius, position.y-radius);
+		graphics.drawOval(0, 0, (int)radius*2, (int)radius*2);
+		graphics.setTransform(oldTransform);
+	}
+	
+	@Override
+	public String getClassName() {
+		return "Circle";
 	}
 
 	@Override
-	public double getSquare() {
-		return Math.PI*radius*radius;
+	public JSONObject toJSON() {
+		JSONObject json = super.toJSON();
+		json.put("radius", Double.toString(radius));
+		return json;
+	}
+
+	@Override
+	public void fromJSON(JSONObject json) throws JSONClassCheckException {
+		super.fromJSON(json);
+		this.radius = json.getDouble("radius");
 	}
 }

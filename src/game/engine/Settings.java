@@ -1,5 +1,9 @@
 package game.engine;
 
+import game.physics.objects.Circle;
+import game.physics.objects.Obstacle;
+import game.physics.objects.Unit;
+
 import java.awt.Color;
 
 public final class Settings {
@@ -78,4 +82,33 @@ public final class Settings {
 			public static int goalPoints = 100;
 		}
 	}
+	
+	public final static class JSON {
+		/*
+		 * Method for checking JSON objects for
+		 * 	compatibility with associated classes
+		 * NB: classes in if() statement must
+		 * 	enumerates from extends to their superclasses,
+		 * 	because (SubClassInst instanceof TheirSuperClass)==true
+		 */
+		/*public static String getClassName(Object object) {
+			if(object instanceof Vehicle)
+				return "Vehicle";
+			else if(object instanceof Bonus)
+				return "Bonus";
+			else if(object instanceof Obstacle)
+				return "Obstacle";
+			else if(object instanceof Circle)
+				return "Circle";
+			else if(object instanceof Unit)
+				return "Unit";
+			else if(object instanceof World)
+				return "World";
+			else if(object instanceof World)
+				return "Vector2d";
+			System.err.println("Settings.JSON.getClassName()::not recognized class of object");
+			return "";
+		}*/
+	}
+
 }

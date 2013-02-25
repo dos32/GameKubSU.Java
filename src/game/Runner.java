@@ -2,8 +2,6 @@ package game;
 
 import java.awt.Color;
 
-import client.ClientRunner;
-
 import game.engine.BonusSpawner;
 import game.engine.UnitContainer;
 import game.engine.Settings;
@@ -169,6 +167,7 @@ public class Runner implements UnitContainer {
 
 	protected void tick() {
 		bonusSpawner.tick();
+		world.toJSON();
 		server.tick();
 		physics.tick();
 		mainFrame.mainCanvas.render();

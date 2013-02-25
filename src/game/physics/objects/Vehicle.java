@@ -2,6 +2,9 @@ package game.physics.objects;
 
 import game.engine.Player;
 import game.engine.Settings;
+import game.json.JSONClassCheckException;
+import game.json.JSONObject;
+import game.json.JSONSerializable;
 import game.physics.colliders.hooks.CollideEventHook;
 import game.physics.colliders.hooks.VehicleCollide;
 import game.physics.forces.BindedForce;
@@ -19,7 +22,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
-public class Vehicle extends Circle implements Serializable {
+public class Vehicle extends Circle implements Serializable, JSONSerializable {
 	private static final long serialVersionUID = 1563688715048158514L;
 	
 	private static transient BufferedImage image = null;
@@ -38,11 +41,11 @@ public class Vehicle extends Circle implements Serializable {
 	public transient ControlForce engine;
 	
 	private Vehicle() {
-		super(0);
+		super(Settings.Vehicle.defaultRadius);
 	}
 	
 	public Vehicle(Player player) {
-		super(Settings.Vehicle.defaultRadius);
+		this();
 		this.player = player;
 		player.vehicles.add(this);
 		new ControlForce(this);
@@ -101,6 +104,33 @@ public class Vehicle extends Circle implements Serializable {
 		graphics.drawRect((int)(position.x-radius), (int)(position.y-radius-Settings.Vehicle.HealthBar.descent-Settings.Vehicle.HealthBar.height),
 				(int)(2*radius), Settings.Vehicle.HealthBar.height);
 		graphics.setColor(oldColor);
+	}
+	
+	@Override
+	public JSONObject toJSON() {
+		// TODO
+		JSONObject json = super.toJSON();
+		json.put("index", indexInTeam);
+		json.put("health", health);
+		json.put("playerId", playerId);
+		json.put("playerName", playerName);
+		json.put("isTeammate", isTeammate);
+		return json;
+	}
+	
+	@Override
+	public void fromJSON(JSONObject json) throws JSONClassCheckException {
+		super.fromJSON(json);
+		indexInTeam = json.getInt("index");
+		health = json.getDouble("health");
+		playerId = json.getInt("playerId");
+		playerName = json.getString("playerName");
+		isTeammate = json.getBoolean("isTeammate");
+	}
+	
+	@Override
+	public String getClassName() {
+		return "Vehicle";
 	}
 
 }

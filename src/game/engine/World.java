@@ -1,6 +1,8 @@
 package game.engine;
 
 import game.Runner;
+import game.json.JSONObject;
+import game.json.JSONSerializable;
 import game.physics.objects.Bonus;
 import game.physics.objects.Obstacle;
 import game.physics.objects.Unit;
@@ -9,7 +11,7 @@ import game.physics.objects.Vehicle;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class World implements Serializable, UnitContainer {
+public class World implements Serializable, JSONSerializable, UnitContainer {
 	private static final long serialVersionUID = 5624391324336770137L;
 
 	public int tick = 0;
@@ -50,6 +52,34 @@ public class World implements Serializable, UnitContainer {
 	}
 	
 	public void loadMap() {
+		// TODO
+	}
+
+	@Override
+	public String getClassName() {
+		return "World";
+	}
+	
+	@Override
+	public JSONObject toJSON() {
+		JSONObject json = new JSONObject();
+		json.put("class", this.getClassName());
+		json.put("tick", this.tick);
+		json.put("width", this.width);
+		json.put("height", this.height);
+		for(Player player : this.players)
+			json.accumulate("players", player.toJSON());
+		for(Vehicle vehicle : this.vehicles)
+			json.accumulate("vehicles", vehicle.toJSON());
+		for(Obstacle obstacle : this.obstacles)
+			json.accumulate("obstacles", obstacle.toJSON());
+		for(Bonus bonus : this.bonuses)
+			json.accumulate("bonuses", bonus.toJSON());
+		return json;
+	}
+	
+	@Override
+	public void fromJSON(JSONObject json) {
 		// TODO
 	}
 

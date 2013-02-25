@@ -40,9 +40,5 @@ public class InfoTip extends Unit {
 		graphics.setTransform(transform);
 		graphics.setColor(oldColor);
 	}
-
-	@Override
-	public double getSquare() {
-		return 0;
-	}
+	
 }
