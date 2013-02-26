@@ -29,7 +29,7 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 	public transient Player player;
 	protected int indexInTeam;
 	protected int playerId;
-	protected String playerName;
+	//protected String playerName;
 	protected boolean isTeammate;
 	protected transient Color color = Color.black;
 
@@ -108,12 +108,11 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 	
 	@Override
 	public JSONObject toJSON() {
-		// TODO
 		JSONObject json = super.toJSON();
 		json.put("index", indexInTeam);
 		json.put("health", health);
 		json.put("playerId", playerId);
-		json.put("playerName", playerName);
+		json.put("playerName", player.name);
 		json.put("isTeammate", isTeammate);
 		return json;
 	}
@@ -124,7 +123,7 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 		indexInTeam = json.getInt("index");
 		health = json.getDouble("health");
 		playerId = json.getInt("playerId");
-		playerName = json.getString("playerName");
+		//playerName = json.getString("playerName");
 		isTeammate = json.getBoolean("isTeammate");
 	}
 	

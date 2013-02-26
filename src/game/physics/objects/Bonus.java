@@ -26,14 +26,14 @@ public class Bonus extends Circle implements Serializable, JSONSerializable {
 	}
 	
 	protected BonusType stringToType(String string) {
-		switch (string) {
-		case "MED_KIT":
+		if(string.equals("MED_KIT"))
 			return BonusType.MED_KIT;
-		case "FLAG":
+		else if(string.equals("FLAG"))
 			return BonusType.FLAG;
-		case "NITRO_FUEL":
+		else if(string.equals("NITRO_FUEL"))
 			return BonusType.NITRO_FUEL;
-		default:
+		else {
+			System.err.println("Bonus.stringToType()::Cant recognize BonusType name");
 			return BonusType.FLAG;
 		}
 	}

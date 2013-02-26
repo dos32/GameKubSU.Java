@@ -1,8 +1,6 @@
 package game.engine;
 
-import game.physics.objects.Circle;
-import game.physics.objects.Obstacle;
-import game.physics.objects.Unit;
+import game.utils.Vector2d;
 
 import java.awt.Color;
 
@@ -13,7 +11,7 @@ public final class Settings {
 	public static int waitAfterDuration = 1000;
 	public static int waitInterval = 1;
 
-	public static int playersCount = 6;
+	public static int playersCount = 1;
 	
 	public final static class Connection {
 		public static int buffer_size = 1<<20;
@@ -83,32 +81,12 @@ public final class Settings {
 		}
 	}
 	
-	public final static class JSON {
-		/*
-		 * Method for checking JSON objects for
-		 * 	compatibility with associated classes
-		 * NB: classes in if() statement must
-		 * 	enumerates from extends to their superclasses,
-		 * 	because (SubClassInst instanceof TheirSuperClass)==true
-		 */
-		/*public static String getClassName(Object object) {
-			if(object instanceof Vehicle)
-				return "Vehicle";
-			else if(object instanceof Bonus)
-				return "Bonus";
-			else if(object instanceof Obstacle)
-				return "Obstacle";
-			else if(object instanceof Circle)
-				return "Circle";
-			else if(object instanceof Unit)
-				return "Unit";
-			else if(object instanceof World)
-				return "World";
-			else if(object instanceof World)
-				return "Vector2d";
-			System.err.println("Settings.JSON.getClassName()::not recognized class of object");
-			return "";
-		}*/
+	public final static class DamageTip {
+		public static Color defaultColor = Color.red;
+		public static int defaultLifeTime = 50; // life time in ticks
+		public static double startTextSize = 10,
+				endTextSize = 8;
+		public static Vector2d defaultSpeed = new Vector2d(0, -0.1);
 	}
 
 }

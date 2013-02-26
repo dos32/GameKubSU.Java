@@ -12,10 +12,15 @@ import java.util.ArrayList;
 
 public class Player implements Serializable, JSONSerializable {
 	private static final long serialVersionUID = 8814139469470501756L;
+	protected static int lastId = 1;
 	public int id;
-	public String name;
+	public String name = "";
 	public int score;
 	public Color color;
+	
+	public Player() {
+		this.id = lastId++;
+	}
 	
 	public ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
 	
@@ -50,8 +55,8 @@ public class Player implements Serializable, JSONSerializable {
 		json.put("id", this.name);
 		json.put("score", this.score);
 		for(Vehicle vehicle : this.vehicles)
-			json.accumulate("vehicles", vehicle.toJSON());
-		return null;
+			json.append("vehicles", vehicle.toJSON());
+		return json;
 	}
 
 	@Override
@@ -64,7 +69,6 @@ public class Player implements Serializable, JSONSerializable {
 		for(int i = 0; i<jvehicles.length(); i++) {
 			Vehicle vehicle = new Vehicle(this);
 			vehicle.fromJSON(jvehicles.getJSONObject(i));
-			vehicles.add(vehicle);
 		}
 			
 	}

@@ -49,8 +49,7 @@ public abstract class Unit implements Serializable, JSONSerializable, Comparable
 	public double frictionCoeff = Settings.Physics.defaultFrictionCoeff;
 
 	public Unit() {
-		id = lastid;
-		lastid++;
+		id = lastid++;
 		Runner.inst().addUnit(this);
 	}
 
@@ -92,11 +91,11 @@ public abstract class Unit implements Serializable, JSONSerializable, Comparable
 	public JSONObject toJSON() {
 		JSONObject json = new JSONObject();
 		json.put("class", this.getClassName());
-		json.put("id", String.format("%s", id));
+		json.put("id", id);
 		json.put("position", position.toJSON());
 		json.put("speed", speed.toJSON());
-		json.put("angle", Double.toString(angle));
-		json.put("angularSpeed", Double.toString(angularSpeed));
+		json.put("angle", angle);
+		json.put("angularSpeed", angularSpeed);
 		return json;
 	}
 	
