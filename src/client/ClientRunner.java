@@ -46,9 +46,7 @@ public class ClientRunner implements Runnable {
 				try {
 					s = in.readLine();
 					if(s==null || s=="") {
-						// TODO add correct exit on message MT_END
-						frame.dispose();
-						return;
+						System.err.println("s is undef");
 					}
 					sm.fromJSON(new JSONObject(s));
 				} catch (JSONException e) {
@@ -66,6 +64,9 @@ public class ClientRunner implements Runnable {
 					bot.move(sm.world, sm.self, action);
 					cm = new ClientMessage(action, "");
 					break;
+				case ServerMessage.MT_END:
+					frame.dispose();
+					return;
 				default:
 					break;
 				}

@@ -64,11 +64,9 @@ public final class ClientListener implements Runnable {
 	}
 	
 	public void release() {
-		//out.println("");
-		try {
-			client.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		out.println(new ServerMessage(ServerMessage.MT_END, Runner.inst().world, player.vehicles.get(0))
+			.toJSON()
+			.toString());
+		out.flush();
 	}
 }
