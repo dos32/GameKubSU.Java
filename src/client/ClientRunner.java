@@ -1,14 +1,16 @@
 package client;
 
-// TODO rm this relation
+// TODO rm
 import game.engine.Settings;
-import client.model.World;
-import client.model.Vehicle;
+import client.json.JSONClassCheckException;
+import client.json.JSONException;
+import client.json.JSONObject;
 import client.model.BotAction;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 import javax.swing.JFrame;
@@ -17,6 +19,9 @@ public class ClientRunner implements Runnable {
 	public ClientFrame frame;
 	public Socket listener;
 	public Bot bot;
+    
+	BufferedReader in = null;
+    PrintWriter out = null;
 	
 	public ClientRunner() {
 		frame = new ClientFrame();
@@ -32,27 +37,41 @@ public class ClientRunner implements Runnable {
 	public void run() {
 		try {
 			listener = new Socket("localhost", Settings.Server.port);
+			in = new BufferedReader(new InputStreamReader(listener.getInputStream()));
+			out = new PrintWriter(listener.getOutputStream());
 			// Wait for server signal loop
 			while (!listener.isClosed()&&!listener.isInputShutdown()&&!listener.isOutputShutdown()) {
-				ObjectInputStream oin = new ObjectInputStream(listener.getInputStream());
-				ObjectOutputStream oout = new ObjectOutputStream(listener.getOutputStream());
-				World world = null;
-				Vehicle self = null;
+				ServerMessage sm = new ServerMessage();
+				String s = "";
 				try {
-					world = (World) oin.readObject();
-					self = (Vehicle) oin.readObject();
-				} catch (ClassNotFoundException e) {
+					s = in.readLine();
+					if(s==null || s=="") {
+						// TODO add correct exit on message MT_END
+						frame.dispose();
+						return;
+					}
+					sm.fromJSON(new JSONObject(s));
+				} catch (JSONException e) {
+					e.printStackTrace();
+				} catch (JSONClassCheckException e) {
 					e.printStackTrace();
 				}
-				if(world == null || self == null)
-				{
-					frame.dispose();
-					return;
+				ClientMessage cm = null;
+				switch (sm.messageType) {
+				case ServerMessage.MT_INIT:
+					cm = new ClientMessage(new BotAction(), bot.init());
+					break;
+				case ServerMessage.MT_TICK:
+					BotAction action = new BotAction();
+					bot.move(sm.world, sm.self, action);
+					cm = new ClientMessage(action, "");
+					break;
+				default:
+					break;
 				}
-				BotAction action = new BotAction();
-				bot.move(world, self, action);
-				oout.writeObject(action);
-				oout.flush();
+				String sr = cm.toJSON().toString();
+				out.println(sr);
+				out.flush();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

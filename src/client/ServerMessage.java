@@ -16,12 +16,6 @@ public class ServerMessage implements JSONSerializable {
 			MT_TICK	= 2,
 			MT_END	= 3;
 	
-	public ServerMessage(int messageType, World world, Vehicle self) {
-		this.messageType = messageType;
-		this.world = world;
-		this.self = self;
-	}
-	
 	@Override
 	public String getClassName() {
 		return "ServerMessage";

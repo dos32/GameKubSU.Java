@@ -38,10 +38,10 @@ public final class Server {
 			clients.add(new ClientListener(null));
 			try {
 				Socket client = server.accept();
-				client.setSendBufferSize(Settings.Connection.buffer_size);
-				clients.get(i).client = client;
+				/*client.setSendBufferSize(Settings.Connection.buffer_size);
 				client.setReceiveBufferSize(Settings.Connection.buffer_size);
-				client.setSoTimeout(Settings.Server.timeout);
+				client.setSoTimeout(Settings.Server.timeout);*/
+				clients.get(i).client = client;
 			} catch (IOException e) {
 				if(e.getClass() == java.net.SocketTimeoutException.class)
 					System.err.println(String.format("Can't accept %s client: timeout has been reached", i));

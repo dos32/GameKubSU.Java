@@ -2,24 +2,24 @@ package game.server;
 
 import game.Runner;
 import game.engine.Player;
-import game.engine.Settings.Vehicle;
-import game.engine.World;
 import game.json.JSONClassCheckException;
 import game.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.*;
 
 public final class ClientListener implements Runnable {
 	public Socket client;
 	public Player player = new Player();
 	public boolean crashed = false;
-	public BotAction response;
+	public ClientMessage cm = new ClientMessage();
+	public BotAction response = new BotAction();
 	
-	protected ObjectOutputStream out = null;
-	protected ObjectInputStream in = null;
+	BufferedReader in = null;
+    PrintWriter out = null;
 	
 	public ClientListener(Socket client) {
 		this.client = client;
@@ -36,21 +36,16 @@ public final class ClientListener implements Runnable {
 		if (!client.isClosed() && player.isAlive())
 			try {
 				if(out == null) {
-					out = new ObjectOutputStream(client.getOutputStream());
-					out.flush();
-					in = new ObjectInputStream(client.getInputStream());
+					in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+					out = new PrintWriter(client.getOutputStream());
 				}
-				out.reset();
 				ServerMessage sm = new ServerMessage(ServerMessage.MT_TICK, Runner.inst().world, player.vehicles.get(0));
-				out.writeObject(sm.toJSON().toString());
+				out.println(sm.toJSON().toString());
 				out.flush();
 				try {
-					JSONObject rjson = new JSONObject((String) in.readObject());
-					response.fromJSON(rjson);
-				} catch (ClassNotFoundException e) {
-					System.err.println("Something wrong with"
-							+ " reading object from client response");
-					e.printStackTrace();
+					JSONObject rjson = new JSONObject((String) in.readLine());
+					cm.fromJSON(rjson);
+					response = cm.botAction;
 				} catch (java.net.SocketTimeoutException e) {
 					System.out.println(String.format("Strategy crashed::timeout, player=%s", player.name));
 					crashed = true;
@@ -69,13 +64,9 @@ public final class ClientListener implements Runnable {
 	}
 	
 	public void release() {
+		//out.println("");
 		try {
-			// ObjectOutputStream sendData = new ObjectOutputStream(client.getOutputStream());
-			World temp1 = null;
-			out.writeObject(temp1);
-			Vehicle temp2 = null;
-			out.writeObject(temp2);
-			out.flush();
+			client.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

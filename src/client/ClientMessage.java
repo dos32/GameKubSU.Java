@@ -9,6 +9,11 @@ public class ClientMessage implements JSONSerializable {
 	public BotAction botAction;
 	public String botName;
 	
+	public ClientMessage(BotAction botAction, String botName) {
+		this.botAction = botAction;
+		this.botName = botName;
+	}
+	
 	@Override
 	public String getClassName() {
 		return "ClientMessage";
@@ -17,6 +22,7 @@ public class ClientMessage implements JSONSerializable {
 	@Override
 	public JSONObject toJSON() {
 		JSONObject json = new JSONObject();
+		json.put("class", getClassName());
 		json.put("action", botAction.toJSON());
 		json.put("name", botName);
 		return json;

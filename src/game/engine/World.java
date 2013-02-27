@@ -1,6 +1,7 @@
 package game.engine;
 
 import game.Runner;
+import game.json.JSONArray;
 import game.json.JSONObject;
 import game.json.JSONSerializable;
 import game.physics.objects.Bonus;
@@ -64,17 +65,27 @@ public class World implements Serializable, JSONSerializable, UnitContainer {
 	public JSONObject toJSON() {
 		JSONObject json = new JSONObject();
 		json.put("class", this.getClassName());
+		
 		json.put("tick", this.tick);
 		json.put("width", this.width);
 		json.put("height", this.height);
+		
+		json.put("players", new JSONArray());
 		for(Player player : this.players)
-			json.accumulate("players", player.toJSON());
+			json.append("players", player.toJSON());
+		
+		json.put("vehicles", new JSONArray());
 		for(Vehicle vehicle : this.vehicles)
-			json.accumulate("vehicles", vehicle.toJSON());
+			json.append("vehicles", vehicle.toJSON());
+		
+		json.put("obstacles", new JSONArray());
 		for(Obstacle obstacle : this.obstacles)
-			json.accumulate("obstacles", obstacle.toJSON());
+			json.append("obstacles", obstacle.toJSON());
+		
+		json.put("bonuses", new JSONArray());
 		for(Bonus bonus : this.bonuses)
-			json.accumulate("bonuses", bonus.toJSON());
+			json.append("bonuses", bonus.toJSON());
+		
 		return json;
 	}
 	

@@ -30,6 +30,7 @@ public class ServerMessage implements JSONSerializable {
 	@Override
 	public JSONObject toJSON() {
 		JSONObject json = new JSONObject();
+		json.put("class", getClassName());
 		json.put("messageType", messageType);
 		json.put("world", world.toJSON());
 		json.put("self", self.toJSON());

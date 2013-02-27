@@ -14,14 +14,14 @@ public class BotAction implements JSONSerializable {
 
 	@Override
 	public JSONObject toJSON() {
-		return null;
+		JSONObject json = new JSONObject();
+		json.put("class", getClassName());
+		json.put("power", power);
+		json.put("turn", turn);
+		return json;
 	}
 
 	@Override
 	public void fromJSON(JSONObject json) throws JSONClassCheckException {
-		if(!json.has("class") || !json.getString("class").equals(getClassName()))
-			throw new JSONClassCheckException(getClassName());
-		power = json.getDouble("power");
-		turn = json.getDouble("turn");
 	}
 }

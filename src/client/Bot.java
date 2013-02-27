@@ -10,8 +10,8 @@ public class Bot {
 		this.runner = runner;
 	}
 	
-	public void init() {
-		
+	public String init() {
+		return "";
 	}
 	
 	public void move(World world, Vehicle self, BotAction action) {
