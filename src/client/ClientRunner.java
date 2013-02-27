@@ -1,7 +1,5 @@
 package client;
 
-// TODO rm
-import game.engine.Settings;
 import client.json.JSONClassCheckException;
 import client.json.JSONException;
 import client.json.JSONObject;
@@ -36,10 +34,9 @@ public class ClientRunner implements Runnable {
 	@Override
 	public void run() {
 		try {
-			listener = new Socket("localhost", Settings.Server.port);
+			listener = new Socket(Settings.host, Settings.port);
 			in = new BufferedReader(new InputStreamReader(listener.getInputStream()));
 			out = new PrintWriter(listener.getOutputStream());
-			// Wait for server signal loop
 			while (!listener.isClosed()&&!listener.isInputShutdown()&&!listener.isOutputShutdown()) {
 				ServerMessage sm = new ServerMessage();
 				String s = "";

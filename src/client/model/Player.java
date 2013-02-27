@@ -5,9 +5,41 @@ import client.json.JSONObject;
 import client.json.JSONSerializable;
 
 public class Player implements JSONSerializable {
-	public int id;
-	public String name;
-	public int score;
+	private int id;
+	private String name;
+	private int score;
+	private boolean crashed;
+	
+	/**
+	 * @return	The unique id of player
+	 */
+	public int getId() {
+		return id;
+	}
+	
+	/**
+	 * 
+	 * @return	Name of player
+	 */
+	public String getName() {
+		return name;
+	}
+	
+	/**
+	 * 
+	 * @return	Amount of game points of this player
+	 */
+	public int getScore() {
+		return score;
+	}
+	
+	/**
+	 * 
+	 * @return	Status of players strategy
+	 */
+	public boolean isCrashed() {
+		return crashed;
+	}
 
 	@Override
 	public String getClassName() {
@@ -26,5 +58,6 @@ public class Player implements JSONSerializable {
 		id = json.getInt("id");
 		name = json.getString("name");
 		score = json.getInt("score");
+		crashed = json.getBoolean("crashed");
 	}
 }

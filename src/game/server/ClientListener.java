@@ -15,7 +15,6 @@ import java.net.*;
 public final class ClientListener implements Runnable {
 	public Socket client;
 	public Player player = new Player();
-	public boolean crashed = false;
 	public ClientMessage cm = new ClientMessage();
 	public BotAction response = new BotAction();
 	
@@ -68,7 +67,7 @@ public final class ClientListener implements Runnable {
 					response = cm.botAction;
 				} catch (java.net.SocketTimeoutException e) {
 					System.out.println(String.format("Strategy crashed::timeout, player=%s", player.name));
-					crashed = true;
+					player.crashed = true;
 				} catch (JSONClassCheckException e) {
 					e.printStackTrace();
 				}

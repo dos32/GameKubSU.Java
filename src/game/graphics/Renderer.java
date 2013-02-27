@@ -17,16 +17,18 @@ public final class Renderer implements UnitContainer {
 	protected double fps = 0;
 	protected long framesCount = 0, time = 0, lastRealTime = 0;
 	
-	protected TreeSet<Unit> objects = new TreeSet<Unit>();
+	protected TreeSet<Drawable> objects = new TreeSet<Drawable>();
 	
 	@Override
 	public void addUnit(Unit unit) {
-		objects.add(unit);
+		if(unit instanceof Drawable)
+			objects.add((Drawable)unit);
 	}
 
 	@Override
 	public void removeUnit(Unit unit) {
-		objects.remove(unit);
+		if(unit instanceof Drawable)
+			objects.remove(unit);
 	}
 
 	@Override
@@ -53,8 +55,8 @@ public final class Renderer implements UnitContainer {
 			graphics.setBackground(Color.white);
 			graphics.setColor(Color.black);
 			graphics.clearRect(0, 0, (int)Settings.World.width, (int)Settings.World.height);
-			for(Unit unit : objects)
-				unit.draw(graphics);
+			for(Drawable drawable : objects)
+				drawable.draw(graphics);
 			updated = false;
 		}
 		time+=System.nanoTime()-t1;

@@ -50,9 +50,9 @@ public class CollideForce extends GlobalForce {
 
 	@Override
 	public void apply(List<Unit> objects) {
-		for(int i=0; i<objects.size(); i++)
+		for(int i=0; i<objects.size(); i++) {
+			Unit unit1 = objects.get(i);
 			for(int j=i+1; j<objects.size(); j++) {
-				Unit unit1 = objects.get(i);
 				Unit unit2 = objects.get(j);
 				if((unit1 instanceof Circle) && (unit2 instanceof Circle))
 					cc.Collide((Circle)unit1, (Circle)unit2);
@@ -64,6 +64,7 @@ public class CollideForce extends GlobalForce {
 					;/*System.err.println(String.format("CollideForce.apply()::Unknown types of params,%s,%s",
 							unit1.getClass().getName(), unit2.getClass().getName()));*/
 			}
+		}
 	}
 
 }

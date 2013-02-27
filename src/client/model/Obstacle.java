@@ -4,7 +4,7 @@ import client.json.JSONClassCheckException;
 import client.json.JSONObject;
 import client.json.JSONSerializable;
 
-public class Obstacle extends Unit implements JSONSerializable {
+public class Obstacle extends Circle implements JSONSerializable {
 	
 	@Override
 	public String getClassName() {

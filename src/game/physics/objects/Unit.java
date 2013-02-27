@@ -1,6 +1,5 @@
 package game.physics.objects;
 
-import java.awt.Graphics2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -16,7 +15,7 @@ import game.utils.*;
 /*
  * Base class for physical object
  */
-public abstract class Unit implements Serializable, JSONSerializable, Comparable<Unit> {
+public abstract class Unit implements Serializable, JSONSerializable {
 	private static final long serialVersionUID = 1714619678919428922L;
 	
 	protected static int lastid = 1;
@@ -25,7 +24,7 @@ public abstract class Unit implements Serializable, JSONSerializable, Comparable
 	public Vector2d speed = new Vector2d();
 	public double angle = 0;
 	public double angularSpeed = 0;
-	public transient int zIndex = 0;
+	//protected transient int zIndex = 0;
 	
 	public transient ArrayList<BindedForce> bindedForces = null; // beware of null !
 	public transient ArrayList<CollideEventHook> collideEventHooks = null; // beware of null !
@@ -49,28 +48,30 @@ public abstract class Unit implements Serializable, JSONSerializable, Comparable
 	public double frictionCoeff = Settings.Physics.defaultFrictionCoeff;
 
 	public Unit() {
+		//this.zIndex = zIndex;
 		id = lastid++;
 		Runner.inst().addUnit(this);
-	}
-
-	public Unit(double mass) {
-		this();
-		this.mass = mass;
 	}
 	
 	public void dispose() {
 		Runner.inst().removeUnit(this);
 	}
 	
+	/*public void setZIndex(int zIndex) {
+		Runner.inst().renderer.removeUnit(this);
+		this.zIndex = zIndex;
+		Runner.inst().renderer.addUnit(this);
+	}*/
+	
 	public static void loadImages() {
 		
 	}
 
-	public abstract void draw(Graphics2D graphics);
+	//public abstract void draw(Graphics2D graphics);
 	
 	// Comparable:
 	
-	@Override
+	/*@Override
 	public int compareTo(Unit unit) {
 		int res = this.zIndex - unit.zIndex;
 		if(res==0)
@@ -78,7 +79,7 @@ public abstract class Unit implements Serializable, JSONSerializable, Comparable
 		if(res == 0 && this!=unit)
 			System.err.println("Unit.compareTo()::res==0");
 		return res;
-	}
+	}*/
 	
 	// JSON part:
 	

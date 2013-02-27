@@ -5,7 +5,15 @@ import client.json.JSONObject;
 import client.json.JSONSerializable;
 
 public class Circle extends Unit implements JSONSerializable {
-	public double radius;
+	private double radius;
+	
+	/**
+	 * 
+	 * @return	Radius of the circle
+	 */
+	public double getRadius() {
+		return radius;
+	}
 	
 	@Override
 	public String getClassName() {

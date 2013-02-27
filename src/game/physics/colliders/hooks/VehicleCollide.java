@@ -17,7 +17,7 @@ public class VehicleCollide extends CollideEventHook {
 			return true;
 		}
 		else {
-			((Vehicle)attachedObject).doDamage(penetrationDepth*Settings.Vehicle.damageFactor);
+			((Vehicle)attachedObject).changeHealth(-penetrationDepth*Settings.Vehicle.damageFactor);
 			return false;
 		}
 	}

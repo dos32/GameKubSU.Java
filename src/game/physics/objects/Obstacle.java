@@ -16,8 +16,8 @@ public class Obstacle extends Circle implements Serializable, JSONSerializable {
 
 	@Override
 	public void draw(Graphics2D graphics) {
+		super.draw(graphics);
 		// TODO Auto-generated method stub
-
 	}
 	
 	@Override
@@ -27,13 +27,11 @@ public class Obstacle extends Circle implements Serializable, JSONSerializable {
 	
 	@Override
 	public JSONObject toJSON() {
-		// TODO
 		return super.toJSON();
 	}
 	
 	@Override
 	public void fromJSON(JSONObject json) throws JSONClassCheckException {
-		// TODO
 		super.fromJSON(json);
 	}
 	

@@ -33,7 +33,7 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 	protected boolean isTeammate;
 	protected transient Color color = Color.black;
 
-	public double health = 0.5;
+	public double health = Settings.Vehicle.maxHealth;
 	/*protected double armor;
 	protected double fuel;
 	protected double nitroFuel;*/
@@ -55,14 +55,16 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 		collideEventHooks.add(new VehicleCollide(this));
 	}
 	
-	public void doDamage(double healthDelta) {
-		health = Math.min(Math.max(0, health - healthDelta), 1);
-		// TODO add animation
+	public void changeHealth(double healthDelta) {
+		health = Math.min(Math.max(0, health + healthDelta), Settings.Vehicle.maxHealth);
+		int dh = (int)Math.round(healthDelta);
+		if(Math.abs(dh) > 0)
+			new AnimatedTip(String.format("%+d", dh), position).color = (dh>0?Settings.AnimatedTip.healColor:Settings.AnimatedTip.dmgColor);
 	}
 	
 	public void addGoalPoints(int ptsCount) {
 		player.score += ptsCount;
-		// TODO add animation
+		new AnimatedTip(String.format("%+d", ptsCount), position).color = Settings.AnimatedTip.goalColor;
 	}
 	
 	public static void loadImages() {
@@ -99,7 +101,7 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 		}
 		graphics.setColor(Settings.Vehicle.HealthBar.defaultColor);
 		graphics.fillRect((int)(position.x-radius), (int)(position.y-radius-Settings.Vehicle.HealthBar.descent-Settings.Vehicle.HealthBar.height),
-				(int)(health*2*radius), Settings.Vehicle.HealthBar.height);
+				(int)(2*radius*health/Settings.Vehicle.maxHealth), Settings.Vehicle.HealthBar.height);
 		graphics.setColor(Settings.Vehicle.HealthBar.borderColor);
 		graphics.drawRect((int)(position.x-radius), (int)(position.y-radius-Settings.Vehicle.HealthBar.descent-Settings.Vehicle.HealthBar.height),
 				(int)(2*radius), Settings.Vehicle.HealthBar.height);

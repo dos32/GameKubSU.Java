@@ -1,19 +1,21 @@
 package game;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import client.ClientRunner;
 
 import game.engine.BonusSpawner;
+import game.engine.Tickable;
 import game.engine.UnitContainer;
 import game.engine.Settings;
 import game.engine.World;
 import game.graphics.MainFrame;
 import game.graphics.Renderer;
 import game.physics.Physics;
-import game.physics.objects.Circle;
 import game.physics.objects.HalfPlane;
 import game.physics.objects.InfoTip;
+import game.physics.objects.Obstacle;
 import game.physics.objects.Unit;
 import game.physics.objects.Vehicle;
 import game.server.Server;
@@ -124,13 +126,13 @@ public class Runner implements UnitContainer {
 		new HalfPlane(new Vector2d(0, 0), Math.PI/2);
 		
 		// test:
-		Circle c = new Circle(100);
+		Obstacle c = new Obstacle(100);
 		c.mass = Math.pow(c.radius,2)*Math.PI*0.01;
 		c.position.assign(Math.random()*world.width, Math.random()*world.height);
 		c.speed.assign(Math.random()-0.5, Math.random()-0.5);
 		c.speed.scale(20);
 		for(int i=0; i<10; i++) {
-			c = new Circle((Math.random()+0.5)*8);
+			c = new Obstacle((Math.random()+0.5)*8);
 			c.mass = Math.pow(c.radius,2)*Math.PI*0.01;
 			c.position.assign(Math.random()*world.width, Math.random()*world.height);
 			c.speed.assign(Math.random()-0.5, Math.random()-0.5);
@@ -172,6 +174,10 @@ public class Runner implements UnitContainer {
 		world.toJSON();
 		server.tick();
 		physics.tick();
+		ArrayList<Unit> objects = new ArrayList<Unit>(physics.objects);
+		for(Unit unit : objects)
+			if(unit instanceof Tickable)
+				((Tickable)unit).tick();
 		mainFrame.mainCanvas.render();
 		tick++;
 		world.tick = tick;

@@ -5,7 +5,15 @@ import client.json.JSONObject;
 import client.json.JSONSerializable;
 
 public class Bonus extends Circle implements JSONSerializable {
-	protected BonusType type;
+	private BonusType type;
+	
+	/**
+	 * 
+	 * @return	Type of bonus
+	 */
+	public BonusType getType() {
+		return type;
+	}
 	
 	protected BonusType stringToType(String string) {
 		if(string.equals("MED_KIT"))

@@ -39,8 +39,8 @@ public final class Server {
 			try {
 				Socket client = server.accept();
 				/*client.setSendBufferSize(Settings.Connection.buffer_size);
-				client.setReceiveBufferSize(Settings.Connection.buffer_size);
-				client.setSoTimeout(Settings.Server.timeout);*/
+				client.setReceiveBufferSize(Settings.Connection.buffer_size);*/
+				client.setSoTimeout(Settings.Server.tickTimeout);
 				clients.get(i).client = client;
 				clients.get(i).init();
 			} catch (IOException e) {

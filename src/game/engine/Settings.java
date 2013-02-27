@@ -11,15 +11,15 @@ public final class Settings {
 	public static int waitAfterDuration = 1000;
 	public static int waitInterval = 1;
 
-	public static int playersCount = 1;
+	public static int playersCount = 6;
 	
 	public final static class Connection {
 		public static int buffer_size = 1<<20;
 	}
 
 	public final static class Server {
-		public static int acceptTimeout = 10000;
-		public static int timeout = 5000;
+		public static int acceptTimeout = 30000;
+		public static int tickTimeout = 500;
 		public static int port = 4000;
 		public static String ip = "127.0.0.1";
 	}
@@ -31,7 +31,7 @@ public final class Settings {
 	public final static class Vehicle {
 		public static double maxHealth = 100, maxArmor = 200, maxFuel = 100,
 				maxNitroPower = 0.05, maxPower = 0.1, maxTurn = 0.1 * Math.PI / 180;
-		public static double damageFactor = 1e-2;
+		public static double damageFactor = 3e0;
 		public static double defaultRadius = 10;
 		public static int placeTryCount = 10;
 		public final static class HealthBar {
@@ -45,6 +45,7 @@ public final class Settings {
 	public final static class Frame {
 		public static int contentWidth = (int) World.width,
 				contentHeight = (int) World.height;
+		public static String title = "Game Engine v2.0";
 	}
 	
 	public final static class Physics {
@@ -73,20 +74,24 @@ public final class Settings {
 	
 	public final static class Bonus {
 		public final static class Medkit {
-			public static double healthSize = 0.2;
+			public static double healthSize = 20;
 			public static int goalPoints = 10;
 		}
 		public final static class Flag {
 			public static int goalPoints = 100;
 		}
+		public static int defaultLifeTime = 500;
 	}
 	
-	public final static class DamageTip {
-		public static Color defaultColor = Color.red;
+	public final static class AnimatedTip {
+		public static Color dmgColor = Color.red,
+				healColor = Color.green,
+				goalColor = Color.orange;
 		public static int defaultLifeTime = 50; // life time in ticks
-		public static double startTextSize = 10,
-				endTextSize = 8;
+		public static double startTextSize = 16,
+				endTextSize = 12;
 		public static Vector2d defaultSpeed = new Vector2d(0, -0.1);
+		public static int defaultZIndex = 1000;
 	}
 
 }

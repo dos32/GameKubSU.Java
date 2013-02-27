@@ -1,6 +1,8 @@
 package game.physics.objects;
 
+import game.Runner;
 import game.engine.Settings;
+import game.engine.Tickable;
 import game.json.JSONClassCheckException;
 import game.json.JSONObject;
 import game.json.JSONSerializable;
@@ -8,9 +10,17 @@ import game.json.JSONSerializable;
 import java.awt.Graphics2D;
 import java.io.Serializable;
 
-public class Bonus extends Circle implements Serializable, JSONSerializable {
+public class Bonus extends Circle implements Serializable, JSONSerializable, Tickable {
 	private static final long serialVersionUID = 8357488035574848722L;
+	protected int bornTime;
+	public int lifeTime = Settings.Bonus.defaultLifeTime;
 	public BonusType type;
+
+	public Bonus(BonusType bonusType) {
+		super(Settings.BonusSpawner.defaultRadius);
+		type = bonusType;
+		this.bornTime = Runner.inst().tick;
+	}
 	
 	protected String typeToString(BonusType bonusType) {
 		switch (type) {
@@ -37,11 +47,6 @@ public class Bonus extends Circle implements Serializable, JSONSerializable {
 			return BonusType.FLAG;
 		}
 	}
-
-	public Bonus(BonusType bonusType) {
-		super(Settings.BonusSpawner.defaultRadius);
-		type = bonusType;
-	}
 	
 	public void collect(Vehicle vehicle) {
 		switch (type) {
@@ -49,7 +54,7 @@ public class Bonus extends Circle implements Serializable, JSONSerializable {
 			vehicle.addGoalPoints(Settings.Bonus.Flag.goalPoints);
 			break;
 		case MED_KIT:
-			vehicle.doDamage(-Settings.Bonus.Medkit.healthSize);
+			vehicle.changeHealth(Settings.Bonus.Medkit.healthSize);
 			vehicle.addGoalPoints(Settings.Bonus.Medkit.goalPoints);
 			break;
 		default:
@@ -93,5 +98,11 @@ public class Bonus extends Circle implements Serializable, JSONSerializable {
 	public void fromJSON(JSONObject json) throws JSONClassCheckException {
 		super.fromJSON(json);
 		this.type = stringToType(json.getString("type"));
+	}
+
+	@Override
+	public void tick() {
+		if(Runner.inst().tick - bornTime > lifeTime)
+			dispose();
 	}
 }

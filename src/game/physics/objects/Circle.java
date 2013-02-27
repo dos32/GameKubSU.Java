@@ -8,7 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.io.Serializable;
 
-public class Circle extends Unit implements Serializable, JSONSerializable {
+public class Circle extends DrawableUnit implements Serializable, JSONSerializable {
 	private static final long serialVersionUID = -2503510928736687406L;
 	public double radius;
 	

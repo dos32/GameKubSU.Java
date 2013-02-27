@@ -16,6 +16,7 @@ public class Player implements Serializable, JSONSerializable {
 	public String name = "";
 	public int score;
 	public Color color;
+	public boolean crashed = false;
 	
 	public Player() {
 		this.id = lastId++;
@@ -54,6 +55,7 @@ public class Player implements Serializable, JSONSerializable {
 		json.put("id", this.id);
 		json.put("name", this.name);
 		json.put("score", this.score);
+		json.put("crashed", this.crashed);
 		return json;
 	}
 
@@ -64,5 +66,6 @@ public class Player implements Serializable, JSONSerializable {
 		// id = json.getInt("id");
 		name = json.getString("name");
 		score = json.getInt("score");
+		crashed = json.getBoolean("crashed");
 	}
 }
