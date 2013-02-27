@@ -1,9 +1,10 @@
 package client;
 
+// TODO rm this relation
 import game.engine.Settings;
-import game.engine.World;
-import game.physics.objects.Vehicle;
-import game.server.BotAction;
+import client.model.World;
+import client.model.Vehicle;
+import client.model.BotAction;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

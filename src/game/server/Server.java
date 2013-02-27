@@ -55,19 +55,6 @@ public final class Server {
 	 * Broadcast to all clients
 	 */
 	public void tick() {
-		/*Thread[] threads = new Thread[clients.size()];
-		for(int i = 0; i<clients.size(); i++) {
-			ClientListener clientListener = clients.get(i);
-			threads[i] = new Thread(clientListener);
-			threads[i].start();
-		}
-		// Wait for end of listening:
-		for(Thread thread : threads)
-			try {
-				thread.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}*/
 		for(int i = 0; i<clients.size(); i++) {
 			clients.get(i).run();
 		}

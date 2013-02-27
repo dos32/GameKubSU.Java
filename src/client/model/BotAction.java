@@ -4,12 +4,12 @@ import client.json.JSONClassCheckException;
 import client.json.JSONObject;
 import client.json.JSONSerializable;
 
-public class Circle extends Unit implements JSONSerializable {
-	public double radius;
-	
+public class BotAction implements JSONSerializable {
+	public double power, turn;
+
 	@Override
 	public String getClassName() {
-		return "Circle";
+		return "BotAction";
 	}
 
 	@Override
@@ -19,7 +19,9 @@ public class Circle extends Unit implements JSONSerializable {
 
 	@Override
 	public void fromJSON(JSONObject json) throws JSONClassCheckException {
-		super.fromJSON(json);
-		radius = json.getDouble("radius");
+		if(!json.has("class") || !json.getString("class").equals(getClassName()))
+			throw new JSONClassCheckException(getClassName());
+		power = json.getDouble("power");
+		turn = json.getDouble("turn");
 	}
 }

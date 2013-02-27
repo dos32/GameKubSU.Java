@@ -1,6 +1,5 @@
 package game.engine;
 
-import game.json.JSONArray;
 import game.json.JSONClassCheckException;
 import game.json.JSONObject;
 import game.json.JSONSerializable;
@@ -52,10 +51,9 @@ public class Player implements Serializable, JSONSerializable {
 	public JSONObject toJSON() {
 		JSONObject json = new JSONObject();
 		json.put("class", this.getClassName());
-		json.put("id", this.name);
+		json.put("id", this.id);
+		json.put("name", this.name);
 		json.put("score", this.score);
-		for(Vehicle vehicle : this.vehicles)
-			json.append("vehicles", vehicle.toJSON());
 		return json;
 	}
 
@@ -64,12 +62,7 @@ public class Player implements Serializable, JSONSerializable {
 		if(!json.has("class") || !json.getString("class").equals(getClassName()))
 			throw new JSONClassCheckException(getClassName());
 		// id = json.getInt("id");
+		name = json.getString("name");
 		score = json.getInt("score");
-		JSONArray jvehicles = json.getJSONArray("vehicles");
-		for(int i = 0; i<jvehicles.length(); i++) {
-			Vehicle vehicle = new Vehicle(this);
-			vehicle.fromJSON(jvehicles.getJSONObject(i));
-		}
-			
 	}
 }

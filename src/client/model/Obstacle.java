@@ -1,5 +1,6 @@
 package client.model;
 
+import client.json.JSONClassCheckException;
 import client.json.JSONObject;
 import client.json.JSONSerializable;
 
@@ -12,13 +13,12 @@ public class Obstacle extends Unit implements JSONSerializable {
 	
 	@Override
 	public JSONObject toJSON() {
-		// TODO
-		return super.toJSON();
+		return null;
 	}
 	
 	@Override
-	public void fromJSON(JSONObject json) {
-		// TODO
+	public void fromJSON(JSONObject json) throws JSONClassCheckException {
+		super.fromJSON(json);
 	}
 	
 }

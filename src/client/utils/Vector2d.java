@@ -1,12 +1,10 @@
 package client.utils;
 
-import game.json.JSONObject;
-import game.json.JSONSerializable;
+import client.json.JSONClassCheckException;
+import client.json.JSONObject;
+import client.json.JSONSerializable;
 
-import java.io.Serializable;
-
-public class Vector2d implements Serializable, JSONSerializable {
-	private static final long serialVersionUID = -7197366098173773030L;
+public class Vector2d implements JSONSerializable {
 	
 	public double x, y;
 
@@ -115,12 +113,11 @@ public class Vector2d implements Serializable, JSONSerializable {
 	}
 
 	@Override
-	public void fromJSON(JSONObject json) {
-		/*if(json.getField("class")!=getClassName())
-			throw new JSONClassException(getClassName());
-		this.x = Double.parseDouble(json.getField("x"));
-		this.y = Double.parseDouble(json.getField("y"));*/
-		// TODO
+	public void fromJSON(JSONObject json) throws JSONClassCheckException {
+		if(!json.has("class") || !json.getString("class").equals(getClassName()))
+			throw new JSONClassCheckException(getClassName());
+		x = json.getDouble("x");
+		y = json.getDouble("y");
 	}
 
 	@Override

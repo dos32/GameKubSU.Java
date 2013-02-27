@@ -4,6 +4,8 @@ import game.Runner;
 import game.engine.Player;
 import game.engine.Settings.Vehicle;
 import game.engine.World;
+import game.json.JSONClassCheckException;
+import game.json.JSONObject;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -39,11 +41,12 @@ public final class ClientListener implements Runnable {
 					in = new ObjectInputStream(client.getInputStream());
 				}
 				out.reset();
-				out.writeObject(Runner.inst().world);
-				out.writeObject(player.vehicles.get(0));
+				ServerMessage sm = new ServerMessage(ServerMessage.MT_TICK, Runner.inst().world, player.vehicles.get(0));
+				out.writeObject(sm.toJSON().toString());
 				out.flush();
 				try {
-					response = (BotAction) in.readObject();
+					JSONObject rjson = new JSONObject((String) in.readObject());
+					response.fromJSON(rjson);
 				} catch (ClassNotFoundException e) {
 					System.err.println("Something wrong with"
 							+ " reading object from client response");
@@ -51,6 +54,8 @@ public final class ClientListener implements Runnable {
 				} catch (java.net.SocketTimeoutException e) {
 					System.out.println(String.format("Strategy crashed::timeout, player=%s", player.name));
 					crashed = true;
+				} catch (JSONClassCheckException e) {
+					e.printStackTrace();
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

@@ -1,7 +1,7 @@
 package client.json;
 
 public interface JSONSerializable {
-	public abstract String getClassName(); // Special field for checking class compatibility
+	public abstract String getClassName();
 	public abstract JSONObject toJSON();
-	public abstract void fromJSON(JSONObject json);
+	public abstract void fromJSON(JSONObject json) throws JSONClassCheckException;
 }

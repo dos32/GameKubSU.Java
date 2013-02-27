@@ -1,8 +1,8 @@
 package client;
 
-import game.engine.World;
-import game.physics.objects.Vehicle;
-import game.server.BotAction;
+import client.model.World;
+import client.model.Vehicle;
+import client.model.BotAction;
 
 public class Bot {
 	private ClientRunner runner;

@@ -1,17 +1,23 @@
 package client.model;
 
-import game.engine.Settings;
+import client.json.JSONClassCheckException;
 import client.json.JSONObject;
 import client.json.JSONSerializable;
-
-import java.awt.Graphics2D;
-import java.io.Serializable;
 
 public class Bonus extends Circle implements JSONSerializable {
 	protected BonusType type;
 	
-	public BonusType getType() {
-		return type;
+	protected BonusType stringToType(String string) {
+		if(string.equals("MED_KIT"))
+			return BonusType.MED_KIT;
+		else if(string.equals("FLAG"))
+			return BonusType.FLAG;
+		else if(string.equals("NITRO_FUEL"))
+			return BonusType.NITRO_FUEL;
+		else {
+			System.err.println("Bonus.stringToType()::Cant recognize BonusType name");
+			return BonusType.FLAG;
+		}
 	}
 	
 	@Override
@@ -21,27 +27,12 @@ public class Bonus extends Circle implements JSONSerializable {
 
 	@Override
 	public JSONObject toJSON() {
-		JSONObject json = super.toJSON();
-		String strType = "";
-		switch (type) {
-		case MED_KIT:
-			strType = "MED_KIT";
-			break;
-		case FLAG:
-			strType = "FLAG";
-			break;
-		case NITRO_FUEL:
-			strType = "NITRO_FUEL";
-			break;
-		default:
-			break;
-		}
-		json.put("type", strType);
-		return json;
+		return null;
 	}
 
 	@Override
-	public void fromJSON(JSONObject json) {
-		// TODO Auto-generated method stub
+	public void fromJSON(JSONObject json) throws JSONClassCheckException {
+		super.fromJSON(json);
+		type = stringToType(json.getString("type"));
 	}
 }

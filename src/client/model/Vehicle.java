@@ -1,33 +1,29 @@
 package client.model;
 
-import game.engine.Player;
+import client.json.JSONClassCheckException;
 import client.json.JSONObject;
 import client.json.JSONSerializable;
 
 public class Vehicle extends Circle implements JSONSerializable {
-	public transient Player player;
-	protected int indexInTeam;
-	protected int playerId;
-	protected String playerName;
-	protected boolean isTeammate;
-
-	public double health = 0.5;
+	public int indexInTeam;
+	public int playerId;
+	public String playerName;
+	public boolean isTeammate;
+	public double health;
 	
 	@Override
 	public JSONObject toJSON() {
-		// TODO
-		JSONObject json = super.toJSON();
-		json.put("index", indexInTeam);
-		json.put("health", health);
-		json.put("playerId", playerId);
-		json.put("playerName", playerName);
-		json.put("isTeammate", isTeammate);
-		return json;
+		return null;
 	}
 	
 	@Override
-	public void fromJSON(JSONObject json) {
-		// TODO
+	public void fromJSON(JSONObject json) throws JSONClassCheckException {
+		super.fromJSON(json);
+		indexInTeam = json.getInt("index");
+		health = json.getDouble("health");
+		playerId = json.getInt("playerId");
+		playerName = json.getString("playerName");
+		isTeammate = json.getBoolean("isTeammate");
 	}
 	
 	@Override
