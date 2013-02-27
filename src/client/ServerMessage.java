@@ -31,11 +31,18 @@ public class ServerMessage implements JSONSerializable {
 		if(!json.has("class") || !json.getString("class").equals(getClassName()))
 			throw new JSONClassCheckException(getClassName());
 		messageType = json.getInt("messageType");
-		// TODO processing of message type
-		world = new World();
-		world.fromJSON(json.getJSONObject("world"));
-		self = new Vehicle();
-		self.fromJSON(json.getJSONObject("self"));
+		if(messageType<1 || messageType>3)
+			throw new JSONClassCheckException(String.format("Wrong messageType: %s", messageType));
+		if(messageType == MT_TICK && !(json.has("world")) && json.has("self"))
+			throw new JSONClassCheckException("MessageType is MT_TICK, but world or/and self not received in json");
+		if(json.has("world"))
+			(world = new World()).fromJSON(json.getJSONObject("world"));
+		else
+			world = null;
+		if(json.has("self"))
+			(self = new Vehicle()).fromJSON(json.getJSONObject("self"));
+		else
+			self = null;
 	}
 	
 }

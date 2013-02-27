@@ -42,6 +42,7 @@ public final class Server {
 				client.setReceiveBufferSize(Settings.Connection.buffer_size);
 				client.setSoTimeout(Settings.Server.timeout);*/
 				clients.get(i).client = client;
+				clients.get(i).init();
 			} catch (IOException e) {
 				if(e.getClass() == java.net.SocketTimeoutException.class)
 					System.err.println(String.format("Can't accept %s client: timeout has been reached", i));

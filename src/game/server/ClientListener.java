@@ -3,6 +3,7 @@ package game.server;
 import game.Runner;
 import game.engine.Player;
 import game.json.JSONClassCheckException;
+import game.json.JSONException;
 import game.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -24,6 +25,29 @@ public final class ClientListener implements Runnable {
 	public ClientListener(Socket client) {
 		this.client = client;
 	}
+	
+	public void init() {
+		try {
+			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+			out = new PrintWriter(client.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		ServerMessage sm = new ServerMessage(ServerMessage.MT_INIT, null, null);
+		out.println(sm.toJSON().toString());
+		out.flush();
+		ClientMessage cm = new ClientMessage();
+		try {
+			cm.fromJSON(new JSONObject(in.readLine()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		} catch (JSONClassCheckException e) {
+			e.printStackTrace();
+		}
+		player.name = cm.botName;
+	}
 
 	/*
 	 * Send to client serialization of World object and wait to its response,
@@ -35,10 +59,6 @@ public final class ClientListener implements Runnable {
 			return;
 		if (!client.isClosed() && player.isAlive())
 			try {
-				if(out == null) {
-					in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-					out = new PrintWriter(client.getOutputStream());
-				}
 				ServerMessage sm = new ServerMessage(ServerMessage.MT_TICK, Runner.inst().world, player.vehicles.get(0));
 				out.println(sm.toJSON().toString());
 				out.flush();
@@ -64,9 +84,13 @@ public final class ClientListener implements Runnable {
 	}
 	
 	public void release() {
-		out.println(new ServerMessage(ServerMessage.MT_END, Runner.inst().world, player.vehicles.get(0))
-			.toJSON()
-			.toString());
+		out.println(new ServerMessage(ServerMessage.MT_END, null, null)
+			.toJSON().toString());
 		out.flush();
+		try {
+			client.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

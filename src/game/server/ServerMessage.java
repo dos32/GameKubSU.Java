@@ -32,8 +32,10 @@ public class ServerMessage implements JSONSerializable {
 		JSONObject json = new JSONObject();
 		json.put("class", getClassName());
 		json.put("messageType", messageType);
-		json.put("world", world.toJSON());
-		json.put("self", self.toJSON());
+		if(world != null)
+			json.put("world", world.toJSON());
+		if(self != null)
+			json.put("self", self.toJSON());
 		return json;
 	}
 	

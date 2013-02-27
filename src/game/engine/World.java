@@ -8,6 +8,7 @@ import game.physics.objects.Bonus;
 import game.physics.objects.Obstacle;
 import game.physics.objects.Unit;
 import game.physics.objects.Vehicle;
+import game.server.ClientListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class World implements Serializable, JSONSerializable, UnitContainer {
 
 	public int tick = 0;
 	public final double width, height;
-	public ArrayList<Player> players = new ArrayList<Player>();
+	//public ArrayList<Player> players = new ArrayList<Player>();
 	public ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
 	public ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 	public ArrayList<Bonus> bonuses = new ArrayList<Bonus>();
@@ -71,8 +72,8 @@ public class World implements Serializable, JSONSerializable, UnitContainer {
 		json.put("height", this.height);
 		
 		json.put("players", new JSONArray());
-		for(Player player : this.players)
-			json.append("players", player.toJSON());
+		for(ClientListener client : Runner.inst().server.clients)
+			json.append("players", client.player.toJSON());
 		
 		json.put("vehicles", new JSONArray());
 		for(Vehicle vehicle : this.vehicles)

@@ -11,7 +11,7 @@ public class Bot {
 	}
 	
 	public String init() {
-		return "";
+		return "TestBot";
 	}
 	
 	public void move(World world, Vehicle self, BotAction action) {
