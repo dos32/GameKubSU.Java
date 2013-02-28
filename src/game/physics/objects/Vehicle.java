@@ -29,14 +29,11 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 	public transient Player player;
 	protected int indexInTeam;
 	protected int playerId;
-	//protected String playerName;
 	protected boolean isTeammate;
 	protected transient Color color = Color.black;
 
 	public double health = Settings.Vehicle.maxHealth;
-	/*protected double armor;
-	protected double fuel;
-	protected double nitroFuel;*/
+	public double nitro = 0;
 	
 	public transient ControlForce engine;
 	
@@ -55,16 +52,33 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 		collideEventHooks.add(new VehicleCollide(this));
 	}
 	
-	public void changeHealth(double healthDelta) {
-		health = Math.min(Math.max(0, health + healthDelta), Settings.Vehicle.maxHealth);
-		int dh = (int)Math.round(healthDelta);
-		if(Math.abs(dh) > 0)
-			new AnimatedTip(String.format("%+d", dh), position).color = (dh>0?Settings.AnimatedTip.healColor:Settings.AnimatedTip.dmgColor);
+	/**
+	 * Changes nitro value by delta; constraints it
+	 * accordingly settings
+	 * @param delta Desirable change of nitro value
+	 * @return	Factual change of nitro value
+	 */
+	public double changeNitro(double delta) {
+		double oldNitroLevel = nitro;
+		nitro = Math.max(0, Math.min(nitro + delta, Settings.Vehicle.maxNitro));
+		return (nitro - oldNitroLevel);
 	}
 	
-	public void addGoalPoints(int ptsCount) {
+	/**
+	 * Changes health value by delta; constraints it
+	 * accordingly settings
+	 * @param	delta Desirable change of health value
+	 * @return	Factual change of health value
+	 */
+	public double changeHealth(double delta) {
+		double oldHealthLevel = health;
+		health = Math.min(Math.max(0, health + delta), Settings.Vehicle.maxHealth);
+		return (health - oldHealthLevel);
+	}
+	
+	public int addGoalPoints(int ptsCount) {
 		player.score += ptsCount;
-		new AnimatedTip(String.format("%+d", ptsCount), position).color = Settings.AnimatedTip.goalColor;
+		return ptsCount;
 	}
 	
 	public static void loadImages() {
@@ -99,12 +113,23 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 			n.add(position);
 			graphics.drawLine((int)position.x, (int)position.y, (int)n.x, (int)n.y);
 		}
+		// Healthbar
 		graphics.setColor(Settings.Vehicle.HealthBar.defaultColor);
-		graphics.fillRect((int)(position.x-radius), (int)(position.y-radius-Settings.Vehicle.HealthBar.descent-Settings.Vehicle.HealthBar.height),
+		graphics.fillRect((int)(position.x-radius),
+				(int)(position.y-radius-Settings.Vehicle.HealthBar.descent-Settings.Vehicle.HealthBar.height-Settings.Vehicle.NitroBar.height),
 				(int)(2*radius*health/Settings.Vehicle.maxHealth), Settings.Vehicle.HealthBar.height);
 		graphics.setColor(Settings.Vehicle.HealthBar.borderColor);
-		graphics.drawRect((int)(position.x-radius), (int)(position.y-radius-Settings.Vehicle.HealthBar.descent-Settings.Vehicle.HealthBar.height),
+		graphics.drawRect((int)(position.x-radius),
+				(int)(position.y-radius-Settings.Vehicle.HealthBar.descent-Settings.Vehicle.HealthBar.height-Settings.Vehicle.NitroBar.height),
 				(int)(2*radius), Settings.Vehicle.HealthBar.height);
+		// Nitrobar
+		graphics.setColor(Settings.Vehicle.NitroBar.defaultColor);
+		graphics.fillRect((int)(position.x-radius), (int)(position.y-radius-Settings.Vehicle.NitroBar.descent-Settings.Vehicle.NitroBar.height),
+				(int)(2*radius*nitro/Settings.Vehicle.maxNitro), Settings.Vehicle.NitroBar.height);
+		graphics.setColor(Settings.Vehicle.NitroBar.borderColor);
+		graphics.drawRect((int)(position.x-radius), (int)(position.y-radius-Settings.Vehicle.NitroBar.descent-Settings.Vehicle.NitroBar.height),
+				(int)(2*radius), Settings.Vehicle.NitroBar.height);
+		
 		graphics.setColor(oldColor);
 	}
 	
@@ -125,7 +150,6 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 		indexInTeam = json.getInt("index");
 		health = json.getDouble("health");
 		playerId = json.getInt("playerId");
-		//playerName = json.getString("playerName");
 		isTeammate = json.getBoolean("isTeammate");
 	}
 	

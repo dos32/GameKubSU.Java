@@ -12,12 +12,13 @@ public class BonusSpawner {
 		else if(p<Settings.BonusSpawner.pFlag+Settings.BonusSpawner.pMedKit)
 			return BonusType.MED_KIT;
 		else
-			return null;
+			return BonusType.NITRO_FUEL;
 	}
 	
 	public void tick() {
 		if(Math.random() > 1-Settings.BonusSpawner.probability) {
-			Runner.inst().physics.collideForce.placeNoCollide(new Bonus(genType()), Settings.BonusSpawner.placementTries);
+			Runner.inst().physics.collideForce.placeNoCollide(
+					new Bonus(genType()), Settings.BonusSpawner.placementTries);
 		}
 	}
 }

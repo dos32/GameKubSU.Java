@@ -3,12 +3,14 @@ package game.physics.objects;
 import game.Runner;
 import game.engine.Settings;
 import game.engine.Tickable;
+import game.engine.TipPlacer;
 import game.json.JSONClassCheckException;
 import game.json.JSONObject;
 import game.json.JSONSerializable;
 
 import java.awt.Graphics2D;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Bonus extends Circle implements Serializable, JSONSerializable, Tickable {
 	private static final long serialVersionUID = 8357488035574848722L;
@@ -49,17 +51,35 @@ public class Bonus extends Circle implements Serializable, JSONSerializable, Tic
 	}
 	
 	public void collect(Vehicle vehicle) {
+		int healthDelta = 0;
+		int nitroDelta = 0;
+		int scoreDelta = 0;
 		switch (type) {
 		case FLAG:
-			vehicle.addGoalPoints(Settings.Bonus.Flag.goalPoints);
+			scoreDelta = vehicle.addGoalPoints(Settings.Bonus.Flag.goalPoints);
 			break;
 		case MED_KIT:
-			vehicle.changeHealth(Settings.Bonus.Medkit.healthSize);
-			vehicle.addGoalPoints(Settings.Bonus.Medkit.goalPoints);
+			healthDelta = (int)Math.round(vehicle.changeHealth(Settings.Bonus.Medkit.healthSize));
+			scoreDelta = vehicle.addGoalPoints(Settings.Bonus.Medkit.goalPoints);
+			break;
+		case NITRO_FUEL:
+			nitroDelta = (int)Math.round(vehicle.changeNitro(Settings.Bonus.Nitro.nitroCount));
+			scoreDelta = vehicle.addGoalPoints(Settings.Bonus.Nitro.goalPoints);
 			break;
 		default:
 			break;
 		}
+		ArrayList<AnimatedTip> tips = new ArrayList<AnimatedTip>();
+		if(Math.abs(healthDelta) > 0)
+			tips.add(new AnimatedTip(String.format("%+d", healthDelta),
+					(healthDelta > 0 ? Settings.AnimatedTip.healColor : Settings.AnimatedTip.dmgColor) ));
+		if(Math.abs(nitroDelta) > 0)
+			tips.add(new AnimatedTip(String.format("%+d", nitroDelta),
+					Settings.AnimatedTip.nitroColor));
+		if(Math.abs(scoreDelta) > 0)
+			tips.add(new AnimatedTip(String.format("%+d", scoreDelta),
+					Settings.AnimatedTip.goalColor));
+		TipPlacer.placeTips(tips, vehicle.position);
 		dispose();
 	}
 
@@ -74,8 +94,7 @@ public class Bonus extends Circle implements Serializable, JSONSerializable, Tic
 				graphics.drawLine((int)position.x, (int)(position.y-radius), (int)position.x, (int)(position.y+radius));
 				break;
 			case NITRO_FUEL:
-				break;
-			case REPAIR_KIT:
+				graphics.drawString("N", (float)position.x, (float)position.y);
 				break;
 			default:
 				break;

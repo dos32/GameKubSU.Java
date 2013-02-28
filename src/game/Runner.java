@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import client.ClientRunner;
@@ -33,6 +34,10 @@ public class Runner implements UnitContainer {
 	private static Runner currentInstance;
 	public static Runner inst() {
 		return currentInstance;
+	}
+	
+	public Graphics2D graphics() {
+		return mainFrame.mainCanvas.graphics();
 	}
 	
 	public final MainFrame mainFrame;

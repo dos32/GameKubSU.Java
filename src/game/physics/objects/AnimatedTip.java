@@ -3,7 +3,6 @@ package game.physics.objects;
 import game.Runner;
 import game.engine.Settings;
 import game.engine.Tickable;
-import game.utils.Vector2d;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -13,22 +12,24 @@ public class AnimatedTip extends InfoTip implements Tickable {
 	private static final long serialVersionUID = 6634407963815306442L;
 	public long lifeTime = Settings.AnimatedTip.defaultLifeTime;
 	public long bornTime;
+	public double textSize = Settings.AnimatedTip.startTextSize;
 	public Color color = Settings.AnimatedTip.dmgColor;
 
-	public AnimatedTip(String message, Vector2d position) {
+	public AnimatedTip(String message, Color color) {
 		super(message);
-		this.position.assign(position);
+		this.color = color;
 		this.isMaterial = false;
 		this.bornTime = Runner.inst().tick;
 		this.speed.assign(Settings.AnimatedTip.defaultSpeed);
-		Runner.inst().renderer.removeUnit(this);
-		this.zIndex = Settings.AnimatedTip.defaultZIndex;
-		Runner.inst().renderer.addUnit(this);
+		setZIndex(Settings.AnimatedTip.defaultZIndex);
 	}
 
 	@Override
 	public void tick() {
-		if(Runner.inst().tick - bornTime > lifeTime)
+		double time = (double)(Runner.inst().tick - bornTime)/(double)lifeTime;
+		textSize = (int)Math.round((1-time)*(Settings.AnimatedTip.startTextSize-Settings.AnimatedTip.endTextSize) +
+			Settings.AnimatedTip.endTextSize);
+		if(time > 1)
 			dispose();
 	}
 	
@@ -37,10 +38,7 @@ public class AnimatedTip extends InfoTip implements Tickable {
 		Font oldFont = graphics.getFont();
 		Color oldColor = graphics.getColor();
 		graphics.setColor(color);
-		double time = (double)(Runner.inst().tick - bornTime)/(double)lifeTime;
-		int textSz = (int)Math.round((1-time)*(Settings.AnimatedTip.startTextSize-Settings.AnimatedTip.endTextSize) +
-				Settings.AnimatedTip.endTextSize);
-		graphics.setFont(new Font("Courier new", Font.PLAIN, textSz));
+		graphics.setFont(new Font("Courier new", Font.PLAIN, (int)textSize));
 		graphics.drawString(message, (float)position.x, (float)position.y);
 		graphics.setColor(oldColor);
 		graphics.setFont(oldFont);

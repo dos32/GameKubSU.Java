@@ -5,9 +5,8 @@ import game.physics.objects.Vehicle;
 import game.utils.Vector2d;
 
 public class ControlForce extends BindedForce {
-	public double powerFactor = 0, turnFactor = 0;
-	public double maxPowerConstraint = Settings.Vehicle.maxPower,
-			maxTurnConstraint = Settings.Vehicle.maxTurn;
+	public double powerFactor = 0,
+			turnFactor = 0;
 	
 	public ControlForce(Vehicle bindUnit) {
 		super(bindUnit);
@@ -17,9 +16,14 @@ public class ControlForce extends BindedForce {
 	@Override
 	public void apply() {
 		Vector2d n = new Vector2d(Math.sin(bindUnit.angle), Math.cos(bindUnit.angle));
-		bindUnit.speed.add(
-			n.mul(Math.signum(powerFactor)*Math.min(1, Math.abs(powerFactor))*maxPowerConstraint));
-		bindUnit.angularSpeed += Math.signum(turnFactor)*Math.min(1, Math.abs(turnFactor))*maxTurnConstraint;
+		double nitroForTick = Math.min(((Vehicle)bindUnit).nitro, Settings.Vehicle.maxNitroBoost);
+		powerFactor = Math.signum(powerFactor)*Math.min(Math.abs(powerFactor),
+				Settings.Vehicle.maxPowerFactor + nitroForTick);
+		double nitroPower = Math.max(0, Math.abs(powerFactor) - Settings.Vehicle.maxPowerFactor);
+		((Vehicle)bindUnit).changeNitro(-nitroPower);
+		bindUnit.speed.add(n.mul(powerFactor*Settings.Vehicle.powerCoeff));
+		bindUnit.angularSpeed += Math.signum(turnFactor)*Settings.Vehicle.turnCoeff*
+				Math.min(Settings.Vehicle.maxTurnFactor, Math.abs(turnFactor));
 	}
 
 }

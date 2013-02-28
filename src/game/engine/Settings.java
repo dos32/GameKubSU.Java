@@ -29,15 +29,25 @@ public final class Settings {
 	}
 
 	public final static class Vehicle {
-		public static double maxHealth = 100, maxArmor = 200, maxFuel = 100,
-				maxNitroPower = 0.05, maxPower = 0.1, maxTurn = 0.1 * Math.PI / 180;
+		public static double maxHealth = 100, maxNitro = 50;
+		public static double maxNitroBoost = 1; // Max power, adds to default, when nitro is available
+		public static double powerCoeff = 0.07;
+		public static double turnCoeff = 0.07 * Math.PI / 180;
+		public static double maxPowerFactor = 1;
+		public static double maxTurnFactor = 1;
 		public static double damageFactor = 3e0;
 		public static double defaultRadius = 10;
 		public static int placeTryCount = 10;
 		public final static class HealthBar {
-			public static int height = 5;
+			public static int height = 4;
 			public static int descent = 7;
 			public static Color defaultColor = Color.blue;
+			public static Color borderColor = Color.black;
+		}
+		public final static class NitroBar {
+			public static int height = 4;
+			public static int descent = 7;
+			public static Color defaultColor = Color.orange;
 			public static Color borderColor = Color.black;
 		}
 	}
@@ -66,8 +76,9 @@ public final class Settings {
 	
 	public final static class BonusSpawner {
 		public static double probability = 0.005; // Probability that bonus spawns in tick
-		public static double pFlag = 0.7;
+		public static double pFlag = 0.6;
 		public static double pMedKit = 0.3;
+		public static double pNitro = 0.1;
 		public static int placementTries = 100;
 		public static double defaultRadius = 10;
 	}
@@ -80,18 +91,28 @@ public final class Settings {
 		public final static class Flag {
 			public static int goalPoints = 100;
 		}
+		public final static class Nitro {
+			public static double nitroCount = 10;
+			public static int goalPoints = 10;
+		}
 		public static int defaultLifeTime = 500;
+	}
+	
+	public final static class InfoTip {
+		public static double defaultTextSize = 14;
 	}
 	
 	public final static class AnimatedTip {
 		public static Color dmgColor = Color.red,
-				healColor = Color.green,
-				goalColor = Color.orange;
+				healColor = Color.blue,
+				goalColor = Color.orange,
+				nitroColor = Color.green;
 		public static int defaultLifeTime = 50; // life time in ticks
 		public static double startTextSize = 16,
 				endTextSize = 12;
 		public static Vector2d defaultSpeed = new Vector2d(0, -0.1);
 		public static int defaultZIndex = 1000;
+		public static double stackIndent = 1;
 	}
 
 }

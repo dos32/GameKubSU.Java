@@ -50,7 +50,7 @@ public final class Renderer implements UnitContainer {
 		long t1 = System.nanoTime();
 		if(updated)
 		{
-			graphics.setFont(new Font("Courier new", Font.PLAIN, 14));
+			// graphics.setFont(new Font("Courier new", Font.PLAIN, 14));
 			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 			graphics.setBackground(Color.white);
 			graphics.setColor(Color.black);
