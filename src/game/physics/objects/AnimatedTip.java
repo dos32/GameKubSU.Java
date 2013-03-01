@@ -39,7 +39,7 @@ public class AnimatedTip extends InfoTip implements Tickable {
 		Color oldColor = graphics.getColor();
 		graphics.setColor(color);
 		graphics.setFont(new Font("Courier new", Font.PLAIN, (int)textSize));
-		graphics.drawString(message, (float)position.x, (float)position.y);
+		graphics.drawString(message, (float)position.x, (float)(position.y+graphics.getFontMetrics().getAscent()));
 		graphics.setColor(oldColor);
 		graphics.setFont(oldFont);
 	}

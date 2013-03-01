@@ -89,7 +89,7 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 	}
 	
 	public int addGoalPoints(int ptsCount) {
-		player.ChangeScore(ptsCount);
+		player.changeScore(ptsCount);
 		return ptsCount;
 	}
 	
@@ -172,6 +172,10 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 	@Override
 	public String getClassName() {
 		return "Vehicle";
+	}
+
+	public Color getColor() {
+		return imageColors[colorId];
 	}
 
 }

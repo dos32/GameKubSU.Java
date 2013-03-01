@@ -40,7 +40,7 @@ public class Player implements Serializable, JSONSerializable {
 	/**
 	 * Changes score of player and refresh stats
 	 */
-	public void ChangeScore(int delta) {
+	public void changeScore(int delta) {
 		score+= delta;
 		statsTip.message = String.format("%d: \"%s\" \t%d", id, name, score);
 	}

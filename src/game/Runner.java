@@ -8,6 +8,7 @@ import client.ClientRunner;
 
 import game.engine.BonusSpawner;
 import game.engine.Tickable;
+import game.engine.TipPlacer;
 import game.engine.UnitContainer;
 import game.engine.Settings;
 import game.engine.World;
@@ -20,6 +21,7 @@ import game.physics.objects.InfoTip;
 import game.physics.objects.Obstacle;
 import game.physics.objects.Unit;
 import game.physics.objects.Vehicle;
+import game.server.ClientListener;
 import game.server.Server;
 import game.utils.Vector2d;
 
@@ -64,6 +66,7 @@ public class Runner implements UnitContainer {
 		if(Settings.Renderer.drawImages) {
 			Vehicle.prepareImages();
 			Bonus.prepareImages();
+			Obstacle.prepareImages();
 		}
 	}
 	
@@ -121,11 +124,26 @@ public class Runner implements UnitContainer {
 			new Thread(new testBot.ClientRunner()).start();
 		}*/
 		//
+		clearUnits();
 		server.acceptClients();
+		// vehicles:
+		for(int i=0; i<server.clients.size(); i++) {
+			Vehicle v = new Vehicle(server.clients.get(i).player);
+			physics.collideForce.placeNoCollide(v, Settings.Vehicle.placeTryCount);
+		}
+		// stats:
+		ArrayList<InfoTip> tips = new ArrayList<InfoTip>();
+		for(ClientListener listener : server.clients) {
+			InfoTip playerTip = new InfoTip("l");
+			playerTip.color = listener.player.vehicles.get(0).getColor();
+			listener.player.statsTip = playerTip;
+			listener.player.changeScore(0);
+			tips.add(playerTip);
+		}
+		TipPlacer.placeTips(tips, new Vector2d(0, 0));
 	}
 
 	protected void prepareGame() {
-		clearUnits();
 		// edges:
 		new HalfPlane(new Vector2d(0, 0), 0);
 		new HalfPlane(new Vector2d(world.width, 0), Math.PI);
@@ -146,25 +164,20 @@ public class Runner implements UnitContainer {
 			c.speed.scale(2);
 		}
 		
-		// vehicles:
-		for(int i=0; i<server.clients.size(); i++) {
-			Vehicle v = new Vehicle(server.clients.get(i).player);
-			physics.collideForce.placeNoCollide(v, Settings.Vehicle.placeTryCount);
-		}
-		
 		infoTick = new InfoTip(String.format("Ticks=%s", tick));
+		infoTick.position.assign(1100, 0);
 		infoTick.isStatic = true;
 		infoTick.color = Color.red;
 		
 		infoRendererFPS = new InfoTip("");
 		infoRendererFPS.isStatic = true;
-		infoRendererFPS.position.assign(0, 16);
+		infoRendererFPS.position.assign(1100, 16);
 		infoRendererFPS.color = Color.red;
 		renderer.updateFPS();
 		
 		infoPhysFPS = new InfoTip("");
 		infoPhysFPS.isStatic = true;
-		infoPhysFPS.position.assign(0, 32);
+		infoPhysFPS.position.assign(1100, 32);
 		infoPhysFPS.color = Color.red;
 		physics.updateFPS();
 	}
