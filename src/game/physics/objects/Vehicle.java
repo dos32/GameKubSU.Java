@@ -88,6 +88,17 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 		return (health - oldHealthLevel);
 	}
 	
+	/**
+	 * Does same that changeHealth, but not change
+	 * value of health
+	 * @param delta
+	 * @return
+	 */
+	public double getHealthChange(double delta) {
+		double newHealthLevel = Math.min(Math.max(0, health + delta), Settings.Vehicle.maxHealth);
+		return (newHealthLevel - health);
+	}
+	
 	public int addGoalPoints(int ptsCount) {
 		player.changeScore(ptsCount);
 		return ptsCount;

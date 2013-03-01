@@ -41,23 +41,6 @@ public final class Renderer implements UnitContainer {
 		}
 	}
 	
-	@Override
-	public void addUnit(Unit unit) {
-		if(unit instanceof Drawable)
-			objects.add((Drawable)unit);
-	}
-
-	@Override
-	public void removeUnit(Unit unit) {
-		if(unit instanceof Drawable)
-			objects.remove(unit);
-	}
-
-	@Override
-	public void clearUnits() {
-		objects.clear();
-	}
-	
 	public void updateFPS() {
 		if(Runner.inst().infoRendererFPS == null)
 			return;
@@ -98,4 +81,22 @@ public final class Renderer implements UnitContainer {
 			}
 		}
 	}
+	
+	@Override
+	public void addUnit(Unit unit) {
+		if(unit instanceof Drawable)
+			objects.add((Drawable)unit);
+	}
+
+	@Override
+	public void removeUnit(Unit unit) {
+		if(unit instanceof Drawable)
+			objects.remove(unit);
+	}
+
+	@Override
+	public void clearUnits() {
+		objects.clear();
+	}
+	
 }

@@ -2,15 +2,12 @@ package game.physics.colliders.hooks;
 
 import game.physics.objects.Unit;
 
-public abstract class CollideEventHook {
-	public Unit attachedObject;
+public interface CollideEventHook {
 	
-	public CollideEventHook(Unit attachedObject) {
-		this.attachedObject = attachedObject;
-	}
-	
-	/*
-	 * Calls on event, returns true if collision is processed by hook
+	/**
+	 * Calls on event of collision on binded object
+	 * @return	true if collision is processed by hook,
+	 * false if collsion must be calculated by collider
 	 */
 	public abstract boolean onEvent(Unit secondObject, double penetrationDepth);
 }
