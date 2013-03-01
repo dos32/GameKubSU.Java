@@ -9,6 +9,7 @@ public class Vehicle extends Circle implements JSONSerializable {
 	private String playerName;
 	private boolean isTeammate;
 	private double health;
+	private double nitro;
 	
 	/**
 	 * 
@@ -42,6 +43,14 @@ public class Vehicle extends Circle implements JSONSerializable {
 		return health;
 	}
 	
+	/**
+	 * 
+	 * @return	Health of vehicle
+	 */
+	public double getNitro() {
+		return nitro;
+	}
+	
 	@Override
 	public JSONObject toJSON() {
 		return null;
@@ -51,6 +60,7 @@ public class Vehicle extends Circle implements JSONSerializable {
 	public void fromJSON(JSONObject json) throws JSONClassCheckException {
 		super.fromJSON(json);
 		health = json.getDouble("health");
+		nitro = json.getDouble("nitro");
 		playerId = json.getInt("playerId");
 		playerName = json.getString("playerName");
 		isTeammate = json.getBoolean("isTeammate");

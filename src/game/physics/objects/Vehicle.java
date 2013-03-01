@@ -152,6 +152,7 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 		JSONObject json = super.toJSON();
 		json.put("index", indexInTeam);
 		json.put("health", health);
+		json.put("nitro", nitro);
 		json.put("playerId", playerId);
 		json.put("playerName", player.name);
 		json.put("isTeammate", isTeammate);
@@ -163,6 +164,7 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 		super.fromJSON(json);
 		indexInTeam = json.getInt("index");
 		health = json.getDouble("health");
+		nitro = json.getDouble("nitro");
 		playerId = json.getInt("playerId");
 		isTeammate = json.getBoolean("isTeammate");
 	}
