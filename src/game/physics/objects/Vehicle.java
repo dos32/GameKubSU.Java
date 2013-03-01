@@ -67,8 +67,8 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 	/**
 	 * Changes nitro value by delta; constraints it
 	 * accordingly settings
-	 * @param delta Desirable change of nitro value
-	 * @return	Factual change of nitro value
+	 * @param	delta Desirable change of nitro value
+	 * @return	Factual change of nitro under constraints
 	 */
 	public double changeNitro(double delta) {
 		double oldNitroLevel = nitro;
@@ -80,7 +80,7 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 	 * Changes health value by delta; constraints it
 	 * accordingly settings
 	 * @param	delta Desirable change of health value
-	 * @return	Factual change of health value
+	 * @return	Factual change of health under constraints
 	 */
 	public double changeHealth(double delta) {
 		double oldHealthLevel = health;
@@ -92,13 +92,18 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 	 * Does same that changeHealth, but not change
 	 * value of health
 	 * @param delta
-	 * @return
+	 * @return	Factual possible change of health under constraints
 	 */
 	public double getHealthChange(double delta) {
 		double newHealthLevel = Math.min(Math.max(0, health + delta), Settings.Vehicle.maxHealth);
 		return (newHealthLevel - health);
 	}
 	
+	/**
+	 * Just adds goal points and changes player score
+	 * @param ptsCount
+	 * @return	Factual change of score points under constraints
+	 */
 	public int addGoalPoints(int ptsCount) {
 		player.changeScore(ptsCount);
 		return ptsCount;

@@ -25,9 +25,14 @@ import game.server.ClientListener;
 import game.server.Server;
 import game.utils.Vector2d;
 
+/**
+ * Class for assemblying entire game model
+ * @author DOS
+ *
+ */
 public class Runner implements UnitContainer {
-	/* 
-	 * Current instance of Runner
+	/**
+	 * Current instance of Runner.
 	 * Important: because it is not singleton,
 	 *	using multiple instances of this class
 	 *	suggest manual switch field current to
@@ -35,12 +40,28 @@ public class Runner implements UnitContainer {
 	 *	can need to access its fields
 	 */
 	private static Runner currentInstance;
+	
+	/**
+	 * Same as singleton instance(), but allowing
+	 * multi instancing for future features
+	 * @return	Current instance of Runner;
+	 * in case of multi-instancing the last of them
+	 */
 	public static Runner inst() {
 		return currentInstance;
 	}
 	
+	/**
+	 * 
+	 * @return	Current rendering graphics context
+	 */
 	public Graphics2D graphics() {
 		return mainFrame.mainCanvas.graphics();
+	}
+	
+	public void forceRender() {
+		renderer.updated = true;
+		mainFrame.mainCanvas.render();
 	}
 	
 	public final MainFrame mainFrame;
@@ -50,7 +71,7 @@ public class Runner implements UnitContainer {
 	public final Physics physics;
 	public final BonusSpawner bonusSpawner;
 	
-	public InfoTip infoTick, infoRendererFPS, infoPhysFPS;
+	public InfoTip infoTick;
 	
 	public int tick = 0;
 
@@ -71,6 +92,10 @@ public class Runner implements UnitContainer {
 		}
 	}
 	
+	/**
+	 * Delays execution of current thread
+	 * @param time
+	 */
 	protected void delay(long time) {
 		try {
 			Thread.sleep(time);
@@ -79,6 +104,10 @@ public class Runner implements UnitContainer {
 		}
 	}
 	
+	/**
+	 * Entering in waiting for time loop
+	 * @param time
+	 */
 	protected void waitForTime(long time) {
 		try {
 			while(System.currentTimeMillis()<time)
@@ -88,6 +117,9 @@ public class Runner implements UnitContainer {
 		}
 	}
 	
+	/**
+	 * Updates tick label
+	 */
 	public void updateTick() {
 		infoTick.message = String.format("ticks = %s", tick);
 	}
@@ -113,20 +145,27 @@ public class Runner implements UnitContainer {
 		renderer.clearUnits();
 	}
 	
+	/**
+	 * Shows greeting message
+	 */
 	protected void showGreeting() {
-		InfoTip info = new InfoTip("Wait for client AI");
-		info.position.assign(world.width/2, world.height/2);
-		mainFrame.mainCanvas.render();
+		infoTick = new InfoTip("Wait for clients AI");
+		infoTick.position.assign(world.width/2, world.height/2);
+		forceRender();
+	}
+
+	/**
+	 * Prepares clients and game environment
+	 */
+	protected void prepareGame() {
 		// test clients:
-		for(int i=0; i<Settings.playersCount; i++) {
+		for(int i=0; i<Settings.playersCount; i++)
 			new Thread(new ClientRunner()).start();
-		}
-		/*for(int i=0; i<(Settings.playersCount); i++) {
-			new Thread(new testBot.ClientRunner()).start();
-		}*/
-		//
-		clearUnits();
+
 		server.acceptClients();
+		infoTick.message = "Clients are connected. Preparing the game.";
+		forceRender();
+		
 		// vehicles:
 		for(int i=0; i<server.clients.size(); i++) {
 			Vehicle v = new Vehicle(server.clients.get(i).player);
@@ -142,9 +181,8 @@ public class Runner implements UnitContainer {
 			tips.add(playerTip);
 		}
 		TipPlacer.placeTips(tips, new Vector2d(0, 0));
-	}
-
-	protected void prepareGame() {
+		tips.clear();
+		
 		// edges:
 		new HalfPlane(new Vector2d(0, 0), 0);
 		new HalfPlane(new Vector2d(world.width, 0), Math.PI);
@@ -160,25 +198,29 @@ public class Runner implements UnitContainer {
 			c.speed.scale(2);
 			physics.collideForce.placeNoCollide(c, Settings.Vehicle.placeTryCount);
 		}
-		
-		infoTick = new InfoTip(String.format("Ticks=%s", tick));
-		infoTick.position.assign(1100, 0);
-		infoTick.isStatic = true;
+
+		// Perf and info tips:
 		infoTick.color = Color.red;
+		tips.add(infoTick);
+		updateTick();
 		
-		infoRendererFPS = new InfoTip("");
-		infoRendererFPS.isStatic = true;
-		infoRendererFPS.position.assign(1100, 16);
-		infoRendererFPS.color = Color.red;
+		renderer.fpsInfo = new InfoTip("");
+		renderer.fpsInfo.color = Color.red;
+		tips.add(renderer.fpsInfo);
 		renderer.updateFPS();
 		
-		infoPhysFPS = new InfoTip("");
-		infoPhysFPS.isStatic = true;
-		infoPhysFPS.position.assign(1100, 32);
-		infoPhysFPS.color = Color.red;
+		physics.fpsInfo = new InfoTip("");
+		physics.fpsInfo.color = Color.red;
+		tips.add(physics.fpsInfo);
 		physics.updateFPS();
+		
+		TipPlacer.placeTips(tips, 1100, 0);
+		tips.clear();
 	}
 	
+	/**
+	 * Shows round statistics
+	 */
 	protected void showStats() {
 		clearUnits();
 		// stats:
@@ -194,7 +236,7 @@ public class Runner implements UnitContainer {
 			tips.add(playerTip);
 		}
 		TipPlacer.placeTips(tips, new Vector2d(world.width/2, world.height/2));
-		mainFrame.mainCanvas.render();
+		forceRender();
 	}
 
 	protected void tick() {
@@ -206,7 +248,7 @@ public class Runner implements UnitContainer {
 		for(Unit unit : objects)
 			if(unit instanceof Tickable)
 				((Tickable)unit).tick();
-		mainFrame.mainCanvas.render();
+		forceRender();
 		tick++;
 		world.tick = tick;
 		updateTick();

@@ -11,6 +11,7 @@ import game.physics.forces.CollideForce;
 import game.physics.forces.FrictionForce;
 import game.physics.forces.GlobalForce;
 import game.physics.forces.GravityForce;
+import game.physics.objects.InfoTip;
 import game.physics.objects.Unit;
 import game.utils.Vector2d;
 
@@ -19,6 +20,7 @@ public final class Physics implements UnitContainer {
 	protected int ticks;
 	protected long ticksCount = 0, innerTime = 0, lastRealTime = 0;
 	protected double fps = 0;
+	public InfoTip fpsInfo = null;
 	
 	// List of all physics objects:
 	public ArrayList<Unit> objects = new ArrayList<Unit>();
@@ -31,12 +33,12 @@ public final class Physics implements UnitContainer {
 	public CollideForce collideForce = new CollideForce();
 	
 	public void updateFPS() {
-		if(Runner.inst().infoPhysFPS == null)
+		if(fpsInfo == null)
 			return;
 		if(fps == 0)
-			Runner.inst().infoPhysFPS.message = String.format("Phys.FPS = %s", "n/a");
+			fpsInfo.message = String.format("Phys.FPS = %s", "n/a");
 		else {
-			Runner.inst().infoPhysFPS.message = String.format("Phys.FPS = %s", Math.round(fps));
+			fpsInfo.message = String.format("Phys.FPS = %s", Math.round(fps));
 		}
 	}
 

@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import game.Runner;
 import game.engine.UnitContainer;
 import game.engine.Settings;
+import game.physics.objects.InfoTip;
 import game.physics.objects.Unit;
 
 public final class Renderer implements UnitContainer {
@@ -20,6 +21,7 @@ public final class Renderer implements UnitContainer {
 	
 	protected double fps = 0;
 	protected long framesCount = 0, time = 0, lastRealTime = 0;
+	public InfoTip fpsInfo = null;
 	
 	protected TreeSet<Drawable> objects = new TreeSet<Drawable>();
 	
@@ -42,12 +44,12 @@ public final class Renderer implements UnitContainer {
 	}
 	
 	public void updateFPS() {
-		if(Runner.inst().infoRendererFPS == null)
+		if(fpsInfo == null)
 			return;
 		if(fps == 0)
-			Runner.inst().infoRendererFPS.message = String.format("Renderer.FPS = %s", "n/a");
+			fpsInfo.message = String.format("Renderer.FPS = %s", "n/a");
 		else {
-			Runner.inst().infoRendererFPS.message = String.format("Renderer.FPS = %s", Math.round(fps));
+			fpsInfo.message = String.format("Renderer.FPS = %s", Math.round(fps));
 		}
 	}
 

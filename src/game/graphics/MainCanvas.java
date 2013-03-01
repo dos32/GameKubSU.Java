@@ -31,7 +31,8 @@ public class MainCanvas extends Canvas {
 	
 	@Override
 	public void paint(Graphics g) {
-		
+		prepareGraphics();
+		bs.show();
 	}
 	
 	@Override

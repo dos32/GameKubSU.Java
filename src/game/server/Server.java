@@ -1,5 +1,6 @@
 package game.server;
 
+import game.Runner;
 import game.engine.Settings;
 import game.physics.objects.Vehicle;
 
@@ -37,12 +38,16 @@ public final class Server {
 		{
 			clients.add(new ClientListener(null));
 			try {
+				Runner.inst().infoTick.message = String.format("Wait for %d client...", i+1);
+				Runner.inst().forceRender();
 				Socket client = server.accept();
 				/*client.setSendBufferSize(Settings.Connection.buffer_size);
 				client.setReceiveBufferSize(Settings.Connection.buffer_size);*/
 				client.setSoTimeout(Settings.Server.tickTimeout);
 				clients.get(i).client = client;
 				clients.get(i).init();
+				Runner.inst().infoTick.message = String.format("Client %d \"%s\" connected.", i+1, clients.get(i).player.name);
+				Runner.inst().forceRender();
 			} catch (IOException e) {
 				if(e.getClass() == java.net.SocketTimeoutException.class)
 					System.err.println(String.format("Can't accept %s client: timeout has been reached", i));
