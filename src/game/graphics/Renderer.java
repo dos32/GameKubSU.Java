@@ -49,7 +49,7 @@ public final class Renderer implements UnitContainer {
 		long t1 = System.nanoTime();
 		if(updated)
 		{
-			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 			graphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
 			graphics.setBackground(Color.white);
 			graphics.setColor(Color.black);

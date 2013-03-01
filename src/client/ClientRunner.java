@@ -11,10 +11,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import javax.swing.JFrame;
-
 public class ClientRunner implements Runnable {
-	public ClientFrame frame;
 	public Socket listener;
 	public Bot bot;
     
@@ -22,13 +19,7 @@ public class ClientRunner implements Runnable {
     PrintWriter out = null;
 	
 	public ClientRunner() {
-		frame = new ClientFrame();
-		frame.setVisible(true);
-		frame.setLocation(800, 660);
-		frame.setSize(500, 100);
-		frame.setTitle("Press arrow keys to move the vehicle");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		bot = new Bot(this);
+		bot = new Bot();
 	}
 	
 	@Override
@@ -62,7 +53,7 @@ public class ClientRunner implements Runnable {
 					cm = new ClientMessage(action, "");
 					break;
 				case ServerMessage.MT_END:
-					frame.dispose();
+					//frame.dispose();
 					return;
 				default:
 					break;

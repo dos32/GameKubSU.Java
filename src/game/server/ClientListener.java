@@ -46,6 +46,8 @@ public final class ClientListener implements Runnable {
 			e.printStackTrace();
 		}
 		player.name = cm.botName;
+		if(player.name == null)
+			player.name = "";
 	}
 
 	/*

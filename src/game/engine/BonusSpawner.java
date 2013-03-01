@@ -15,8 +15,15 @@ public class BonusSpawner {
 			return BonusType.NITRO_FUEL;
 	}
 	
+	public double probability() {
+		if(Runner.inst().world.bonuses.size() == 0)
+			return 1;
+		else
+			return (Math.random()-Settings.BonusSpawner.probability/2+1/Runner.inst().world.bonuses.size());
+	}
+	
 	public void tick() {
-		if(Math.random() > 1-Settings.BonusSpawner.probability) {
+		if(probability() > 1-Settings.BonusSpawner.probability) {
 			Runner.inst().physics.collideForce.placeNoCollide(
 					new Bonus(genType()), Settings.BonusSpawner.placementTries);
 		}

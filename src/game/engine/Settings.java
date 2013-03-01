@@ -7,8 +7,8 @@ import java.awt.Color;
 public final class Settings {
 	public static int tickDuration = 12;
 	public static int maxTicksCount = 5000;
-	public static int waitBeforeDuration = 1000;
-	public static int waitAfterDuration = 1000;
+	public static int waitBeforeDuration = 100;
+	public static int waitAfterDuration = 5000;
 	public static int waitInterval = 1;
 
 	public static int playersCount = 6;
@@ -29,7 +29,8 @@ public final class Settings {
 	}
 
 	public final static class Vehicle {
-		public static double maxHealth = 100, maxNitro = 50;
+		public static double maxHealth = 100;
+		public static double maxNitro = 250;
 		public static double maxNitroBoost = 1; // Max power, adds to default, when nitro is available
 		public static double powerCoeff = 0.07;
 		public static double turnCoeff = 0.07 * Math.PI / 180;
@@ -92,8 +93,8 @@ public final class Settings {
 			public static int goalPoints = 100;
 		}
 		public final static class Nitro {
-			public static double nitroCount = 10;
-			public static int goalPoints = 10;
+			public static double nitroCount = 150;
+			public static int goalPoints = 15;
 		}
 		public static int defaultLifeTime = 500;
 	}

@@ -134,7 +134,7 @@ public class Runner implements UnitContainer {
 		// stats:
 		ArrayList<InfoTip> tips = new ArrayList<InfoTip>();
 		for(ClientListener listener : server.clients) {
-			InfoTip playerTip = new InfoTip("l");
+			InfoTip playerTip = new InfoTip("");
 			playerTip.color = listener.player.vehicles.get(0).getColor();
 			listener.player.statsTip = playerTip;
 			listener.player.changeScore(0);
@@ -151,17 +151,13 @@ public class Runner implements UnitContainer {
 		new HalfPlane(new Vector2d(0, 0), Math.PI/2);
 		
 		// test:
-		Obstacle c = new Obstacle(100);
-		c.mass = Math.pow(c.radius,2)*Math.PI*0.01;
-		c.position.assign(Math.random()*world.width, Math.random()*world.height);
-		c.speed.assign(Math.random()-0.5, Math.random()-0.5);
-		c.speed.scale(20);
+		Obstacle c = null;
 		for(int i=0; i<50; i++) {
 			c = new Obstacle(10);
 			c.mass = Math.pow(c.radius,2)*Math.PI*0.01;
-			c.position.assign(Math.random()*world.width, Math.random()*world.height);
 			c.speed.assign(Math.random()-0.5, Math.random()-0.5);
 			c.speed.scale(2);
+			physics.collideForce.placeNoCollide(c, Settings.Vehicle.placeTryCount);
 		}
 		
 		infoTick = new InfoTip(String.format("Ticks=%s", tick));
@@ -184,8 +180,19 @@ public class Runner implements UnitContainer {
 	
 	protected void showStats() {
 		clearUnits();
+		// stats:
+		ArrayList<InfoTip> tips = new ArrayList<InfoTip>();
 		InfoTip info = new InfoTip("Game over");
 		info.position = new Vector2d(world.width/2, world.height/2);
+		tips.add(info);
+		for(ClientListener listener : server.clients) {
+			InfoTip playerTip = new InfoTip("");
+			playerTip.color = listener.player.vehicles.get(0).getColor();
+			listener.player.statsTip = playerTip;
+			listener.player.changeScore(0);
+			tips.add(playerTip);
+		}
+		TipPlacer.placeTips(tips, new Vector2d(world.width/2, world.height/2));
 		mainFrame.mainCanvas.render();
 	}
 
