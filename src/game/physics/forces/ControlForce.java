@@ -15,7 +15,7 @@ public class ControlForce extends BindedForce {
 
 	@Override
 	public void apply() {
-		Vector2d n = new Vector2d(Math.sin(bindUnit.angle), Math.cos(bindUnit.angle));
+		Vector2d n = new Vector2d(Math.cos(bindUnit.angle), Math.sin(bindUnit.angle));
 		double nitroForTick = Math.min(((Vehicle)bindUnit).nitro, Settings.Vehicle.maxNitroBoost);
 		powerFactor = Math.signum(powerFactor)*Math.min(Math.abs(powerFactor),
 				Settings.Vehicle.maxPowerFactor + nitroForTick);

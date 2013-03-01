@@ -14,6 +14,7 @@ import game.engine.World;
 import game.graphics.MainFrame;
 import game.graphics.Renderer;
 import game.physics.Physics;
+import game.physics.objects.Bonus;
 import game.physics.objects.HalfPlane;
 import game.physics.objects.InfoTip;
 import game.physics.objects.Obstacle;
@@ -61,7 +62,8 @@ public class Runner implements UnitContainer {
 		bonusSpawner = new BonusSpawner();
 		// Load resources:
 		if(Settings.Renderer.drawImages) {
-			Vehicle.loadImages();
+			Vehicle.prepareImages();
+			Bonus.prepareImages();
 		}
 	}
 	
@@ -136,8 +138,8 @@ public class Runner implements UnitContainer {
 		c.position.assign(Math.random()*world.width, Math.random()*world.height);
 		c.speed.assign(Math.random()-0.5, Math.random()-0.5);
 		c.speed.scale(20);
-		for(int i=0; i<10; i++) {
-			c = new Obstacle((Math.random()+0.5)*8);
+		for(int i=0; i<50; i++) {
+			c = new Obstacle(10);
 			c.mass = Math.pow(c.radius,2)*Math.PI*0.01;
 			c.position.assign(Math.random()*world.width, Math.random()*world.height);
 			c.speed.assign(Math.random()-0.5, Math.random()-0.5);

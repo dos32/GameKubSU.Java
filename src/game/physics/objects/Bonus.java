@@ -9,14 +9,23 @@ import game.json.JSONObject;
 import game.json.JSONSerializable;
 
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 public class Bonus extends Circle implements Serializable, JSONSerializable, Tickable {
 	private static final long serialVersionUID = 8357488035574848722L;
 	protected int bornTime;
 	public int lifeTime = Settings.Bonus.defaultLifeTime;
 	public BonusType type;
+	protected static BufferedImage imageNitro = null,
+			imageMedkit = null,
+			imageFlag = null;
 
 	public Bonus(BonusType bonusType) {
 		super(Settings.BonusSpawner.defaultRadius);
@@ -47,6 +56,21 @@ public class Bonus extends Circle implements Serializable, JSONSerializable, Tic
 		else {
 			System.err.println("Bonus.stringToType()::Cant recognize BonusType name");
 			return BonusType.FLAG;
+		}
+	}
+	
+	public static void prepareImages() {
+		if(imageNitro == null || imageMedkit == null || imageFlag == null) {
+			try {
+				URL url = Runner.class.getResource("/res/nitro1.png");
+				imageNitro = ImageIO.read(url);
+				url = Runner.class.getResource("/res/medkit1.png");
+				imageMedkit = ImageIO.read(url);
+				url = Runner.class.getResource("/res/flag1.png");
+				imageFlag = ImageIO.read(url);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -84,17 +108,61 @@ public class Bonus extends Circle implements Serializable, JSONSerializable, Tic
 	}
 
 	public void draw(Graphics2D graphics) {
-		super.draw(graphics);
 		switch(type) {
 			case MED_KIT:
-				graphics.drawLine((int)(position.x-radius), (int)position.y, (int)(position.x+radius), (int)position.y);
-				graphics.drawLine((int)position.x, (int)(position.y-radius), (int)position.x, (int)(position.y+radius));
+				if(Settings.Renderer.drawImages) {
+					prepareImages();
+					AffineTransform oldTransform = graphics.getTransform();
+					graphics.translate(position.x, position.y);
+					graphics.rotate(angle);
+					graphics.drawImage(imageMedkit, (int)-radius, (int)-radius,
+							(int)(2*radius), (int)(2*radius), null);
+					graphics.setTransform(oldTransform);
+				}
+				else {
+					AffineTransform oldTransform = graphics.getTransform();
+					graphics.translate(position.x-radius, position.y-radius);
+					graphics.drawOval(0, 0, (int)radius*2, (int)radius*2);
+					graphics.drawLine((int)(position.x-radius), (int)position.y, (int)(position.x+radius), (int)position.y);
+					graphics.drawLine((int)position.x, (int)(position.y-radius), (int)position.x, (int)(position.y+radius));
+					graphics.setTransform(oldTransform);
+				}
 				break;
 			case FLAG:
-				graphics.drawLine((int)position.x, (int)(position.y-radius), (int)position.x, (int)(position.y+radius));
+				if(Settings.Renderer.drawImages) {
+					prepareImages();
+					AffineTransform oldTransform = graphics.getTransform();
+					graphics.translate(position.x, position.y);
+					graphics.rotate(angle);
+					graphics.drawImage(imageFlag, (int)-radius, (int)-radius,
+							(int)(2*radius), (int)(2*radius), null);
+					graphics.setTransform(oldTransform);
+				}
+				else {
+					AffineTransform oldTransform = graphics.getTransform();
+					graphics.translate(position.x-radius, position.y-radius);
+					graphics.drawOval(0, 0, (int)radius*2, (int)radius*2);
+					graphics.drawLine((int)position.x, (int)(position.y-radius), (int)position.x, (int)(position.y+radius));
+					graphics.setTransform(oldTransform);
+				}
 				break;
 			case NITRO_FUEL:
-				graphics.drawString("N", (float)position.x, (float)position.y);
+				if(Settings.Renderer.drawImages) {
+					prepareImages();
+					AffineTransform oldTransform = graphics.getTransform();
+					graphics.translate(position.x, position.y);
+					graphics.rotate(angle);
+					graphics.drawImage(imageNitro, (int)-radius, (int)-radius,
+							(int)(2*radius), (int)(2*radius), null);
+					graphics.setTransform(oldTransform);
+				}
+				else {
+					AffineTransform oldTransform = graphics.getTransform();
+					graphics.translate(position.x-radius, position.y-radius);
+					graphics.drawOval(0, 0, (int)radius*2, (int)radius*2);
+					graphics.drawString("N", (float)position.x, (float)position.y);
+					graphics.setTransform(oldTransform);
+				}
 				break;
 			default:
 				break;

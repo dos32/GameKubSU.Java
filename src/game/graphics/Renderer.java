@@ -1,7 +1,6 @@
 package game.graphics;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.TreeSet;
@@ -50,8 +49,8 @@ public final class Renderer implements UnitContainer {
 		long t1 = System.nanoTime();
 		if(updated)
 		{
-			// graphics.setFont(new Font("Courier new", Font.PLAIN, 14));
-			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			graphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
 			graphics.setBackground(Color.white);
 			graphics.setColor(Color.black);
 			graphics.clearRect(0, 0, (int)Settings.World.width, (int)Settings.World.height);

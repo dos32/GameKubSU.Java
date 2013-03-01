@@ -16,10 +16,10 @@ public class Bot {
 	
 	public void move(World world, Vehicle self, BotAction action) {
 		if (runner.frame.leftPressed ){
-			action.turn = 1;
+			action.turn = -1;
 		}
 		if (runner.frame.rightPressed ){
-			action.turn = -1;
+			action.turn = 1;
 		}
 		if (runner.frame.upPressed ){
 			action.power = 1;

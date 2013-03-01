@@ -14,4 +14,10 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<variableList>
+		<variable>
+			<name>car1</name>
+			<value>file:/C:/Users/DOS/workspace/GameKubSU.java/src/car1.png</value>
+		</variable>
+	</variableList>
 </projectDescription>

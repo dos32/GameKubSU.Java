@@ -1,5 +1,6 @@
 package game.physics.objects;
 
+import game.Runner;
 import game.engine.Player;
 import game.engine.Settings;
 import game.json.JSONClassCheckException;
@@ -15,9 +16,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -25,8 +26,13 @@ import javax.imageio.ImageIO;
 public class Vehicle extends Circle implements Serializable, JSONSerializable {
 	private static final long serialVersionUID = 1563688715048158514L;
 	
-	private static transient BufferedImage image = null;
+	private static final int imagesCount = 6;
+	private static transient BufferedImage[] images = new BufferedImage[imagesCount];
+	private static transient Color[] imageColors = new Color[imagesCount];
+	
 	public transient Player player;
+	private static int lastColorId = 0;
+	protected int colorId;
 	protected int indexInTeam;
 	protected int playerId;
 	protected boolean isTeammate;
@@ -39,6 +45,12 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 	
 	private Vehicle() {
 		super(Settings.Vehicle.defaultRadius);
+		if(lastColorId >= images.length) {
+			System.err.println("There are not so much colors for vehicles");
+			colorId = lastColorId;
+		}
+		else
+			colorId = lastColorId++;
 	}
 	
 	public Vehicle(Player player) {
@@ -77,33 +89,35 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 	}
 	
 	public int addGoalPoints(int ptsCount) {
-		player.score += ptsCount;
+		player.ChangeScore(ptsCount);
 		return ptsCount;
 	}
 	
-	public static void loadImages() {
-		if(image == null)
+	public static void prepareImages() {
+		if(images[0] == null) {
 			try {
-				image = ImageIO.read(new File("res/car1.png"));
+				for(int i = 0; i < imagesCount; i++) {
+					URL url = Runner.class.getResource(String.format("/res/car%s.png", i+1));
+					images[i] = ImageIO.read(url);
+					imageColors[i] = new Color(images[i].getRGB(images[i].getWidth()/2, images[i].getHeight()/2));
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
 	}
 	
 	@Override
 	public void draw(Graphics2D graphics) {
 		Color oldColor = graphics.getColor();
 		if(Settings.Renderer.drawImages) {
-			// loadImages();
-			if(image != null) {
-				AffineTransform oldTransform = graphics.getTransform();
-				graphics.rotate(-angle, position.x, position.y);
-				graphics.drawImage(image, (int)(position.x-radius), (int)(position.y-2*radius),
-						(int)(2*radius), (int)(4*radius), null);
-				graphics.setTransform(oldTransform);
-			}
-			else
-				System.err.println("Vehicle::img not loaded");
+			prepareImages();
+			AffineTransform oldTransform = graphics.getTransform();
+			graphics.translate(position.x, position.y);
+			graphics.rotate(angle+Math.PI/2);
+			graphics.drawImage(images[colorId], (int)-radius, (int)-radius,
+					(int)(2*radius), (int)(2*radius), null);
+			graphics.setTransform(oldTransform);
 		}
 		else {
 			graphics.setColor(color);

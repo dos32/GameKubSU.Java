@@ -24,27 +24,30 @@ public abstract class Unit implements Serializable, JSONSerializable {
 	public Vector2d speed = new Vector2d();
 	public double angle = 0;
 	public double angularSpeed = 0;
-	//protected transient int zIndex = 0;
 	
 	public transient ArrayList<BindedForce> bindedForces = null; // beware of null !
 	public transient ArrayList<CollideEventHook> collideEventHooks = null; // beware of null !
 	
-	/*
+	/**
 	 * When object becomes static it
 	 * 	ignores self speed, friction and all collisions
 	 */
 	public boolean isStatic = false;
 	
-	/*
+	/**
 	 * When object becomes not material it
 	 * 	ignores all collisions
 	 */
 	public boolean isMaterial = true;
 	
-	// Physical mass of an object
+	/** 
+	 * Physical mass of an object
+	 */
 	public double mass = Settings.Physics.defaultMass;
 	
-	// Friction coefficient of an object
+	/**
+	 * Friction coefficient of an object
+	 */
 	public double frictionCoeff = Settings.Physics.defaultFrictionCoeff;
 
 	public Unit() {
@@ -57,29 +60,12 @@ public abstract class Unit implements Serializable, JSONSerializable {
 		Runner.inst().removeUnit(this);
 	}
 	
-	/*public void setZIndex(int zIndex) {
-		Runner.inst().renderer.removeUnit(this);
-		this.zIndex = zIndex;
-		Runner.inst().renderer.addUnit(this);
-	}*/
-	
-	public static void loadImages() {
+	/**
+	 * Prepares all necessary images
+	 */
+	public static void prepareImages() {
 		
 	}
-
-	//public abstract void draw(Graphics2D graphics);
-	
-	// Comparable:
-	
-	/*@Override
-	public int compareTo(Unit unit) {
-		int res = this.zIndex - unit.zIndex;
-		if(res==0)
-			res= this.id-unit.id;
-		if(res == 0 && this!=unit)
-			System.err.println("Unit.compareTo()::res==0");
-		return res;
-	}*/
 	
 	// JSON part:
 	

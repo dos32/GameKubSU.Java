@@ -3,6 +3,7 @@ package game.engine;
 import game.json.JSONClassCheckException;
 import game.json.JSONObject;
 import game.json.JSONSerializable;
+import game.physics.objects.InfoTip;
 import game.physics.objects.Vehicle;
 
 import java.awt.Color;
@@ -17,6 +18,7 @@ public class Player implements Serializable, JSONSerializable {
 	public int score;
 	public Color color;
 	public boolean crashed = false;
+	public InfoTip statsTip;
 	
 	public Player() {
 		this.id = lastId++;
@@ -24,7 +26,7 @@ public class Player implements Serializable, JSONSerializable {
 	
 	public ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
 	
-	/*
+	/**
 	 * True if at least one of player's
 	 * 	vehicles is alive
 	 */
@@ -35,12 +37,12 @@ public class Player implements Serializable, JSONSerializable {
 		return res;
 	}
 
-	/*
-	 * Changes score of player and create animation
+	/**
+	 * Changes score of player and refresh stats
 	 */
-	public void ChangeScore(int scoreDelta) {
-		score+= scoreDelta;
-		// TODO animation
+	public void ChangeScore(int delta) {
+		score+= delta;
+		statsTip.message = String.format("%d: \"%s\" \t%d", id, name, score);
 	}
 
 	@Override

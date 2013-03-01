@@ -2,6 +2,7 @@ package game.engine;
 
 import game.Runner;
 import game.json.JSONArray;
+import game.json.JSONClassCheckException;
 import game.json.JSONObject;
 import game.json.JSONSerializable;
 import game.physics.objects.Bonus;
@@ -18,7 +19,6 @@ public class World implements Serializable, JSONSerializable, UnitContainer {
 
 	public int tick = 0;
 	public final double width, height;
-	//public ArrayList<Player> players = new ArrayList<Player>();
 	public ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
 	public ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 	public ArrayList<Bonus> bonuses = new ArrayList<Bonus>();
@@ -31,11 +31,11 @@ public class World implements Serializable, JSONSerializable, UnitContainer {
 	@Override
 	public void addUnit(Unit unit) {
 		Runner.inst().renderer.updated = true;
-		if (unit.getClass() == Vehicle.class)
+		if (unit instanceof Vehicle)
 			vehicles.add((Vehicle) unit);
-		else if (unit.getClass() == Obstacle.class)
+		else if (unit instanceof Obstacle)
 			obstacles.add((Obstacle) unit);
-		else if (unit.getClass() == Bonus.class)
+		else if (unit instanceof Bonus)
 			bonuses.add((Bonus) unit);
 	}
 
@@ -91,8 +91,8 @@ public class World implements Serializable, JSONSerializable, UnitContainer {
 	}
 	
 	@Override
-	public void fromJSON(JSONObject json) {
-		// TODO
+	public void fromJSON(JSONObject json) throws JSONClassCheckException {
+		throw new JSONClassCheckException("not realized fromJSON");
 	}
 
 }
