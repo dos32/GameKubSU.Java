@@ -67,6 +67,7 @@ public class Runner implements UnitContainer {
 			Vehicle.prepareImages();
 			Bonus.prepareImages();
 			Obstacle.prepareImages();
+			Renderer.prepareImages();
 		}
 	}
 	

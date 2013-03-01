@@ -3,7 +3,12 @@ package game.graphics;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 import java.util.TreeSet;
+
+import javax.imageio.ImageIO;
 
 import game.Runner;
 import game.engine.UnitContainer;
@@ -17,6 +22,24 @@ public final class Renderer implements UnitContainer {
 	protected long framesCount = 0, time = 0, lastRealTime = 0;
 	
 	protected TreeSet<Drawable> objects = new TreeSet<Drawable>();
+	
+	protected static BufferedImage background = null;
+	
+	public static void prepareImages() {
+		if(background == null) {
+			try {
+				URL url = Runner.class.getResource(String.format("/res/background.png"));
+				BufferedImage image = ImageIO.read(url);
+				background = new BufferedImage((int)Runner.inst().world.width, (int)Runner.inst().world.height, BufferedImage.TYPE_INT_ARGB);
+				Graphics2D graphics = background.createGraphics();
+				for(int x = 0; x < background.getWidth(); x += image.getWidth())
+					for(int y = 0; y < background.getHeight(); y += image.getHeight())
+						graphics.drawImage(image, x, y, null);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	@Override
 	public void addUnit(Unit unit) {
@@ -53,7 +76,12 @@ public final class Renderer implements UnitContainer {
 			graphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
 			graphics.setBackground(Color.white);
 			graphics.setColor(Color.black);
-			graphics.clearRect(0, 0, (int)Settings.World.width, (int)Settings.World.height);
+			if(Settings.Renderer.drawImages) {
+				prepareImages();
+				graphics.drawImage(background, 0, 0, null);
+			}
+			else
+				graphics.clearRect(0, 0, (int)Settings.World.width, (int)Settings.World.height);
 			for(Drawable drawable : objects)
 				drawable.draw(graphics);
 			updated = false;
