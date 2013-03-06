@@ -1,26 +1,38 @@
 package game;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 import client.ClientRunner;
 
 import game.engine.BonusSpawner;
+import game.engine.Tickable;
+import game.engine.TipPlacer;
+import game.engine.UnitContainer;
 import game.engine.Settings;
 import game.engine.World;
 import game.graphics.MainFrame;
 import game.graphics.Renderer;
 import game.physics.Physics;
-import game.physics.objects.Circle;
+import game.physics.objects.Bonus;
 import game.physics.objects.HalfPlane;
 import game.physics.objects.InfoTip;
+import game.physics.objects.Obstacle;
 import game.physics.objects.Unit;
 import game.physics.objects.Vehicle;
+import game.server.ClientListener;
 import game.server.Server;
 import game.utils.Vector2d;
 
-public class Runner {
-	/* 
-	 * Current instance of Runner
+/**
+ * Class for assemblying entire game model
+ * @author DOS
+ *
+ */
+public class Runner implements UnitContainer {
+	/**
+	 * Current instance of Runner.
 	 * Important: because it is not singleton,
 	 *	using multiple instances of this class
 	 *	suggest manual switch field current to
@@ -28,8 +40,28 @@ public class Runner {
 	 *	can need to access its fields
 	 */
 	private static Runner currentInstance;
+	
+	/**
+	 * Same as singleton instance(), but allowing
+	 * multi instancing for future features
+	 * @return	Current instance of Runner;
+	 * in case of multi-instancing the last of them
+	 */
 	public static Runner inst() {
 		return currentInstance;
+	}
+	
+	/**
+	 * 
+	 * @return	Current rendering graphics context
+	 */
+	public Graphics2D graphics() {
+		return mainFrame.mainCanvas.graphics();
+	}
+	
+	public void forceRender() {
+		renderer.updated = true;
+		mainFrame.mainCanvas.render();
 	}
 	
 	public final MainFrame mainFrame;
@@ -39,7 +71,7 @@ public class Runner {
 	public final Physics physics;
 	public final BonusSpawner bonusSpawner;
 	
-	public InfoTip infoTick, infoRendererFPS, infoPhysFPS;
+	public InfoTip infoTick;
 	
 	public int tick = 0;
 
@@ -51,8 +83,19 @@ public class Runner {
 		world = new World();
 		server = new Server();
 		bonusSpawner = new BonusSpawner();
+		// Load resources:
+		if(Settings.Renderer.drawImages) {
+			Vehicle.prepareImages();
+			Bonus.prepareImages();
+			Obstacle.prepareImages();
+			Renderer.prepareImages();
+		}
 	}
 	
+	/**
+	 * Delays execution of current thread
+	 * @param time
+	 */
 	protected void delay(long time) {
 		try {
 			Thread.sleep(time);
@@ -61,6 +104,10 @@ public class Runner {
 		}
 	}
 	
+	/**
+	 * Entering in waiting for time loop
+	 * @param time
+	 */
 	protected void waitForTime(long time) {
 		try {
 			while(System.currentTimeMillis()<time)
@@ -70,38 +117,72 @@ public class Runner {
 		}
 	}
 	
+	/**
+	 * Updates tick label
+	 */
 	public void updateTick() {
 		infoTick.message = String.format("ticks = %s", tick);
 	}
 	
+	@Override
 	public void addUnit(Unit unit) {
 		world.addUnit(unit);
 		physics.addUnit(unit);
+		renderer.addUnit(unit);
 	}
-	
+
+	@Override
 	public void removeUnit(Unit unit) {
 		world.removeUnit(unit);
 		physics.removeUnit(unit);
+		renderer.removeUnit(unit);
 	}
-	
+
+	@Override
 	public void clearUnits() {
 		world.clearUnits();
 		physics.clearUnits();
+		renderer.clearUnits();
 	}
 	
+	/**
+	 * Shows greeting message
+	 */
 	protected void showGreeting() {
-		InfoTip info = new InfoTip("Wait for client AI");
-		info.position.assign(world.width/2, world.height/2);
-		mainFrame.mainCanvas.render();
-		// test client:
-		new Thread(new ClientRunner()).start();
-		new Thread(new ClientRunner()).start();
-		//
-		server.acceptClients();
+		infoTick = new InfoTip("Wait for clients AI");
+		infoTick.position.assign(world.width/2, world.height/2);
+		forceRender();
 	}
 
+	/**
+	 * Prepares clients and game environment
+	 */
 	protected void prepareGame() {
-		clearUnits();
+		// test clients:
+		for(int i=0; i<Settings.playersCount; i++)
+			new Thread(new ClientRunner()).start();
+
+		server.acceptClients();
+		infoTick.message = "Clients are connected. Preparing the game.";
+		forceRender();
+		
+		// vehicles:
+		for(int i=0; i<server.clients.size(); i++) {
+			Vehicle v = new Vehicle(server.clients.get(i).player);
+			physics.collideForce.placeNoCollide(v, Settings.Vehicle.placeTryCount);
+		}
+		// stats:
+		ArrayList<InfoTip> tips = new ArrayList<InfoTip>();
+		for(ClientListener listener : server.clients) {
+			InfoTip playerTip = new InfoTip("");
+			playerTip.color = listener.player.vehicles.get(0).getColor();
+			listener.player.statsTip = playerTip;
+			listener.player.changeScore(0);
+			tips.add(playerTip);
+		}
+		TipPlacer.placeTips(tips, new Vector2d(0, 0));
+		tips.clear();
+		
 		// edges:
 		new HalfPlane(new Vector2d(0, 0), 0);
 		new HalfPlane(new Vector2d(world.width, 0), Math.PI);
@@ -109,54 +190,65 @@ public class Runner {
 		new HalfPlane(new Vector2d(0, 0), Math.PI/2);
 		
 		// test:
-		Circle c = new Circle(100);
-		c.mass = Math.pow(c.radius,2)*Math.PI*0.01;
-		c.position.assign(Math.random()*world.width, Math.random()*world.height);
-		c.speed.assign(Math.random()-0.5, Math.random()-0.5);
-		c.speed.scale(20);
-		for(int i=0; i<10; i++) {
-			c = new Circle((Math.random()+0.5)*8);
+		Obstacle c = null;
+		for(int i=0; i<50; i++) {
+			c = new Obstacle(10);
 			c.mass = Math.pow(c.radius,2)*Math.PI*0.01;
-			c.position.assign(Math.random()*world.width, Math.random()*world.height);
 			c.speed.assign(Math.random()-0.5, Math.random()-0.5);
 			c.speed.scale(2);
+			physics.collideForce.placeNoCollide(c, Settings.Vehicle.placeTryCount);
 		}
-		
-		// vehicles:
-		for(int i=0; i<server.clients.size(); i++) {
-			Vehicle v = new Vehicle(server.clients.get(i).player);
-			physics.collideForce.placeNoCollide(v, Settings.Vehicle.placeTryCount);
-		}
-		
-		infoTick = new InfoTip(String.format("Ticks=%s", tick));
-		infoTick.isStatic = true;
+
+		// Perf and info tips:
 		infoTick.color = Color.red;
+		tips.add(infoTick);
+		updateTick();
 		
-		infoRendererFPS = new InfoTip("");
-		infoRendererFPS.isStatic = true;
-		infoRendererFPS.position.assign(0, 16);
-		infoRendererFPS.color = Color.red;
+		renderer.fpsInfo = new InfoTip("");
+		renderer.fpsInfo.color = Color.red;
+		tips.add(renderer.fpsInfo);
 		renderer.updateFPS();
 		
-		infoPhysFPS = new InfoTip("");
-		infoPhysFPS.isStatic = true;
-		infoPhysFPS.position.assign(0, 32);
-		infoPhysFPS.color = Color.red;
+		physics.fpsInfo = new InfoTip("");
+		physics.fpsInfo.color = Color.red;
+		tips.add(physics.fpsInfo);
 		physics.updateFPS();
+		
+		TipPlacer.placeTips(tips, 1100, 0);
+		tips.clear();
 	}
 	
+	/**
+	 * Shows round statistics
+	 */
 	protected void showStats() {
 		clearUnits();
+		// stats:
+		ArrayList<InfoTip> tips = new ArrayList<InfoTip>();
 		InfoTip info = new InfoTip("Game over");
 		info.position = new Vector2d(world.width/2, world.height/2);
-		mainFrame.mainCanvas.render();
+		tips.add(info);
+		for(ClientListener listener : server.clients) {
+			InfoTip playerTip = new InfoTip("");
+			playerTip.color = listener.player.vehicles.get(0).getColor();
+			listener.player.statsTip = playerTip;
+			listener.player.changeScore(0);
+			tips.add(playerTip);
+		}
+		TipPlacer.placeTips(tips, new Vector2d(world.width/2, world.height/2));
+		forceRender();
 	}
 
 	protected void tick() {
 		bonusSpawner.tick();
+		world.toJSON();
 		server.tick();
 		physics.tick();
-		mainFrame.mainCanvas.render();
+		ArrayList<Unit> objects = new ArrayList<Unit>(physics.objects);
+		for(Unit unit : objects)
+			if(unit instanceof Tickable)
+				((Tickable)unit).tick();
+		forceRender();
 		tick++;
 		world.tick = tick;
 		updateTick();

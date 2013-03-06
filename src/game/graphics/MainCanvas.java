@@ -9,13 +9,30 @@ import java.awt.image.BufferStrategy;
 
 public class MainCanvas extends Canvas {
 	private static final long serialVersionUID = 1L;
+	protected BufferStrategy bs = null;
+	protected Graphics2D graphics = null;
 	
-	public MainCanvas() {
+	public Graphics2D graphics() {
+		prepareGraphics();
+		return graphics;
+	}
+	
+	protected void prepareGraphics() {
+		bs = getBufferStrategy();
+		if(bs == null) {
+			createBufferStrategy(2);
+			bs = getBufferStrategy();
+			requestFocus();
+			graphics = (Graphics2D) bs.getDrawGraphics();
+		}
+		if(bs.contentsLost())
+			graphics = (Graphics2D) bs.getDrawGraphics();
 	}
 	
 	@Override
 	public void paint(Graphics g) {
-		
+		prepareGraphics();
+		bs.show();
 	}
 	
 	@Override
@@ -24,15 +41,7 @@ public class MainCanvas extends Canvas {
 	}
 	
 	public void render() {
-		BufferStrategy bs = getBufferStrategy();
-		if(bs == null) {
-			createBufferStrategy(2);
-			bs=getBufferStrategy();
-			requestFocus();
-		}
-		Graphics2D graphics = (Graphics2D) bs.getDrawGraphics();
-		Runner.inst().renderer.render(graphics);
-		//Runner.inst().mainFrame.repaint();
+		Runner.inst().renderer.render(graphics());
 		bs.show();
 	}
 	

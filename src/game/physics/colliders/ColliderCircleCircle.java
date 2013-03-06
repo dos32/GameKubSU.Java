@@ -1,6 +1,6 @@
 package game.physics.colliders;
 
-import game.physics.colliders.listeners.CollideEventHook;
+import game.physics.colliders.hooks.CollideEventHook;
 import game.physics.objects.Circle;
 import game.utils.Vector2d;
 
@@ -27,11 +27,11 @@ public class ColliderCircleCircle extends Collider {
 		if (isCollide(unit1, unit2)) {
 			boolean bContinue = true;
 			// Collide detected, invoke the event listeners:
-			if (unit1.collideEventListeners != null)
-				for (CollideEventHook listener : unit1.collideEventListeners)
+			if (unit1.collideEventHooks != null)
+				for (CollideEventHook listener : unit1.collideEventHooks)
 					bContinue &= !listener.onEvent(unit2, R - dr);
-			if (unit2.collideEventListeners != null)
-				for (CollideEventHook listener : unit2.collideEventListeners)
+			if (unit2.collideEventHooks != null)
+				for (CollideEventHook listener : unit2.collideEventHooks)
 					bContinue &= !listener.onEvent(unit1, R - dr);
 			if(bContinue) {
 				// Continue calculations:

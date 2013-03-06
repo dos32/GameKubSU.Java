@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 
 // position of this object is control point
 // normal to the edge of plane sets by an angle
-public class HalfPlane extends Unit {
+public class HalfPlane extends DrawableUnit {
 	private static final long serialVersionUID = 5013907462403385255L;
 
 	public HalfPlane(Vector2d position, double angle) {
@@ -17,14 +17,6 @@ public class HalfPlane extends Unit {
 
 	@Override
 	public void draw(Graphics2D graphics) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public double getSquare() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 }

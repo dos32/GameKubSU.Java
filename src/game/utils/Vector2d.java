@@ -1,8 +1,12 @@
 package game.utils;
 
+import game.json.JSONClassCheckException;
+import game.json.JSONObject;
+import game.json.JSONSerializable;
+
 import java.io.Serializable;
 
-public class Vector2d implements Serializable {
+public class Vector2d implements Serializable, JSONSerializable {
 	private static final long serialVersionUID = -7197366098173773030L;
 	
 	public double x, y;
@@ -100,5 +104,27 @@ public class Vector2d implements Serializable {
 			x/=h;
 			y/=h;
 		}
+	}
+
+	@Override
+	public JSONObject toJSON() {
+		JSONObject json = new JSONObject();
+		json.put("class", this.getClassName());
+		json.put("x", Double.toString(x));
+		json.put("y", Double.toString(y));
+		return json;
+	}
+
+	@Override
+	public void fromJSON(JSONObject json) throws JSONClassCheckException {
+		if(!json.has("class") || !json.getString("class").equals(getClassName()))
+			throw new JSONClassCheckException(getClassName());
+		x = json.getDouble("x");
+		y = json.getDouble("y");
+	}
+
+	@Override
+	public String getClassName() {
+		return "Vector2d";
 	}
 }

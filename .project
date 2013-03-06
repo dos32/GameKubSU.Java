@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>GameEngine</name>
+	<name>GameKubSU.java</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -14,4 +14,10 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<variableList>
+		<variable>
+			<name>car1</name>
+			<value>file:/C:/Users/DOS/workspace/GameKubSU.java/src/car1.png</value>
+		</variable>
+	</variableList>
 </projectDescription>

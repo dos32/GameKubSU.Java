@@ -1,10 +1,12 @@
 package game.server;
 
+import game.Runner;
 import game.engine.Settings;
 import game.physics.objects.Vehicle;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
@@ -36,7 +38,16 @@ public final class Server {
 		{
 			clients.add(new ClientListener(null));
 			try {
-				clients.get(i).client = server.accept();
+				Runner.inst().infoTick.message = String.format("Wait for %d client...", i+1);
+				Runner.inst().forceRender();
+				Socket client = server.accept();
+				/*client.setSendBufferSize(Settings.Connection.buffer_size);
+				client.setReceiveBufferSize(Settings.Connection.buffer_size);*/
+				client.setSoTimeout(Settings.Server.tickTimeout);
+				clients.get(i).client = client;
+				clients.get(i).init();
+				Runner.inst().infoTick.message = String.format("Client %d \"%s\" connected.", i+1, clients.get(i).player.name);
+				Runner.inst().forceRender();
 			} catch (IOException e) {
 				if(e.getClass() == java.net.SocketTimeoutException.class)
 					System.err.println(String.format("Can't accept %s client: timeout has been reached", i));
@@ -50,19 +61,9 @@ public final class Server {
 	 * Broadcast to all clients
 	 */
 	public void tick() {
-		Thread[] threads = new Thread[clients.size()];
 		for(int i = 0; i<clients.size(); i++) {
-			ClientListener clientListener = clients.get(i);
-			threads[i] = new Thread(clientListener);
-			threads[i].start();
+			clients.get(i).run();
 		}
-		// Wait for end of listening:
-		for(Thread thread : threads)
-			try {
-				thread.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 		for(ClientListener clientListener : clients) {
 			for(Vehicle vehicle : clientListener.player.vehicles) {
 				vehicle.engine.powerFactor = clientListener.response.power;

@@ -12,12 +12,20 @@ public class BonusSpawner {
 		else if(p<Settings.BonusSpawner.pFlag+Settings.BonusSpawner.pMedKit)
 			return BonusType.MED_KIT;
 		else
-			return null;
+			return BonusType.NITRO_FUEL;
+	}
+	
+	public double probability() {
+		if(Runner.inst().world.bonuses.size() == 0)
+			return 1;
+		else
+			return (Math.random()-Settings.BonusSpawner.probability/2+1/Runner.inst().world.bonuses.size());
 	}
 	
 	public void tick() {
-		if(Math.random() > 1-Settings.BonusSpawner.probability) {
-			Runner.inst().physics.collideForce.placeNoCollide(new Bonus(genType()), Settings.BonusSpawner.placementTries);
+		if(probability() > 1-Settings.BonusSpawner.probability) {
+			Runner.inst().physics.collideForce.placeNoCollide(
+					new Bonus(genType()), Settings.BonusSpawner.placementTries);
 		}
 	}
 }

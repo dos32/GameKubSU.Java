@@ -11,7 +11,7 @@ public class MainFrame extends JFrame {
 	public MainCanvas mainCanvas;
 	
 	public MainFrame() {
-		setTitle("Game engine 1.0 beta");
+		setTitle(Settings.Frame.title);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainCanvas = new MainCanvas();
 		mainCanvas.setPreferredSize(new Dimension((int) Settings.World.width, (int) Settings.World.height));

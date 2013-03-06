@@ -1,19 +1,25 @@
 package game.engine;
 
+import game.utils.Vector2d;
+
 import java.awt.Color;
 
 public final class Settings {
 	public static int tickDuration = 12;
 	public static int maxTicksCount = 5000;
-	public static int waitBeforeDuration = 1000;
-	public static int waitAfterDuration = 1000;
+	public static int waitBeforeDuration = 100;
+	public static int waitAfterDuration = 5000;
 	public static int waitInterval = 1;
 
-	public static int playersCount = 2;
+	public static int playersCount = 6;
+	
+	public final static class Connection {
+		public static int buffer_size = 1<<20;
+	}
 
 	public final static class Server {
-		public static int acceptTimeout = 10000;
-		public static int timeout = 5000;
+		public static int acceptTimeout = 30000;
+		public static int tickTimeout = 500;
 		public static int port = 4000;
 		public static String ip = "127.0.0.1";
 	}
@@ -23,21 +29,34 @@ public final class Settings {
 	}
 
 	public final static class Vehicle {
-		public static double maxHealth = 100, maxArmor = 200, maxFuel = 100,
-				maxNitroPower = 0.05, maxPower = 0.03, maxTurn = 0.03 * Math.PI / 180;
-		public static double damageFactor = 1e-2;
+		public static double maxHealth = 100;
+		public static double maxNitro = 250;
+		public static double maxNitroBoost = 1; // Max power, adds to default, when nitro is available
+		public static double powerCoeff = 0.07;
+		public static double turnCoeff = 0.07 * Math.PI / 180;
+		public static double maxPowerFactor = 1;
+		public static double maxTurnFactor = 1;
+		public static double damageFactor = 3e0;
 		public static double defaultRadius = 10;
 		public static int placeTryCount = 10;
 		public final static class HealthBar {
-			public static int height = 5;
+			public static int height = 4;
 			public static int descent = 7;
 			public static Color defaultColor = Color.blue;
+			public static Color borderColor = Color.black;
+		}
+		public final static class NitroBar {
+			public static int height = 4;
+			public static int descent = 7;
+			public static Color defaultColor = Color.orange;
+			public static Color borderColor = Color.black;
 		}
 	}
 
 	public final static class Frame {
 		public static int contentWidth = (int) World.width,
 				contentHeight = (int) World.height;
+		public static String title = "Game Engine v2.0";
 	}
 	
 	public final static class Physics {
@@ -46,6 +65,7 @@ public final class Settings {
 	}
 	
 	public final static class Renderer {
+		public static boolean drawImages = true;
 	}
 	
 	public final static class PerfMonitor {
@@ -57,19 +77,43 @@ public final class Settings {
 	
 	public final static class BonusSpawner {
 		public static double probability = 0.005; // Probability that bonus spawns in tick
-		public static double pFlag = 0.7;
+		public static double pFlag = 0.6;
 		public static double pMedKit = 0.3;
+		public static double pNitro = 0.1;
 		public static int placementTries = 100;
 		public static double defaultRadius = 10;
 	}
 	
 	public final static class Bonus {
 		public final static class Medkit {
-			public static double healthSize = 0.2;
+			public static double healthSize = 20;
 			public static int goalPoints = 10;
 		}
 		public final static class Flag {
 			public static int goalPoints = 100;
 		}
+		public final static class Nitro {
+			public static double nitroCount = 150;
+			public static int goalPoints = 15;
+		}
+		public static int defaultLifeTime = 500;
 	}
+	
+	public final static class InfoTip {
+		public static double defaultTextSize = 14;
+	}
+	
+	public final static class AnimatedTip {
+		public static Color dmgColor = Color.red,
+				healColor = Color.blue,
+				goalColor = Color.orange,
+				nitroColor = Color.green;
+		public static int defaultLifeTime = 50; // life time in ticks
+		public static double startTextSize = 16,
+				endTextSize = 12;
+		public static Vector2d defaultSpeed = new Vector2d(0, -0.1);
+		public static int defaultZIndex = 1000;
+		public static double stackIndent = 1;
+	}
+
 }

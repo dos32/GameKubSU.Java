@@ -1,9 +1,11 @@
 package game.physics.objects;
 
+import game.graphics.Drawable;
+
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
-public class Box extends Unit {
+public class Box extends DrawableUnit implements Drawable {
 	private static final long serialVersionUID = 8112815845676840482L;
 	public final double width, height;
 	
@@ -21,10 +23,5 @@ public class Box extends Unit {
 		graphics.drawRect(-(int)this.width/2, -(int)this.height/2,
 				(int)this.width, (int)this.height);
 		graphics.setTransform(oldTransform);
-	}
-
-	@Override
-	public double getSquare() {
-		return width*height;
 	}
 }
