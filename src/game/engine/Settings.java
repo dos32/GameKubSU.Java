@@ -10,8 +10,15 @@ public final class Settings {
 	public static int waitBeforeDuration = 100;
 	public static int waitAfterDuration = 5000;
 	public static int waitInterval = 1;
+	
+	/**
+	 * Count of ticks to wait before shutdown the game since all bots became dead
+	 */
+	public static int waitWhenAllDead = 300;
 
 	public static int playersCount = 6;
+	
+	public static int StatusBarZIndex = 10000;
 	
 	public final static class Connection {
 		public static int buffer_size = 1<<20;
@@ -25,18 +32,18 @@ public final class Settings {
 	}
 
 	public final static class World {
-		public static double width = 1300.0d, height = 700.0d;
+		public static double width = 1024.0d, height = 640.0d;
 	}
 
 	public final static class Vehicle {
 		public static double maxHealth = 100;
 		public static double maxNitro = 250;
-		public static double maxNitroBoost = 1; // Max power, adds to default, when nitro is available
+		public static double maxNitroBoost = 1; // Max power of nitro
 		public static double powerCoeff = 0.07;
 		public static double turnCoeff = 0.07 * Math.PI / 180;
 		public static double maxPowerFactor = 1;
 		public static double maxTurnFactor = 1;
-		public static double damageFactor = 3e0;
+		public static double damageFactor = 7e0;
 		public static double defaultRadius = 10;
 		public static int placeTryCount = 10;
 		public final static class HealthBar {
@@ -48,7 +55,7 @@ public final class Settings {
 		public final static class NitroBar {
 			public static int height = 4;
 			public static int descent = 7;
-			public static Color defaultColor = Color.orange;
+			public static Color defaultColor = Color.green;
 			public static Color borderColor = Color.black;
 		}
 	}

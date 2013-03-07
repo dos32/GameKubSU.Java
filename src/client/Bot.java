@@ -8,7 +8,7 @@ import client.model.BotAction;
 
 public class Bot {
 	public final double TURN = -1;
-	public final double POWER = 1; 
+	public final double POWER = 2; 
 	public final int BORDER_REFLECTION = 30;
 	public final int BORDER_SLOWING = 150;
 	public final double RETORDATION_COEFFICIENT = 0.1;
