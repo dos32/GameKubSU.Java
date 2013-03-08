@@ -33,7 +33,18 @@ public class ColliderCircleHalfPlane extends Collider {
 						bContinue &= !listener.onEvent(circle, dr);
 				if(bContinue) {
 					// Continue calculations:
-					circle.speed.add(n.mul(-2 * vn));
+                    Vector2d frictionForce = new Vector2d();
+                    Vector2d tangentSpeed = new Vector2d(circle.speed.diff(n.mul(vn)));
+                    double frictionConstant = 0.2; // friction coefficient*friction effect
+                    frictionForce.add(tangentSpeed.mul(-frictionConstant*dr));
+                    frictionForce.add(n.rotatedBy(Math.PI/2.0).mul(circle.angularSpeed * circle.radius * 0.4 * circle.radius * circle.mass * frictionConstant));
+
+                    // three steps 1: vertical part
+                    circle.speed.add(n.mul(-2 * vn));
+                    // 2: tangent speed
+                    circle.speed.add(frictionForce);
+                    // 3: rotation speed
+                    circle.angularSpeed += frictionForce.rotatedBy(Math.PI/2.0).dotprod(n)/(circle.radius*0.4*circle.radius*circle.mass);
 				}
 			}
 		}
