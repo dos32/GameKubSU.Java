@@ -44,7 +44,7 @@ public final class Settings {
 		public static double turnCoeff = 0.07 * Math.PI / 180;
 		public static double maxPowerFactor = 1;
 		public static double maxTurnFactor = 1;
-		public static double damageFactor = 7e0;
+		public static double damageFactor = 5e0;
 		public static double defaultRadius = 10;
 		public static int placeTryCount = 10;
 		public final static class HealthBar {

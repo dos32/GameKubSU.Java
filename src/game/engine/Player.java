@@ -10,7 +10,7 @@ import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Player implements Serializable, JSONSerializable {
+public class Player implements Serializable, JSONSerializable, Comparable<Player> {
 	private static final long serialVersionUID = 8814139469470501756L;
 	protected static int lastId = 1;
 	public int id;
@@ -69,5 +69,13 @@ public class Player implements Serializable, JSONSerializable {
 		name = json.getString("name");
 		score = json.getInt("score");
 		crashed = json.getBoolean("crashed");
+	}
+
+	@Override
+	public int compareTo(Player o) {
+		int res = this.score - o.score;
+		if(res == 0)
+			res = this.id - o.id;
+		return res;
 	}
 }

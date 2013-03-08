@@ -3,10 +3,13 @@ package game;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.NavigableSet;
+import java.util.TreeSet;
 
 import client.ClientRunner;
 
 import game.engine.BonusSpawner;
+import game.engine.Player;
 import game.engine.Tickable;
 import game.engine.TipPlacer;
 import game.engine.UnitContainer;
@@ -15,6 +18,7 @@ import game.engine.World;
 import game.graphics.MainFrame;
 import game.graphics.Renderer;
 import game.physics.Physics;
+import game.physics.objects.AnimatedTip;
 import game.physics.objects.Bonus;
 import game.physics.objects.HalfPlane;
 import game.physics.objects.InfoTip;
@@ -176,7 +180,7 @@ public class Runner implements UnitContainer {
 		// test clients:
 		for(int i=0; i<Settings.playersCount; i++)
 			new Thread(new ClientRunner()).start();
-
+		
 		server.acceptClients();
 		infoTick.message = "Clients are connected. Preparing the game.";
 		forceRender();
@@ -189,7 +193,7 @@ public class Runner implements UnitContainer {
 		
 		// ticks & stats:
 		ArrayList<InfoTip> tips = new ArrayList<InfoTip>();
-
+		
 		infoTick.color = Color.red;
 		infoTick.setZIndex(Settings.StatusBarZIndex);
 		tips.add(infoTick);
@@ -236,32 +240,22 @@ public class Runner implements UnitContainer {
 		TipPlacer.placeTips(tips, 800, 0);
 		tips.clear();
 	}
-	
-	/**
-	 * Shows round statistics
-	 */
-	protected void showStats() {
-		clearUnits();
-		// stats:
-		ArrayList<InfoTip> tips = new ArrayList<InfoTip>();
-		InfoTip info = new InfoTip("Game over");
-		info.position = new Vector2d(world.width/2, world.height/2);
-		tips.add(info);
-		for(ClientListener listener : server.clients) {
-			InfoTip playerTip = new InfoTip("");
-			playerTip.color = listener.player.vehicles.get(0).getColor();
-			listener.player.statsTip = playerTip;
-			listener.player.changeScore(0);
-			tips.add(playerTip);
-		}
-		TipPlacer.placeTips(tips, new Vector2d(world.width/2, world.height/2));
-		forceRender();
-	}
 
 	protected void tick() {
 		bonusSpawner.tick();
 		if(tick < Settings.maxTicksCount)
 			server.tick();
+		else if(tick == Settings.maxTicksCount) {
+			// add bonus for end health level
+			for(Vehicle vehicle : world.vehicles) {
+				vehicle.engine.powerFactor = 0;
+				vehicle.engine.turnFactor = 0;
+				if(vehicle.health > 0) {
+					int scoreDelta = vehicle.addGoalPoints(vehicle.health);
+					new AnimatedTip(String.format("%+d", scoreDelta), Settings.AnimatedTip.goalColor).position.assign(vehicle.position);
+				}
+			}
+		}
 		physics.tick();
 		ArrayList<Unit> objects = new ArrayList<Unit>(physics.objects);
 		for(Unit unit : objects)
@@ -271,6 +265,32 @@ public class Runner implements UnitContainer {
 		tick++;
 		world.tick = tick;
 		updateTick();
+	}
+	
+	/**
+	 * Shows results statistics
+	 */
+	protected void showStats() {
+		clearUnits();
+		// stats:
+		TreeSet<Player> sortedStats = new TreeSet<Player>();
+		for(ClientListener listener : server.clients)
+			sortedStats.add(listener.player);
+		ArrayList<InfoTip> tips = new ArrayList<InfoTip>();
+		InfoTip info = new InfoTip("Game over");
+		tips.add(info);
+		NavigableSet<Player> sortedStatsDesc = sortedStats.descendingSet();
+		for(Player player : sortedStatsDesc) {
+			InfoTip playerTip = new InfoTip("");
+			playerTip.color = player.vehicles.get(0).getColor();
+			player.statsTip = playerTip;
+			player.changeScore(0);
+			tips.add(playerTip);
+		}
+		TipPlacer.placeTips(tips, new Vector2d(world.width/2, world.height/2));
+		tips.clear();
+		sortedStats.clear();
+		forceRender();
 	}
 	
 	public void start() {

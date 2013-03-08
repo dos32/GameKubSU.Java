@@ -20,8 +20,8 @@ public abstract class Unit implements Serializable, JSONSerializable {
 	
 	protected static int lastid = 1;
 	public final int id;
-	public Vector2d position = new Vector2d();
-	public Vector2d speed = new Vector2d();
+	public final Vector2d position = new Vector2d();
+	public final Vector2d speed = new Vector2d();
 	public double angle = 0;
 	public double angularSpeed = 0;
 	

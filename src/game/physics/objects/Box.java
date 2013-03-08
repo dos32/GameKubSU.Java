@@ -1,11 +1,9 @@
 package game.physics.objects;
 
-import game.graphics.Drawable;
-
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
-public class Box extends DrawableUnit implements Drawable {
+public class Box extends DrawableUnit {
 	private static final long serialVersionUID = 8112815845676840482L;
 	public final double width, height;
 	

@@ -7,7 +7,7 @@ import client.json.JSONSerializable;
 public class Vehicle extends Circle implements JSONSerializable {
 	private int playerId;
 	private String playerName;
-	private double health;
+	private int health;
 	private double nitro;
 	
 	/**
@@ -30,7 +30,7 @@ public class Vehicle extends Circle implements JSONSerializable {
 	 * 
 	 * @return	Health of vehicle
 	 */
-	public double getHealth() {
+	public int getHealth() {
 		return health;
 	}
 	
@@ -50,7 +50,7 @@ public class Vehicle extends Circle implements JSONSerializable {
 	@Override
 	public void fromJSON(JSONObject json) throws JSONClassCheckException {
 		super.fromJSON(json);
-		health = json.getDouble("health");
+		health = json.getInt("health");
 		nitro = json.getDouble("nitro");
 		playerId = json.getInt("playerId");
 		playerName = json.getString("playerName");
