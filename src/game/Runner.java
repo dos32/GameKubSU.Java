@@ -51,19 +51,6 @@ public class Runner implements UnitContainer {
 		return currentInstance;
 	}
 	
-	/**
-	 * 
-	 * @return	Current rendering graphics context
-	 */
-	public Graphics2D graphics() {
-		return mainFrame.mainCanvas.graphics();
-	}
-	
-	public void forceRender() {
-		renderer.updated = true;
-		mainFrame.mainCanvas.render();
-	}
-	
 	public final MainFrame mainFrame;
 	public final World world;
 	public final Renderer renderer;
@@ -90,6 +77,34 @@ public class Runner implements UnitContainer {
 			Obstacle.prepareImages();
 			Renderer.prepareImages();
 		}
+	}
+	
+	/**
+	 * 
+	 * @return	Current rendering graphics context
+	 */
+	public Graphics2D graphics() {
+		return mainFrame.mainCanvas.graphics();
+	}
+	
+	/**
+	 * Forces rendering of scene
+	 */
+	public void forceRender() {
+		renderer.updated = true;
+		mainFrame.mainCanvas.render();
+	}
+	
+	private int allDeadTick = -1;
+	public int allDeadTickout() {
+		for(ClientListener listener : server.clients)
+			if(listener.player.isAlive()) {
+				allDeadTick = -1;
+				return Settings.waitWhenAllDead;
+			}
+		if(allDeadTick == -1)
+			allDeadTick = tick;
+		return Settings.waitWhenAllDead - tick + allDeadTick;
 	}
 	
 	/**
@@ -171,16 +186,24 @@ public class Runner implements UnitContainer {
 			Vehicle v = new Vehicle(server.clients.get(i).player);
 			physics.collideForce.placeNoCollide(v, Settings.Vehicle.placeTryCount);
 		}
-		// stats:
+		
+		// ticks & stats:
 		ArrayList<InfoTip> tips = new ArrayList<InfoTip>();
+
+		infoTick.color = Color.red;
+		infoTick.setZIndex(Settings.StatusBarZIndex);
+		tips.add(infoTick);
+		updateTick();
+		
 		for(ClientListener listener : server.clients) {
 			InfoTip playerTip = new InfoTip("");
+			playerTip.setZIndex(Settings.StatusBarZIndex);
 			playerTip.color = listener.player.vehicles.get(0).getColor();
 			listener.player.statsTip = playerTip;
 			listener.player.changeScore(0);
 			tips.add(playerTip);
 		}
-		TipPlacer.placeTips(tips, new Vector2d(0, 0));
+		TipPlacer.placeTips(tips, 0, 0);
 		tips.clear();
 		
 		// edges:
@@ -191,19 +214,15 @@ public class Runner implements UnitContainer {
 		
 		// test:
 		Obstacle c = null;
-		for(int i=0; i<50; i++) {
+		for(int i=0; i<25; i++) {
 			c = new Obstacle(10);
 			c.mass = Math.pow(c.radius,2)*Math.PI*0.01;
 			c.speed.assign(Math.random()-0.5, Math.random()-0.5);
-			c.speed.scale(2);
+			c.speed.scale(0.8);
 			physics.collideForce.placeNoCollide(c, Settings.Vehicle.placeTryCount);
 		}
-
-		// Perf and info tips:
-		infoTick.color = Color.red;
-		tips.add(infoTick);
-		updateTick();
 		
+		// Perf tips:
 		renderer.fpsInfo = new InfoTip("");
 		renderer.fpsInfo.color = Color.red;
 		tips.add(renderer.fpsInfo);
@@ -214,7 +233,7 @@ public class Runner implements UnitContainer {
 		tips.add(physics.fpsInfo);
 		physics.updateFPS();
 		
-		TipPlacer.placeTips(tips, 1100, 0);
+		TipPlacer.placeTips(tips, 800, 0);
 		tips.clear();
 	}
 	
@@ -258,7 +277,7 @@ public class Runner implements UnitContainer {
 		showGreeting();
 		delay(Settings.waitBeforeDuration);
 		prepareGame();
-		while(tick < Settings.maxTicksCount)
+		while(tick < Settings.maxTicksCount && allDeadTickout() > 0)
 		{
 			long t1 = System.currentTimeMillis();
 			tick();

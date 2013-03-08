@@ -45,12 +45,9 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 	
 	private Vehicle() {
 		super(Settings.Vehicle.defaultRadius);
-		if(lastColorId >= images.length) {
+		if(lastColorId >= images.length)
 			System.err.println("There are not so much colors for vehicles");
-			colorId = lastColorId;
-		}
-		else
-			colorId = lastColorId++;
+		colorId = (lastColorId++ % imagesCount);
 	}
 	
 	public Vehicle(Player player) {

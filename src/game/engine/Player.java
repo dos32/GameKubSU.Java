@@ -31,10 +31,10 @@ public class Player implements Serializable, JSONSerializable {
 	 * 	vehicles is alive
 	 */
 	public boolean isAlive() {
-		boolean res = false;
 		for(Vehicle vehicle : vehicles)
-			res |= vehicle.health>0;
-		return res;
+			if(vehicle.health>0)
+				return true;
+		return false;
 	}
 
 	/**

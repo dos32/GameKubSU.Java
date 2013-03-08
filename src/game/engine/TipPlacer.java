@@ -27,23 +27,11 @@ public class TipPlacer {
 	
 	public static void placeTips(List<? extends InfoTip> tips, Vector2d position) {
 		placeTips(tips, position.x, position.y);
-		/*double indent = 0;
-		for(InfoTip tip : tips) {
-			placeTip(tip, position.x, position.y + indent);
-			indent += tmpSize.height + (tip.position.y-position.y-indent)
-					+ Settings.AnimatedTip.stackIndent;
-		}*/
 	}
 	
 	public static void placeTips(List<? extends InfoTip> tips, double x, double y) {
-		/*double indent = 0;
-		for(InfoTip tip : tips) {
-			placeTip(tip, x, y + indent);
-			indent += tmpSize.height + (tip.position.y-y-indent)
-					+ Settings.AnimatedTip.stackIndent;
-		}*/
 		if(tips.size() > 0)
-			tips.get(0).position.assign(x, y);
+			placeTip(tips.get(0), x, y);
 		for(int i = 1; i < tips.size(); i++)
 			joinBottom(tips.get(i-1), tips.get(i), Settings.AnimatedTip.stackIndent);
 	}
