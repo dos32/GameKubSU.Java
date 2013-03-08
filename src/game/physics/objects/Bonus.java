@@ -83,7 +83,7 @@ public class Bonus extends Circle implements Serializable, JSONSerializable, Tic
 			scoreDelta = vehicle.addGoalPoints(Settings.Bonus.Flag.goalPoints);
 			break;
 		case MED_KIT:
-			healthDelta = (int)Math.round(vehicle.changeHealth(Settings.Bonus.Medkit.healthSize));
+			healthDelta = vehicle.changeHealth(Settings.Bonus.Medkit.healthSize);
 			scoreDelta = vehicle.addGoalPoints(Settings.Bonus.Medkit.goalPoints);
 			break;
 		case NITRO_FUEL:
@@ -114,7 +114,7 @@ public class Bonus extends Circle implements Serializable, JSONSerializable, Tic
 					prepareImages();
 					AffineTransform oldTransform = graphics.getTransform();
 					graphics.translate(position.x, position.y);
-					graphics.rotate(angle);
+					//graphics.rotate(angle);
 					graphics.drawImage(imageMedkit, (int)-radius, (int)-radius,
 							(int)(2*radius), (int)(2*radius), null);
 					graphics.setTransform(oldTransform);
@@ -133,7 +133,7 @@ public class Bonus extends Circle implements Serializable, JSONSerializable, Tic
 					prepareImages();
 					AffineTransform oldTransform = graphics.getTransform();
 					graphics.translate(position.x, position.y);
-					graphics.rotate(angle);
+					//graphics.rotate(angle);
 					graphics.drawImage(imageFlag, (int)-radius, (int)-radius,
 							(int)(2*radius), (int)(2*radius), null);
 					graphics.setTransform(oldTransform);
@@ -151,7 +151,7 @@ public class Bonus extends Circle implements Serializable, JSONSerializable, Tic
 					prepareImages();
 					AffineTransform oldTransform = graphics.getTransform();
 					graphics.translate(position.x, position.y);
-					graphics.rotate(angle);
+					//graphics.rotate(angle);
 					graphics.drawImage(imageNitro, (int)-radius, (int)-radius,
 							(int)(2*radius), (int)(2*radius), null);
 					graphics.setTransform(oldTransform);

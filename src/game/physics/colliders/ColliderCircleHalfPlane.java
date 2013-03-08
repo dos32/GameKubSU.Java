@@ -35,9 +35,9 @@ public class ColliderCircleHalfPlane extends Collider {
 					// Continue calculations:
                     Vector2d frictionForce = new Vector2d();
                     Vector2d tangentSpeed = new Vector2d(circle.speed.diff(n.mul(vn)));
-                    double frictionConstant = 0.2; // friction coefficient*friction effect
-                    frictionForce.add(tangentSpeed.mul(-frictionConstant*dr));
-                    frictionForce.add(n.rotatedBy(Math.PI/2.0).mul(circle.angularSpeed * circle.radius * 0.4 * circle.radius * circle.mass * frictionConstant));
+                    double frictionCoefficient = circle.frictionCoeff + hp.frictionCoeff; // friction coefficient*friction effect
+                    frictionForce.add(tangentSpeed.mul(-frictionCoefficient*dr));
+                    frictionForce.add(n.rotatedBy(Math.PI/2.0).mul(circle.angularSpeed * circle.radius * 0.4 * circle.radius * circle.mass * frictionCoefficient));
 
                     // three steps 1: vertical part
                     circle.speed.add(n.mul(-2 * vn));

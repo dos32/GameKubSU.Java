@@ -40,7 +40,7 @@ public class Obstacle extends Circle implements Serializable, JSONSerializable {
 			prepareImages();
 			AffineTransform oldTransform = graphics.getTransform();
 			graphics.translate(position.x, position.y);
-			graphics.rotate(angle);
+			//graphics.rotate(angle);
 			graphics.drawImage(image, (int)-radius, (int)-radius,
 					(int)(2*radius), (int)(2*radius), null);
 			graphics.setTransform(oldTransform);

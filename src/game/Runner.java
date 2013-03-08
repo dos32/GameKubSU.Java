@@ -260,8 +260,8 @@ public class Runner implements UnitContainer {
 
 	protected void tick() {
 		bonusSpawner.tick();
-		world.toJSON();
-		server.tick();
+		if(tick < Settings.maxTicksCount)
+			server.tick();
 		physics.tick();
 		ArrayList<Unit> objects = new ArrayList<Unit>(physics.objects);
 		for(Unit unit : objects)
@@ -277,7 +277,7 @@ public class Runner implements UnitContainer {
 		showGreeting();
 		delay(Settings.waitBeforeDuration);
 		prepareGame();
-		while(tick < Settings.maxTicksCount && allDeadTickout() > 0)
+		while(tick < Settings.maxTicksCount + Settings.extraTicksCount && allDeadTickout() > 0)
 		{
 			long t1 = System.currentTimeMillis();
 			tick();

@@ -7,6 +7,7 @@ import java.awt.Color;
 public final class Settings {
 	public static int tickDuration = 12;
 	public static int maxTicksCount = 5000;
+	public static int extraTicksCount = 500;
 	public static int waitBeforeDuration = 100;
 	public static int waitAfterDuration = 5000;
 	public static int waitInterval = 1;
@@ -26,7 +27,7 @@ public final class Settings {
 
 	public final static class Server {
 		public static int acceptTimeout = 30000;
-		public static int tickTimeout = 500;
+		public static int tickTimeout = 100;
 		public static int port = 4000;
 		public static String ip = "127.0.0.1";
 	}
@@ -36,7 +37,7 @@ public final class Settings {
 	}
 
 	public final static class Vehicle {
-		public static double maxHealth = 100;
+		public static int maxHealth = 100;
 		public static double maxNitro = 250;
 		public static double maxNitroBoost = 1; // Max power of nitro
 		public static double powerCoeff = 0.07;
@@ -93,7 +94,7 @@ public final class Settings {
 	
 	public final static class Bonus {
 		public final static class Medkit {
-			public static double healthSize = 20;
+			public static int healthSize = 20;
 			public static int goalPoints = 10;
 		}
 		public final static class Flag {

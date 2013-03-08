@@ -38,15 +38,15 @@ public class ColliderCircleCircle extends Collider {
 				n.scale(1 / dr);
 				double v1 = unit1.speed.dotprod(n);
                 double v2 = unit2.speed.dotprod(n);
-                double magicConstant = 0.1;
+                double frictionCoefficient = unit1.frictionCoeff + unit2.frictionCoeff;
                 Vector2d tanSpeed1 = new Vector2d(unit1.speed.diff(n.mul(v1)));
                 Vector2d tanSpeed2 = new Vector2d(unit2.speed.diff(n.mul(v2)));
 
                 Vector2d frictionForce = new Vector2d();
-                frictionForce.add(tanSpeed1.mul(-magicConstant*dr));
-                frictionForce.add(tanSpeed2.mul(magicConstant*dr));
-                frictionForce.add(n.rotatedBy(Math.PI/2.0).mul(unit1.angularSpeed * unit1.radius * unit1.radius * 0.4 * unit1.mass * magicConstant));
-                frictionForce.add(n.rotatedBy(Math.PI/2.0).mul(unit2.angularSpeed * unit2.radius * unit2.radius* 0.4 * unit2.mass * magicConstant));
+                frictionForce.add(tanSpeed1.mul(-frictionCoefficient*dr));
+                frictionForce.add(tanSpeed2.mul(frictionCoefficient*dr));
+                frictionForce.add(n.rotatedBy(Math.PI/2.0).mul(unit1.angularSpeed * unit1.radius * unit1.radius * 0.4 * unit1.mass * frictionCoefficient));
+                frictionForce.add(n.rotatedBy(Math.PI/2.0).mul(unit2.angularSpeed * unit2.radius * unit2.radius* 0.4 * unit2.mass * frictionCoefficient));
 
 				if (v1 <= 0 && v2 >= 0 || v1 <= 0 && v2 <= 0 && v1 <= v2 || v1 >= 0 &&
 						v2 >= 0 && v2 >= v1) {

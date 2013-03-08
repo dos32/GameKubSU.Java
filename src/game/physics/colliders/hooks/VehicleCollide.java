@@ -25,13 +25,15 @@ public class VehicleCollide implements CollideEventHook {
 		}
 		else {
 			ArrayList<InfoTip> tips = new ArrayList<InfoTip>();
-			int healthDelta1 = (int)Math.round(attachedObject.changeHealth(-penetrationDepth*Settings.Vehicle.damageFactor));
+			int damage1 = -(int)Math.round(penetrationDepth*Settings.Vehicle.damageFactor);
+			int healthDelta1 = (int)Math.round(attachedObject.changeHealth(damage1));
 			if(Math.abs(healthDelta1) > 0)
 				tips.add(new AnimatedTip(String.format("%+d", healthDelta1), Settings.AnimatedTip.dmgColor));
 			
 			if(secondObject instanceof Vehicle) {
 				Vehicle vehicle2 = (Vehicle)secondObject;
-				int healthDelta2 = (int)Math.round(vehicle2.getHealthChange(-penetrationDepth*Settings.Vehicle.damageFactor));
+				int damage2 = -(int)Math.round(penetrationDepth*Settings.Vehicle.damageFactor);
+				int healthDelta2 = (int)Math.round(vehicle2.getHealthChange(damage2));
 				int scoreDelta = attachedObject.addGoalPoints(Math.abs(healthDelta2));
 				if(Math.abs(scoreDelta) > 0)
 					tips.add(new AnimatedTip(String.format("%+d", scoreDelta), Settings.AnimatedTip.goalColor));

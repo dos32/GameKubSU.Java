@@ -7,7 +7,6 @@ import client.json.JSONSerializable;
 public class Vehicle extends Circle implements JSONSerializable {
 	private int playerId;
 	private String playerName;
-	private boolean isTeammate;
 	private double health;
 	private double nitro;
 	
@@ -25,14 +24,6 @@ public class Vehicle extends Circle implements JSONSerializable {
 	 */
 	public String getPlayreName() {
 		return playerName;
-	}
-	
-	/**
-	 * 
-	 * @return	True if vehicle is friendly for you
-	 */
-	public boolean isTeammate() {
-		return isTeammate;
 	}
 	
 	/**
@@ -63,7 +54,6 @@ public class Vehicle extends Circle implements JSONSerializable {
 		nitro = json.getDouble("nitro");
 		playerId = json.getInt("playerId");
 		playerName = json.getString("playerName");
-		isTeammate = json.getBoolean("isTeammate");
 	}
 	
 	@Override

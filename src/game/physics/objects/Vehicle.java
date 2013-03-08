@@ -38,7 +38,7 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 	protected boolean isTeammate;
 	protected transient Color color = Color.black;
 
-	public double health = Settings.Vehicle.maxHealth;
+	public int health = Settings.Vehicle.maxHealth;
 	public double nitro = 0;
 	
 	public transient ControlForce engine;
@@ -60,6 +60,14 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 		collideEventHooks = new ArrayList<CollideEventHook>();
 		collideEventHooks.add(new VehicleCollide(this));
 	}
+
+	/**
+	 * 
+	 * @return	Color of vehicle
+	 */
+	public Color getColor() {
+		return imageColors[colorId];
+	}
 	
 	/**
 	 * Changes nitro value by delta; constraints it
@@ -79,8 +87,8 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 	 * @param	delta Desirable change of health value
 	 * @return	Factual change of health under constraints
 	 */
-	public double changeHealth(double delta) {
-		double oldHealthLevel = health;
+	public int changeHealth(int delta) {
+		int oldHealthLevel = health;
 		health = Math.min(Math.max(0, health + delta), Settings.Vehicle.maxHealth);
 		return (health - oldHealthLevel);
 	}
@@ -91,8 +99,8 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 	 * @param delta
 	 * @return	Factual possible change of health under constraints
 	 */
-	public double getHealthChange(double delta) {
-		double newHealthLevel = Math.min(Math.max(0, health + delta), Settings.Vehicle.maxHealth);
+	public int getHealthChange(int delta) {
+		int newHealthLevel = Math.min(Math.max(0, health + delta), Settings.Vehicle.maxHealth);
 		return (newHealthLevel - health);
 	}
 	
@@ -174,21 +182,18 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 	
 	@Override
 	public void fromJSON(JSONObject json) throws JSONClassCheckException {
-		super.fromJSON(json);
+		throw new JSONClassCheckException("not impl");
+		/*super.fromJSON(json);
 		indexInTeam = json.getInt("index");
-		health = json.getDouble("health");
+		health = json.getInt("health");
 		nitro = json.getDouble("nitro");
 		playerId = json.getInt("playerId");
-		isTeammate = json.getBoolean("isTeammate");
+		isTeammate = json.getBoolean("isTeammate");*/
 	}
 	
 	@Override
 	public String getClassName() {
 		return "Vehicle";
-	}
-
-	public Color getColor() {
-		return imageColors[colorId];
 	}
 
 }

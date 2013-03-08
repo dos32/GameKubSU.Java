@@ -58,7 +58,7 @@ public final class ClientListener implements Runnable {
 	public void run() {
 		if(client == null)
 			return;
-		if (!client.isClosed() && player.isAlive())
+		if (!client.isClosed() && player.isAlive() && !player.crashed)
 			try {
 				ServerMessage sm = new ServerMessage(ServerMessage.MT_TICK, Runner.inst().world, player.vehicles.get(0));
 				out.println(sm.toJSON().toString());
