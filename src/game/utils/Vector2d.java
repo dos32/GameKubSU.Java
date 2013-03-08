@@ -106,6 +106,14 @@ public class Vector2d implements Serializable, JSONSerializable {
 		}
 	}
 
+    public Vector2d rotatedBy(double angle) {
+        double xNew = this.x*Math.cos(angle)-this.y*Math.sin(angle);
+        double yNew = this.x*Math.sin(angle)+this.y*Math.cos(angle);
+
+        Vector2d result = new Vector2d(xNew,yNew);
+        return result;
+    }
+
 	@Override
 	public JSONObject toJSON() {
 		JSONObject json = new JSONObject();
