@@ -22,7 +22,7 @@ public class Vehicle extends Circle implements JSONSerializable {
 	 * 
 	 * @return	Name of vehicle driver
 	 */
-	public String getPlayreName() {
+	public String getPlayerName() {
 		return playerName;
 	}
 	

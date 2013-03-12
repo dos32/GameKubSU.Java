@@ -15,7 +15,7 @@ public final class Settings {
 	/**
 	 * Count of ticks to wait before shutdown the game since all bots became dead
 	 */
-	public static int waitWhenAllDead = 300;
+	public static int waitWhenAllDead = 100;
 
 	public static int playersCount = 6;
 	
@@ -45,7 +45,7 @@ public final class Settings {
 		public static double maxPowerFactor = 1;
 		public static double maxTurnFactor = 1;
 		public static double damageFactor = 5e0;
-		public static double defaultRadius = 10;
+		public static double defaultRadius = 20;
 		public static int placeTryCount = 10;
 		public final static class HealthBar {
 			public static int height = 4;
@@ -89,10 +89,11 @@ public final class Settings {
 		public static double pMedKit = 0.3;
 		public static double pNitro = 0.1;
 		public static int placementTries = 100;
-		public static double defaultRadius = 10;
 	}
 	
 	public final static class Bonus {
+		public static int defaultLifeTime = 500;
+		public static double defaultRadius = 20;
 		public final static class Medkit {
 			public static int healthSize = 20;
 			public static int goalPoints = 10;
@@ -104,7 +105,6 @@ public final class Settings {
 			public static double nitroCount = 150;
 			public static int goalPoints = 15;
 		}
-		public static int defaultLifeTime = 500;
 	}
 	
 	public final static class InfoTip {
@@ -122,6 +122,10 @@ public final class Settings {
 		public static Vector2d defaultSpeed = new Vector2d(0, -0.1);
 		public static int defaultZIndex = 1000;
 		public static double stackIndent = 1;
+	}
+	
+	public final static class Obstacle {
+		public static double defaultRadius = 30;
 	}
 
 }

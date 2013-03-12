@@ -28,7 +28,7 @@ public class Bonus extends Circle implements Serializable, JSONSerializable, Tic
 			imageFlag = null;
 
 	public Bonus(BonusType bonusType) {
-		super(Settings.BonusSpawner.defaultRadius);
+		super(Settings.Bonus.defaultRadius);
 		type = bonusType;
 		this.bornTime = Runner.inst().tick;
 	}

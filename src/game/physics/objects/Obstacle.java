@@ -19,8 +19,8 @@ public class Obstacle extends Circle implements Serializable, JSONSerializable {
 	private static final long serialVersionUID = 4749768202608073202L;
 	protected static BufferedImage image = null;
 	
-	public Obstacle(double radius) {
-		super(radius);
+	public Obstacle() {
+		super(Settings.Obstacle.defaultRadius);
 	}
 
 	public static void prepareImages() {

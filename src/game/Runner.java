@@ -2,7 +2,13 @@ package game;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.NavigableSet;
 import java.util.TreeSet;
 
@@ -218,8 +224,8 @@ public class Runner implements UnitContainer {
 		
 		// test:
 		Obstacle c = null;
-		for(int i=0; i<25; i++) {
-			c = new Obstacle(10);
+		for(int i=0; i<10; i++) {
+			c = new Obstacle();
 			c.mass = Math.pow(c.radius,2)*Math.PI*0.01;
 			c.speed.assign(Math.random()-0.5, Math.random()-0.5);
 			c.speed.scale(0.8);
@@ -268,6 +274,24 @@ public class Runner implements UnitContainer {
 	}
 	
 	/**
+	 *  Write statistics to file
+	 */
+	protected void writeStats() {
+		String fileName = String.format("game_%s_%s.txt",
+				new SimpleDateFormat("yy.MM.dd_HH.mm.ss").format(new Date()),
+				(int)Math.round(Math.random()*99));
+		PrintWriter pw = null;
+		try {
+			pw = new PrintWriter(new File(fileName));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		for(ClientListener listener : server.clients)
+			pw.println(String.format("%s %s %s", listener.player.id, listener.player.name, listener.player.score));
+		pw.close();
+	}
+	
+	/**
 	 * Shows results statistics
 	 */
 	protected void showStats() {
@@ -305,6 +329,7 @@ public class Runner implements UnitContainer {
 			waitForTime(t1+Settings.tickDuration);
 		}
 		showStats();
+		writeStats();
 		delay(Settings.waitAfterDuration);
 		server.releaseClients();
 		mainFrame.dispose();
