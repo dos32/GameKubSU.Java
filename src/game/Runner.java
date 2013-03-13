@@ -195,7 +195,22 @@ public class Runner implements UnitContainer {
 		server.acceptClients();
 		infoTick.message = "Clients are connected. Preparing the game.";
 		forceRender();
+
+		clearUnits();
+		// Show list of clients:
+		ArrayList<InfoTip> tips = new ArrayList<InfoTip>();
+		for(ClientListener listener : server.clients) {
+			Player player = listener.player;
+			InfoTip playerTip = new InfoTip(player.name);
+			//playerTip.color = player.vehicles.get(0).getColor();
+			tips.add(playerTip);
+		}
+		TipPlacer.placeTips(tips, world.width/2, 200);
+		tips.clear();
+		forceRender();
+		delay(Settings.waitBeforeDuration);
 		
+		clearUnits();
 		// edges:
 		new HalfPlane(new Vector2d(0, 0), 0);
 		new HalfPlane(new Vector2d(world.width, 0), Math.PI);
@@ -209,7 +224,7 @@ public class Runner implements UnitContainer {
 		}
 		
 		// ticks & stats:
-		ArrayList<InfoTip> tips = new ArrayList<InfoTip>();
+		tips = new ArrayList<InfoTip>();
 		
 		infoTick.color = Color.red;
 		infoTick.setZIndex(Settings.statusBarZIndex);
@@ -282,7 +297,10 @@ public class Runner implements UnitContainer {
 	 *  Write statistics to file
 	 */
 	protected void writeStats() {
-		String fileName = String.format("game_%s_%s.txt",
+		File f = new File(Settings.statsPath);
+		f.mkdirs();
+		String fileName = String.format("%sgame_%s_%s.txt",
+				Settings.statsPath,
 				new SimpleDateFormat("yy.MM.dd_HH.mm.ss").format(new Date()),
 				(int)Math.round(Math.random()*99));
 		PrintWriter pw = null;

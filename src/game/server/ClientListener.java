@@ -25,6 +25,9 @@ public final class ClientListener implements Runnable {
 		this.client = client;
 	}
 	
+	/**
+	 * Send to client init request
+	 */
 	public void init() {
 		try {
 			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
@@ -50,7 +53,7 @@ public final class ClientListener implements Runnable {
 			player.name = "";
 	}
 
-	/*
+	/**
 	 * Send to client serialization of World object and wait to its response,
 	 *	which includes changes in controls which manages by client AI
 	 */

@@ -7,10 +7,12 @@ import java.awt.Color;
 public final class Settings {
 	public static int tickDuration = 12;
 	public static int maxTicksCount = 5000;
-	public static int extraTicksCount = 500;
-	public static int waitBeforeDuration = 100;
+	public static int extraTicksCount = 100;
+	public static int waitBeforeDuration = 1000;
 	public static int waitAfterDuration = 5000;
 	public static int waitInterval = 1;
+	
+	public static String statsPath = ".\\stats\\";
 	
 	/**
 	 * Count of ticks to wait before shutdown the game since all bots became dead
@@ -27,7 +29,7 @@ public final class Settings {
 
 	public final static class Server {
 		public static int acceptTimeout = 30000;
-		public static int tickTimeout = 100;
+		public static int tickTimeout = 1000;
 		public static int port = 4000;
 		public static String ip = "127.0.0.1";
 	}
