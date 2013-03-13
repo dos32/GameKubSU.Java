@@ -19,7 +19,7 @@ public final class Settings {
 
 	public static int playersCount = 6;
 	
-	public static int StatusBarZIndex = 10000;
+	public static int statusBarZIndex = 10000;
 	
 	public final static class Connection {
 		public static int buffer_size = 1<<20;
@@ -33,6 +33,7 @@ public final class Settings {
 	}
 
 	public final static class World {
+		public static int obstaclesCount = 7;
 		public static double width = 1024.0d, height = 640.0d;
 	}
 
@@ -77,6 +78,7 @@ public final class Settings {
 	}
 	
 	public final static class PerfMonitor {
+		public static boolean active = false;
 		public final static class FPS {
 			public static int resetPeriod = 500; // number of ticks, after that stats reset
 			public static long realTimeSpan = (long)1e9; // span of real time in which stats must be recalculated; ns

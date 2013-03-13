@@ -13,7 +13,7 @@ import javax.imageio.ImageIO;
 import game.Runner;
 import game.engine.UnitContainer;
 import game.engine.Settings;
-import game.physics.objects.InfoTip;
+import game.physics.objects.PerfTip;
 import game.physics.objects.Unit;
 
 public final class Renderer implements UnitContainer {
@@ -21,7 +21,7 @@ public final class Renderer implements UnitContainer {
 	
 	protected double fps = 0;
 	protected long framesCount = 0, time = 0, lastRealTime = 0;
-	public InfoTip fpsInfo = null;
+	public PerfTip fpsInfo = null;
 	
 	protected TreeSet<Drawable> objects = new TreeSet<Drawable>();
 	

@@ -5,7 +5,6 @@ import java.awt.Graphics2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,6 +28,7 @@ import game.physics.objects.Bonus;
 import game.physics.objects.HalfPlane;
 import game.physics.objects.InfoTip;
 import game.physics.objects.Obstacle;
+import game.physics.objects.PerfTip;
 import game.physics.objects.Unit;
 import game.physics.objects.Vehicle;
 import game.server.ClientListener;
@@ -74,6 +74,11 @@ public class Runner implements UnitContainer {
 
 	public Runner() {
 		currentInstance = this;
+		// Setup settings from properties:
+		String port = System.getProperty("p");
+		if(port != null && port != "")
+			Settings.Server.port = Integer.parseInt(port);
+		// Create main objects:
 		physics = new Physics();
 		mainFrame = new MainFrame();
 		renderer = new Renderer();
@@ -191,6 +196,12 @@ public class Runner implements UnitContainer {
 		infoTick.message = "Clients are connected. Preparing the game.";
 		forceRender();
 		
+		// edges:
+		new HalfPlane(new Vector2d(0, 0), 0);
+		new HalfPlane(new Vector2d(world.width, 0), Math.PI);
+		new HalfPlane(new Vector2d(0, world.height), 3*Math.PI/2);
+		new HalfPlane(new Vector2d(0, 0), Math.PI/2);
+		
 		// vehicles:
 		for(int i=0; i<server.clients.size(); i++) {
 			Vehicle v = new Vehicle(server.clients.get(i).player);
@@ -201,13 +212,13 @@ public class Runner implements UnitContainer {
 		ArrayList<InfoTip> tips = new ArrayList<InfoTip>();
 		
 		infoTick.color = Color.red;
-		infoTick.setZIndex(Settings.StatusBarZIndex);
+		infoTick.setZIndex(Settings.statusBarZIndex);
 		tips.add(infoTick);
 		updateTick();
 		
 		for(ClientListener listener : server.clients) {
 			InfoTip playerTip = new InfoTip("");
-			playerTip.setZIndex(Settings.StatusBarZIndex);
+			playerTip.setZIndex(Settings.statusBarZIndex);
 			playerTip.color = listener.player.vehicles.get(0).getColor();
 			listener.player.statsTip = playerTip;
 			listener.player.changeScore(0);
@@ -216,15 +227,9 @@ public class Runner implements UnitContainer {
 		TipPlacer.placeTips(tips, 0, 0);
 		tips.clear();
 		
-		// edges:
-		new HalfPlane(new Vector2d(0, 0), 0);
-		new HalfPlane(new Vector2d(world.width, 0), Math.PI);
-		new HalfPlane(new Vector2d(0, world.height), 3*Math.PI/2);
-		new HalfPlane(new Vector2d(0, 0), Math.PI/2);
-		
 		// test:
 		Obstacle c = null;
-		for(int i=0; i<10; i++) {
+		for(int i=0; i < Settings.World.obstaclesCount; i++) {
 			c = new Obstacle();
 			c.mass = Math.pow(c.radius,2)*Math.PI*0.01;
 			c.speed.assign(Math.random()-0.5, Math.random()-0.5);
@@ -233,12 +238,12 @@ public class Runner implements UnitContainer {
 		}
 		
 		// Perf tips:
-		renderer.fpsInfo = new InfoTip("");
+		renderer.fpsInfo = new PerfTip("");
 		renderer.fpsInfo.color = Color.red;
 		tips.add(renderer.fpsInfo);
 		renderer.updateFPS();
 		
-		physics.fpsInfo = new InfoTip("");
+		physics.fpsInfo = new PerfTip("");
 		physics.fpsInfo.color = Color.red;
 		tips.add(physics.fpsInfo);
 		physics.updateFPS();
