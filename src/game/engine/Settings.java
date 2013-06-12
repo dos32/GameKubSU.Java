@@ -10,8 +10,15 @@ public final class Settings {
 	public static int extraTicksCount = 100;
 	public static int waitBeforeDuration = 1000;
 	public static int waitAfterDuration = 5000;
+	
+	/**
+	 * Interval for sampling process of wait
+	 */
 	public static int waitInterval = 1;
 	
+	/**
+	 * Path to folder to output for stats of game
+	 */
 	public static String statsPath = ".\\stats\\";
 	
 	/**
@@ -19,14 +26,44 @@ public final class Settings {
 	 */
 	public static int waitWhenAllDead = 100;
 
-	public static int playersCount = 6;
+	/**
+	 * Count of players in game
+	 */
+	public static int playersCount = 1;
+	
+	/**
+	 * Count of auto-creating by server bots; limits by <I>playersCount</I>
+	 */
+	public static int innerBotsCount = 100;
 	
 	public static int statusBarZIndex = 10000;
+	
+	/**
+	 * Initializes <I>Settings</I> by program start arguments
+	 * @param args program start arguments
+	 */
+	public static void init(String[] args) {
+		//TODO convert args to map
+		// Processing of start arguments:
+		if(args.length>0)
+			innerBotsCount = Math.min(Integer.parseInt(args[0]), playersCount);
+		else
+			innerBotsCount = Math.min(innerBotsCount, playersCount);
+		/*if(args.length>1);
+		String port = System.getProperty("p");
+		if(port != null && port != "")
+			Settings.Server.port = Integer.parseInt(port);*/
+	}
 	
 	public final static class Connection {
 		public static int buffer_size = 1<<20;
 	}
 
+	/**
+	 * Server settings
+	 * @author DOS
+	 *
+	 */
 	public final static class Server {
 		public static int acceptTimeout = 30000;
 		public static int tickTimeout = 1000;
@@ -34,11 +71,21 @@ public final class Settings {
 		public static String ip = "127.0.0.1";
 	}
 
+	/**
+	 * World settings
+	 * @author DOS
+	 *
+	 */
 	public final static class World {
 		public static int obstaclesCount = 7;
 		public static double width = 1024.0d, height = 640.0d;
 	}
 
+	/**
+	 * Vehicle settings
+	 * @author DOS
+	 *
+	 */
 	public final static class Vehicle {
 		public static int maxHealth = 100;
 		public static double maxNitro = 250;

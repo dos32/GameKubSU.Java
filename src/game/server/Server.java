@@ -18,14 +18,14 @@ public final class Server {
 		try {
 			server = new ServerSocket(Settings.Server.port);
 		} catch (IOException e) {
-			System.err.println(String.format("Failed open server on port %s",
-					Settings.Server.port));
+			System.err.printf("Failed open server on port %s\n", Settings.Server.port);
 			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 	
-	/*
-	 * accepts all of clients - the
+	/**
+	 * Accepts all of clients - the
 	 *  initialization part for this server
 	 */
 	public void acceptClients() {
@@ -34,8 +34,7 @@ public final class Server {
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
-		for(int i=0; i<Settings.playersCount; i++)
-		{
+		for(int i=0; i<Settings.playersCount; i++) {
 			clients.add(new ClientListener(null));
 			try {
 				Runner.inst().infoTick.message = String.format("Wait for %d client...", i+1);
@@ -50,20 +49,18 @@ public final class Server {
 				Runner.inst().forceRender();
 			} catch (IOException e) {
 				if(e.getClass() == java.net.SocketTimeoutException.class)
-					System.err.println(String.format("Can't accept %s client: timeout has been reached", i));
-				else
-					e.printStackTrace();
+					System.err.printf("Can't accept %s client: timeout has been reached\n", i);
+				e.printStackTrace();
 			}
 		}
 	}
 	
-	/*
+	/**
 	 * Broadcast to all clients
 	 */
 	public void tick() {
-		for(int i = 0; i<clients.size(); i++) {
+		for(int i = 0; i<clients.size(); i++)
 			clients.get(i).run();
-		}
 		for(ClientListener clientListener : clients) {
 			for(Vehicle vehicle : clientListener.player.vehicles) {
 				vehicle.engine.powerFactor = clientListener.response.power;
@@ -72,10 +69,12 @@ public final class Server {
 		}
 	}
 	
+	/**
+	 * Send endgame message and close all clients
+	 */
 	public void releaseClients() {
-		for(ClientListener c : clients) {
+		for(ClientListener c : clients)
 			c.release();
-		}
 	}
 	
 }

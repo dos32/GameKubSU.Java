@@ -36,7 +36,7 @@ import game.server.Server;
 import game.utils.Vector2d;
 
 /**
- * Class for assemblying entire game model
+ * Class for assemblying and running entire game model
  * @author DOS
  *
  */
@@ -70,14 +70,14 @@ public class Runner implements UnitContainer {
 	
 	public InfoTip infoTick;
 	
+	/**
+	 * Current tick of game
+	 */
 	public int tick = 0;
 
 	public Runner() {
+		// Current instance:
 		currentInstance = this;
-		// Setup settings from properties:
-		String port = System.getProperty("p");
-		if(port != null && port != "")
-			Settings.Server.port = Integer.parseInt(port);
 		// Create main objects:
 		physics = new Physics();
 		mainFrame = new MainFrame();
@@ -140,8 +140,11 @@ public class Runner implements UnitContainer {
 	 */
 	protected void waitForTime(long time) {
 		try {
-			while(System.currentTimeMillis()<time)
-				Thread.sleep(Settings.waitInterval);
+			/*while(System.currentTimeMillis()<time)
+				Thread.sleep(Settings.waitInterval);*/
+			long waitTime = time - System.currentTimeMillis();
+			if(waitTime>0)
+				Thread.sleep(waitTime);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -189,7 +192,9 @@ public class Runner implements UnitContainer {
 	 */
 	protected void prepareGame() {
 		// test clients:
-		for(int i=0; i<Settings.playersCount; i++)
+		/*for(int i=0; i<Settings.playersCount-1; i++)
+			new Thread(new ClientRunner()).start();*/
+		for(int i=0; i<Settings.innerBotsCount; i++)
 			new Thread(new ClientRunner()).start();
 		
 		server.acceptClients();
@@ -359,6 +364,7 @@ public class Runner implements UnitContainer {
 	}
 
 	public static void main(String[] args) {
+		Settings.init(args);
 		Runner runner = new Runner();
 		runner.start();
 	}
