@@ -22,7 +22,7 @@ public abstract class DrawableUnit extends Unit implements Drawable {
 	@Override
 	public int compareTo(Drawable o) {
 		int res = this.zIndex - o.getZIndex();
-		if(res==0 && (o instanceof Unit))
+		if(res == 0 && (o instanceof Unit))
 			res= this.id - ((Unit)o).id;
 		if(res == 0 && this != o)
 			System.err.println("Box.compareTo()::res==0");

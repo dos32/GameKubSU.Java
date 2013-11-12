@@ -5,7 +5,7 @@ import game.utils.Vector2d;
 import java.awt.Color;
 
 public final class Settings {
-	public static int tickDuration = 12;
+	public static int tickDuration = 0;//12;
 	public static int maxTicksCount = 5000;
 	public static int extraTicksCount = 100;
 	public static int waitBeforeDuration = 1000;
@@ -29,12 +29,12 @@ public final class Settings {
 	/**
 	 * Count of players in game
 	 */
-	public static int playersCount = 1;
+	public static int playersCount = 10;
 	
 	/**
 	 * Count of auto-creating by server bots; limits by <I>playersCount</I>
 	 */
-	public static int innerBotsCount = 100;
+	public static int innerBotsCount = 10;
 	
 	public static int statusBarZIndex = 10000;
 	
@@ -136,10 +136,17 @@ public final class Settings {
 	
 	public final static class BonusSpawner {
 		public static double probability = 0.005; // Probability that bonus spawns in tick
-		public static double pFlag = 0.6;
-		public static double pMedKit = 0.3;
-		public static double pNitro = 0.1;
+//		public static double pFlag = 0.6;
+//		public static double pMedKit = 0.3;
+//		public static double pNitro = 0.1;
 		public static int placementTries = 100;
+		public static double[] p = new double[] {
+			0.5,
+			0.2,
+			0.1,
+			0.2,
+			0.0
+		};
 	}
 	
 	public final static class Bonus {
@@ -155,6 +162,9 @@ public final class Settings {
 		public final static class Nitro {
 			public static double nitroCount = 150;
 			public static int goalPoints = 15;
+		}
+		public final static class Kamikadze {
+			public static double explodeRadius = 500;
 		}
 	}
 	

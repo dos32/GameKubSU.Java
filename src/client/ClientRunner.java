@@ -37,26 +37,25 @@ public class ClientRunner implements Runnable {
 						System.err.println("s is undef");
 					}
 					sm.fromJSON(new JSONObject(s));
-				} catch (JSONException e) {
-					e.printStackTrace();
-				} catch (JSONClassCheckException e) {
+				} catch (JSONException | JSONClassCheckException e) {
+					System.err.printf("Some errors with deserializing JSON \"%s\"\n", s);
 					e.printStackTrace();
 				}
 				ClientMessage cm = null;
 				switch (sm.messageType) {
-				case ServerMessage.MT_INIT:
-					cm = new ClientMessage(new BotAction(), bot.init());
-					break;
-				case ServerMessage.MT_TICK:
-					BotAction action = new BotAction();
-					bot.move(sm.world, sm.self, action);
-					cm = new ClientMessage(action, "");
-					break;
-				case ServerMessage.MT_END:
-					//frame.dispose();
-					return;
-				default:
-					break;
+					case ServerMessage.MT_INIT:
+						cm = new ClientMessage(new BotAction(), bot.init());
+						break;
+					case ServerMessage.MT_TICK:
+						BotAction action = new BotAction();
+						bot.move(sm.world, sm.self, action);
+						cm = new ClientMessage(action, "");
+						break;
+					case ServerMessage.MT_END:
+						//frame.dispose();
+						return;
+					default:
+						break;
 				}
 				String sr = cm.toJSON().toString();
 				out.println(sr);

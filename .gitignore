@@ -5,3 +5,6 @@ GameKubSu.java.iml
 *.jar
 *.war
 *.ear
+client.zip
+imgs/
+stats/

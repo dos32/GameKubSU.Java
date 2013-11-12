@@ -24,13 +24,17 @@ public class ColliderCircleHalfPlane extends Collider {
 		if (isCollide(circle, hp)) {
 			if(vn<0) {
 				boolean bContinue = true;
-				// Collide detected, invoke the event listeners:
+				// Collision detected, invoke the event listeners:
+				Vector2d penetrationPoint = new Vector2d(n);
+				penetrationPoint.scale(circle.radius - dr);
+				penetrationPoint.negate();
+				penetrationPoint.add(circle.position);
 				if (circle.collideEventHooks != null)
 					for (CollideEventHook listener : circle.collideEventHooks)
-						bContinue &= !listener.onEvent(hp, dr);
+						bContinue &= !listener.onEvent(hp, dr, penetrationPoint);
 				if (hp.collideEventHooks != null)
 					for (CollideEventHook listener : hp.collideEventHooks)
-						bContinue &= !listener.onEvent(circle, dr);
+						bContinue &= !listener.onEvent(circle, dr, penetrationPoint);
 				if(bContinue) {
 					// Continue calculations:
                     Vector2d frictionForce = new Vector2d();

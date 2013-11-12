@@ -135,4 +135,10 @@ public class Vector2d implements Serializable, JSONSerializable {
 	public String getClassName() {
 		return "Vector2d";
 	}
+	
+	public static void main(String[] args) {
+		Vector2d v = new Vector2d(0, 1);
+		Vector2d v1 = v.rotatedBy(Math.PI/2);
+		System.out.println(v1);
+	}
 }

@@ -12,7 +12,6 @@ import java.util.NavigableSet;
 import java.util.TreeSet;
 
 import client.ClientRunner;
-
 import game.engine.BonusSpawner;
 import game.engine.Player;
 import game.engine.Tickable;
@@ -76,7 +75,6 @@ public class Runner implements UnitContainer {
 	public int tick = 0;
 
 	public Runner() {
-		// Current instance:
 		currentInstance = this;
 		// Create main objects:
 		physics = new Physics();

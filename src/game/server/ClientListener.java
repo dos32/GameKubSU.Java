@@ -5,6 +5,7 @@ import game.engine.Player;
 import game.json.JSONClassCheckException;
 import game.json.JSONException;
 import game.json.JSONObject;
+import game.utils.TimeWatch;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -64,30 +65,39 @@ public final class ClientListener implements Runnable {
 		if(client == null)
 			return;
 		if (!client.isClosed() && player.isAlive() && !player.crashed) {
-				ServerMessage sm = new ServerMessage(ServerMessage.MT_TICK, Runner.inst().world, player.vehicles.get(0));
-				out.println(sm.toJSON().toString());
-				out.flush();
-				String sJSON = null;
-				response = null;
-				try {
-					sJSON = in.readLine();
-					JSONObject rjson = new JSONObject(sJSON);
-					cm.fromJSON(rjson);
-					response = cm.botAction;
-				} catch (JSONException | JSONClassCheckException e) {
-					System.err.printf("Some troubles with parsing JSON: \"%s\"\n", sJSON);
-					e.printStackTrace();
-				} catch (IOException e) {
-					if(e.getClass() == SocketTimeoutException.class) {
-						System.out.printf("Strategy crashed by timeout, player=\"%s\"#%d\n",
-								player.name, player.id);
-						player.crashed = true;
-					}
-					e.printStackTrace();
-				} finally {
-					if(response == null)
-						response = new BotAction(0, 0);
+			ServerMessage sm = new ServerMessage(ServerMessage.MT_TICK,
+					Runner.inst().world, player.vehicles.get(0));
+			//String sJSON = sm.toJSON().toString();
+			//out.println(sJSON);
+//			TimeWatch.start();
+			JSONObject oJSON = sm.toJSON();
+//			TimeWatch.event("Created oJSON");
+			oJSON.write(out);
+//			TimeWatch.event("Posted JSON");
+//			System.out.println();
+			out.println("ee");
+			out.flush();
+			String sJSON = null;
+			response = null;
+			try {
+				sJSON = in.readLine();
+				JSONObject rjson = new JSONObject(sJSON);
+				cm.fromJSON(rjson);
+				response = cm.botAction;
+			} catch (JSONException | JSONClassCheckException e) {
+				System.err.printf("Some troubles with parsing JSON: \"%s\"\n", sJSON);
+				e.printStackTrace();
+			} catch (IOException e) {
+				if(e.getClass() == SocketTimeoutException.class) {
+					System.out.printf("Strategy crashed by timeout, player=\"%s\"#%d\n",
+							player.name, player.id);
+					player.crashed = true;
 				}
+				e.printStackTrace();
+			} finally {
+				if(response == null)
+					response = new BotAction(0, 0);
+			}
 		} else if(response == null)
 			response = new BotAction(0, 0);
 		else

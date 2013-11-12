@@ -3,11 +3,14 @@ package game.physics.objects;
 import game.Runner;
 import game.engine.Player;
 import game.engine.Settings;
+import game.engine.TipPlacer;
 import game.json.JSONClassCheckException;
 import game.json.JSONObject;
 import game.json.JSONSerializable;
 import game.physics.colliders.hooks.CollideEventHook;
-import game.physics.colliders.hooks.VehicleCollide;
+import game.physics.colliders.hooks.VehicleCollideHook;
+import game.physics.effects.Explosion;
+import game.physics.effects.KamikadzeHalo;
 import game.physics.forces.BindedForce;
 import game.physics.forces.ControlForce;
 import game.utils.Vector2d;
@@ -23,6 +26,8 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 public class Vehicle extends Circle implements Serializable, JSONSerializable {
 	private static final long serialVersionUID = 1563688715048158514L;
 	
@@ -37,7 +42,9 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 	protected int playerId;
 	protected boolean isTeammate;
 	protected transient Color color = Color.black;
-
+	
+	public transient KamikadzeHalo kamikadzeHalo = null;
+	
 	public int health = Settings.Vehicle.maxHealth;
 	public double nitro = 0;
 	
@@ -58,7 +65,7 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 		bindedForces = new ArrayList<BindedForce>();
 		bindedForces.add(engine);
 		collideEventHooks = new ArrayList<CollideEventHook>();
-		collideEventHooks.add(new VehicleCollide(this));
+		collideEventHooks.add(new VehicleCollideHook(this));
 	}
 
 	/**
@@ -90,16 +97,18 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 	public int changeHealth(int delta) {
 		int oldHealthLevel = health;
 		health = Math.min(Math.max(0, health + delta), Settings.Vehicle.maxHealth);
+		if(health <= 0 && Math.abs(health - oldHealthLevel) > 0)
+			die();
 		return (health - oldHealthLevel);
 	}
 	
 	/**
-	 * Does same that changeHealth, but not change
-	 * value of health
+	 * Returns possible change of health under constraints.
+	 * Value of health will be not changed
 	 * @param delta
 	 * @return	Factual possible change of health under constraints
 	 */
-	public int getHealthChange(int delta) {
+	public int getPossibleHealthChange(int delta) {
 		int newHealthLevel = Math.min(Math.max(0, health + delta), Settings.Vehicle.maxHealth);
 		return (newHealthLevel - health);
 	}
@@ -112,6 +121,27 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 	public int addGoalPoints(int ptsCount) {
 		player.changeScore(ptsCount);
 		return ptsCount;
+	}
+	
+	public void die() {
+		if(kamikadzeHalo != null) {
+			new Explosion(Explosion.Type.BIG, position);
+			ArrayList<Unit> damaged = Runner.inst().physics.findInRadius(position, Settings.Bonus.Kamikadze.explodeRadius);
+			for(Unit unit : damaged) {
+				if(unit instanceof Vehicle && unit != this) {
+					ArrayList<InfoTip> tips = new ArrayList<InfoTip>();
+					double dist = position.diff(unit.position).norm() * 0.1;
+					double damage = 1.0/(1.0 + Math.pow(dist, 2)) * Settings.Vehicle.maxHealth * 10;
+					int healthDelta = ((Vehicle)unit).changeHealth(-(int)Math.round(damage));
+					addGoalPoints(Math.abs(healthDelta));
+					if(Math.abs(healthDelta) > 0)
+						tips.add(new AnimatedTip(String.format("%+d", healthDelta), Settings.AnimatedTip.dmgColor));
+					TipPlacer.placeTips(tips, unit.position);
+				}
+			}
+			kamikadzeHalo.dispose();
+		}
+		dispose();
 	}
 	
 	public static void prepareImages() {
@@ -182,7 +212,8 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 	
 	@Override
 	public void fromJSON(JSONObject json) throws JSONClassCheckException {
-		throw new JSONClassCheckException("not impl");
+//		throw new JSONClassCheckException("not impl");
+		throw new NotImplementedException();
 		/*super.fromJSON(json);
 		indexInTeam = json.getInt("index");
 		health = json.getInt("health");

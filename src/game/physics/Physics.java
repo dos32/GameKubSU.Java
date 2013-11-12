@@ -17,7 +17,7 @@ import game.utils.Vector2d;
 
 @SuppressWarnings("unused")
 public final class Physics implements UnitContainer {
-	protected int ticks;
+//	protected int ticks = 0;
 	protected long ticksCount = 0, innerTime = 0, lastRealTime = 0;
 	protected double fps = 0;
 	public PerfTip fpsInfo = null;
@@ -40,6 +40,14 @@ public final class Physics implements UnitContainer {
 		else {
 			fpsInfo.message = String.format("Phys.FPS = %s", Math.round(fps));
 		}
+	}
+	
+	public ArrayList<Unit> findInRadius(Vector2d center, double radius) {
+		ArrayList<Unit> result = new ArrayList<Unit>();
+		for(Unit unit : objects)
+			if(center.diff(unit.position).norm() <= radius)
+				result.add(unit);
+		return result;
 	}
 
 	@Override

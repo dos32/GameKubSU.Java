@@ -26,13 +26,18 @@ public class ColliderCircleCircle extends Collider {
 	public void Collide(Circle unit1, Circle unit2) {
 		if (isCollide(unit1, unit2)) {
 			boolean bContinue = true;
-			// Collide detected, invoke the event listeners:
+			// Collision detected, invoke the event listeners:
+			double penetrationDepth = R - dr;
+			Vector2d penetrationPoint = new Vector2d(n);
+			penetrationPoint.normalize();
+			penetrationPoint.scale(penetrationDepth/2 - unit1.radius);
+			penetrationPoint.add(unit1.position);
 			if (unit1.collideEventHooks != null)
 				for (CollideEventHook listener : unit1.collideEventHooks)
-					bContinue &= !listener.onEvent(unit2, R - dr);
+					bContinue &= !listener.onEvent(unit2, penetrationDepth, penetrationPoint);
 			if (unit2.collideEventHooks != null)
 				for (CollideEventHook listener : unit2.collideEventHooks)
-					bContinue &= !listener.onEvent(unit1, R - dr);
+					bContinue &= !listener.onEvent(unit1, penetrationDepth, penetrationPoint);
 			if(bContinue) {
 				// Continue calculations:
 				n.scale(1 / dr);
