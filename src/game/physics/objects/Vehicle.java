@@ -29,6 +29,7 @@ import javax.imageio.ImageIO;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class Vehicle extends Circle implements Serializable, JSONSerializable {
+	
 	private static final long serialVersionUID = 1563688715048158514L;
 	
 	private static final int imagesCount = 6;
@@ -67,7 +68,7 @@ public class Vehicle extends Circle implements Serializable, JSONSerializable {
 		collideEventHooks = new ArrayList<CollideEventHook>();
 		collideEventHooks.add(new VehicleCollideHook(this));
 	}
-
+	
 	/**
 	 * 
 	 * @return	Color of vehicle

@@ -24,8 +24,7 @@ public class VehicleCollideHook implements CollideEventHook {
 		if(secondObject instanceof Bonus) {
 			((Bonus)secondObject).collect(attachedObject);
 			return true;
-		}
-		else {
+		} else {
 			ArrayList<InfoTip> tips = new ArrayList<InfoTip>();
 			int damage1 = -(int)Math.round(penetrationDepth*Settings.Vehicle.damageFactor);
 			int healthDelta1 = (int)Math.round(attachedObject.changeHealth(damage1));

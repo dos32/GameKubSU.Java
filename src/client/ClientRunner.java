@@ -66,7 +66,7 @@ public class ClientRunner implements Runnable {
 		}
 	}
 	
-	/*public static void main(String[] args) {
-		new ClientRunner();
-	}*/
+	public static void main(String[] args) {
+		new ClientRunner().run();
+	}
 }

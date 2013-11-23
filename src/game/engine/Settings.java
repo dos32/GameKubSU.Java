@@ -34,7 +34,7 @@ public final class Settings {
 	/**
 	 * Count of auto-creating by server bots; limits by <I>playersCount</I>
 	 */
-	public static int innerBotsCount = 10;
+	public static int innerBotsCount = 9;
 	
 	public static int statusBarZIndex = 10000;
 	

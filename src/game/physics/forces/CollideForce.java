@@ -13,7 +13,7 @@ public class CollideForce extends GlobalForce {
 	public ColliderCircleCircle cc = new ColliderCircleCircle();
 	public ColliderCircleHalfPlane chp = new ColliderCircleHalfPlane();
 
-	/*
+	/**
 	 * Change position of unit until it collides with other objects
 	 *	or operation repeats more than tryCount times  
 	 */
